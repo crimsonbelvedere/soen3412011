@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type='text/css' href="css/vader/jquery-ui-1.8.16.custom.css">
+  <link rel='stylesheet' type='text/css' href='css/jquery.ui.selectmenu.css'>
+  <link rel='stylesheet' type='text/css' href='css/fullcalendar.css'>
+  <link rel='stylesheet' type='text/css' href='css/fullcalendar.print.css' media='print'>
+  <link rel="stylesheet" type='text/css' href="css/custom.css">
+  <script src="js/jquery-1.6.4.min.js"></script>
+  <script src="http://cdn.jquerytools.org/1.2.6/full/jquery.tools.min.js"></script>
+  <script src="js/jquery-ui-1.8.16.custom.min.js"></script>
+  <script src="js/jquery.ui.core.js"></script>
+  <script src="js/jquery.ui.widget.js"></script>
+  <script src="js/jquery.ui.button.js"></script>
+  <script src="js/jquery.ui.mouse.js"></script>
+  <script src="js/jquery.ui.slider.js"></script>
+  <script src="js/jquery.ui.position.js"></script>
+  <script src="js/jquery.ui.tooltip.js"></script>
+  <script src="js/jquery.ui.selectmenu.js"></script>
+  <script src="js/fullcalendar.min.js"></script>
+  <script src="js/custom.js"></script>
+
+  <title>SOEN341</title>
+</head>
+
+<body>
+  <div id="content">
+    <div class="demo">
+      <fieldset>
+        <select id="selectFaculty" class="selectDrop">
+          <option value="encs">
+            Engineering and Computer Science
+          </option>
+        </select> <select id="selectDepartment" class="selectDrop">
+          <option value="csse">
+            Computer Science and Software Engineering
+          </option>
+        </select> <select id="selectProgram" class="selectDrop">
+          <option value="se">
+            BEng in Software Engineering
+          </option>
+        </select>
+      </fieldset>
+
+      <div class="clear-both"></div>
+
+      <div id="tabs">
+        <ul>
+          <li><a href="#tabs-1">Core courses</a></li>
+          <li><a href="#tabs-2">Options</a></li>
+          <li><a href="#tabs-3">Electives</a></li>
+        </ul>
+
+        <div id="tabs-1">
+          <form action="">
+
+            <fieldset class="float-left">
+              <legend>Engineering</legend>
+
+              <ul class="checklist">
+                <li title="Principles of Electrical Engineering/nFundamentals of electric circuits: Kirchoff’s laws, voltage and current sources, Ohm’s law, series and parallel circuits. Nodal and mesh analysis of DC circuits. Superposition theorem, Thevenin and Norton Equivalents. Use of operational amplifiers. Transient analysis of simple RC, RL and RLC circuits. Steady state analysis: Phasors and impedances, power and power factor. Single and three phase circuits. Magnetic circuits and transformers. Power generation and distribution.">
+                  <input value="ELEC 275" type="checkbox" id="elec725">
+                  <label for="elec275"><strong>ELEC 275</strong></label>
+                  <a class="checkbox-select" href="#">Select</a>
+                  <a class="checkbox-deselect" href="#">Remove</a>
+                </li>
+              </ul>
+              <div class="clear-both"></div><br />
+
+              <ul class="checklist">
+                <li title="Professional Practice and Responsibility">
+                  <input value="ENGR 201" type="checkbox" id="engr201">
+                  <label for="engr201"><strong>ENGR 201</strong></label>
+                  <a class="checkbox-select" href="#">Select</a>
+                  <a class="checkbox-deselect" href="#">Remove</a>
+                </li>
+              </ul>
+              <div class="clear-both"></div><br />
+
+              <ul class="checklist">
+                <li title="Sustainable Development and Environmental Stewardship">
+                  <input value="ENGR 202" type="checkbox" id="engr202">
+                  <label for="engr202"><strong>ENGR 202</strong></label>
+                  <a class="checkbox-select" href="#">Select</a>
+                  <a class="checkbox-deselect" href="#">Remove</a>
+                </li>
+              </ul>
+              <div class="clear-both"></div><br />
+
+              <ul class="checklist">
+                <li title="Applied Ordinary Differential Equations">
+                  <input value="ENGR 213" type="checkbox" id="engr213">
+                  <label for="engr213"><strong>ENGR 213</strong></label>
+                  <a class="checkbox-select" href="#">Select</a>
+                  <a class="checkbox-deselect" href="#">Remove</a>
+                </li>
+              </ul>
+
+            </fieldset>
+
+            <fieldset class="float-left">
+              <legend>Software Engineering</legend>
+
+              <ul class="checklist">
+                <li title="System Hardware">
+                  <input value="SOEN 228" type="checkbox" id="soen228">
+                  <label for="soen228"><strong>SOEN 228</strong></label>
+                  <a class="checkbox-select" href="#">Select</a>
+                  <a class="checkbox-deselect" href="#">Remove</a>
+                </li>
+              </ul>
+              <div class="clear-both"></div><br />
+
+              <ul class="checklist">
+                <li title="Web Programming">
+                  <input value="SOEN 287" type="checkbox" id="soen287">
+                  <label for="soen287"><strong>SOEN 287</strong></label>
+                  <a class="checkbox-select" href="#">Select</a>
+                  <a class="checkbox-deselect" href="#">Remove</a>
+                </li>
+              </ul>
+              <div class="clear-both"></div><br />
+
+              <ul class="checklist">
+                <li title="Introduction to Formal Methods for Software Engineering">
+                  <input value="SOEN 331" type="checkbox" id="soen331">
+                  <label for="soen331"><strong>SOEN 331</strong></label>
+                  <a class="checkbox-select" href="#">Select</a>
+                  <a class="checkbox-deselect" href="#">Remove</a>
+                </li>
+              </ul>
+              <div class="clear-both"></div><br />
+
+              <ul class="checklist">
+                <li title="Software Process">
+                  <input value="SOEN 341" type="checkbox" id="soen341">
+                  <label for="soen341"><strong>SOEN 341</strong></label>
+                  <a class="checkbox-select" href="#">Select</a>
+                  <a class="checkbox-deselect" href="#">Remove</a>
+                </li>
+              </ul>
+
+            </fieldset>
+
+          </form>
+
+          <div class="clear-both"></div>
+
+        </div>
+
+        <div id="tabs-2">
+            <p>Option courses</p>
+        </div>
+
+        <div id="tabs-3">
+            <p>Electives</p>
+        </div>
+      </div>
+    </div><!-- End demo -->
+
+    <div id='calendar'></div>
+
+    <div id="options" class="ui-corner-all float-left">
+      <fieldset class="ui-corner-all gray-border center">
+        <legend>Term</legend>
+
+        <div class="fg-buttonset fg-buttonset-single ui-helper-clearfix">
+          <button class="fg-button ui-state-default ui-state-active ui-priority-primary ui-corner-left" value="2">Fall</button>
+          <button class="fg-button ui-state-default ui-priority-primary ui-corner-right" value="4">Winter</button>
+        </div>
+      </fieldset>
+
+      <fieldset class="ui-corner-all gray-border center">
+        <legend>Constraints</legend>
+
+        <select id="selectDay" class="selectDrop margin10">
+          <option value="monday">Monday</option>
+          <option value="tuesday">Tuesday</option>
+          <option value="wednesday">Wednesday</option>
+          <option value="thursday">Thursday</option>
+          <option value="friday">Friday</option>
+        </select>
+
+      	<div id="time">10:00 - 20:00</div>
+
+        <div id="slider-range" class="margin10">
+        </div><button class="fg-button ui-state-default ui-corner-all" type="button" id="add">Add</button>
+        <button class="fg-button ui-state-default ui-corner-all" type="button" id="clear">Clear all</button>
+      </fieldset>
+    </div>
+
+    <div class="clear-both"></div>
+
+  </div>
+</body>
+</html>
