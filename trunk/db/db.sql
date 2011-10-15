@@ -11,7 +11,7 @@ USE `soen341` ;
 DROP TABLE IF EXISTS `soen341`.`Faculty` ;
 
 CREATE  TABLE IF NOT EXISTS `soen341`.`Faculty` (
-  `id` INT NOT NULL ,
+  `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(45) NOT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
@@ -23,7 +23,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `soen341`.`Department` ;
 
 CREATE  TABLE IF NOT EXISTS `soen341`.`Department` (
-  `id` INT NOT NULL ,
+  `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(45) NOT NULL ,
   `faculty` INT NOT NULL ,
   PRIMARY KEY (`id`) ,
@@ -42,11 +42,11 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `soen341`.`Course` ;
 
 CREATE  TABLE IF NOT EXISTS `soen341`.`Course` (
-  `id` INT NOT NULL ,
-  `title` VARCHAR(45) NOT NULL ,
-  `number` INT NOT NULL ,
-  `description` VARCHAR(1200) NOT NULL ,
-  `department` INT NOT NULL ,
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `title` VARCHAR(45) NULL ,
+  `number` VARCHAR(9) NOT NULL ,
+  `description` VARCHAR(1200) NULL ,
+  `department` INT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_CourseType_Department1` (`department` ASC) ,
   CONSTRAINT `fk_CourseType_Department1`
@@ -63,7 +63,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `soen341`.`Schedule_type` ;
 
 CREATE  TABLE IF NOT EXISTS `soen341`.`Schedule_type` (
-  `id` INT NOT NULL ,
+  `id` INT NOT NULL AUTO_INCREMENT ,
   `description` VARCHAR(10) NOT NULL ,
   `abbreviation` VARCHAR(4) NOT NULL ,
   PRIMARY KEY (`id`) )
@@ -76,9 +76,9 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `soen341`.`Schedule` ;
 
 CREATE  TABLE IF NOT EXISTS `soen341`.`Schedule` (
-  `id` INT NOT NULL ,
+  `id` INT NOT NULL AUTO_INCREMENT ,
   `term` INT NOT NULL ,
-  `professor` VARCHAR(120) NOT NULL ,
+  `professor` VARCHAR(120) NULL ,
   `course` INT NOT NULL ,
   `location` VARCHAR(14) NOT NULL ,
   `begin` TIME NOT NULL ,
@@ -109,11 +109,11 @@ DROP TABLE IF EXISTS `soen341`.`Prerequisite_group` ;
 CREATE  TABLE IF NOT EXISTS `soen341`.`Prerequisite_group` (
   `course` INT NOT NULL ,
   `prerequisite` INT NOT NULL ,
-  `group` INT NOT NULL ,
+  `course_group` INT NOT NULL ,
   `concurrent` TINYINT(1)  NOT NULL ,
   INDEX `fk_Course_has_Prerequisites_Course1` (`course` ASC) ,
   INDEX `fk_Course_has_Prerequisites_Course2` (`prerequisite` ASC) ,
-  PRIMARY KEY (`group`, `prerequisite`, `course`) ,
+  PRIMARY KEY (`course_group`, `prerequisite`, `course`) ,
   CONSTRAINT `fk_Course_has_Prerequisites_Course1`
     FOREIGN KEY (`course` )
     REFERENCES `soen341`.`Course` (`id` )
@@ -133,7 +133,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `soen341`.`Student` ;
 
 CREATE  TABLE IF NOT EXISTS `soen341`.`Student` (
-  `id` INT NOT NULL ,
+  `id` INT NOT NULL AUTO_INCREMENT ,
   `student_id` VARCHAR(45) NOT NULL ,
   `name` VARCHAR(45) NOT NULL ,
   `family_name` VARCHAR(45) NOT NULL ,
@@ -173,7 +173,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `soen341`.`Program` ;
 
 CREATE  TABLE IF NOT EXISTS `soen341`.`Program` (
-  `id` INT NOT NULL ,
+  `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(45) NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
@@ -185,10 +185,10 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `soen341`.`Course_group` ;
 
 CREATE  TABLE IF NOT EXISTS `soen341`.`Course_group` (
-  `id` INT NOT NULL ,
-  `name` VARCHAR(45) NOT NULL ,
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(60) NOT NULL ,
   `program` INT NOT NULL ,
-  `course_group` INT NOT NULL ,
+  `course_group` INT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_Group_Program1` (`program` ASC) ,
   INDEX `fk_Course_group_Course_group1` (`course_group` ASC) ,
