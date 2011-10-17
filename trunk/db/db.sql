@@ -43,8 +43,8 @@ DROP TABLE IF EXISTS `soen341`.`Course` ;
 
 CREATE  TABLE IF NOT EXISTS `soen341`.`Course` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `title` VARCHAR(45) NULL ,
-  `number` VARCHAR(9) NOT NULL ,
+  `title` VARCHAR(100) NULL ,
+  `number` VARCHAR(200) NOT NULL ,
   `description` VARCHAR(1200) NULL ,
   `department` INT NULL ,
   PRIMARY KEY (`id`) ,
@@ -109,11 +109,11 @@ DROP TABLE IF EXISTS `soen341`.`Prerequisite_group` ;
 CREATE  TABLE IF NOT EXISTS `soen341`.`Prerequisite_group` (
   `course` INT NOT NULL ,
   `prerequisite` INT NOT NULL ,
-  `course_group` INT NOT NULL ,
+  `prerequisite_group` INT NOT NULL ,
   `concurrent` TINYINT(1)  NOT NULL ,
   INDEX `fk_Course_has_Prerequisites_Course1` (`course` ASC) ,
   INDEX `fk_Course_has_Prerequisites_Course2` (`prerequisite` ASC) ,
-  PRIMARY KEY (`course_group`, `prerequisite`, `course`) ,
+  PRIMARY KEY (`prerequisite_group`, `prerequisite`, `course`) ,
   CONSTRAINT `fk_Course_has_Prerequisites_Course1`
     FOREIGN KEY (`course` )
     REFERENCES `soen341`.`Course` (`id` )
@@ -211,13 +211,13 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `soen341`.`Group_has_course` ;
 
 CREATE  TABLE IF NOT EXISTS `soen341`.`Group_has_course` (
-  `id` INT NOT NULL ,
+  `course_group` INT NOT NULL ,
   `course` INT NOT NULL ,
-  PRIMARY KEY (`id`, `course`) ,
+  PRIMARY KEY (`course_group`, `course`) ,
   INDEX `fk_Group_has_Course_Course1` (`course` ASC) ,
-  INDEX `fk_Group_has_Course_Group1` (`id` ASC) ,
+  INDEX `fk_Group_has_Course_Group1` (`course_group` ASC) ,
   CONSTRAINT `fk_Group_has_Course_Group1`
-    FOREIGN KEY (`id` )
+    FOREIGN KEY (`course_group` )
     REFERENCES `soen341`.`Course_group` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
