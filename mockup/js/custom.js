@@ -1,12 +1,8 @@
 $(function() {
-    $( "#tabs" ).tabs();
-});
-
-$(function() {
 	/* see if anything is previously checked and reflect that in the view*/
 	$(".checklist input:checked").parent().addClass("selected");
 
-	/* handle the user selections */
+	/* handle the user selections for the checklist*/
 	$(".checklist .checkbox-select").click(
 		function(event) {
 			event.preventDefault();
@@ -72,9 +68,9 @@ function getTime(hours, minutes) {
     $('#calendar').fullCalendar({
 	    theme: true,
 			header: {
-		    left: 'prev,next',
+		    left: '',
 	    	center: 'title',
-	    	right: ''
+	    	right: 'prev,next'
 	    },
         columnFormat: 'dddd',
         titleFormat: '',

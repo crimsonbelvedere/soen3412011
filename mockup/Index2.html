@@ -1,0 +1,324 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+		
+		<title>Soen 341 Web Scheduler</title>
+		
+		<!-- CSS section -->		
+		<link rel="stylesheet" type="text/css" href="css/vader/jquery-ui-1.8.16.custom.css">		
+		<link rel="stylesheet" type="text/css" href="css/jquery.ui.selectmenu.css">
+		<link rel="stylesheet" type="text/css" href="css/custom.css">				
+		<link rel="stylesheet" type="text/css" href="css/fullcalendar.css">
+		<link rel="stylesheet" type="text/css" href="css/fullcalendar.print.css" media="print">
+		<!-- CSS section -->
+		
+
+		<!-- Javascript section -->
+		<script src="js/jquery-1.6.4.min.js"></script>
+		<script src="http://cdn.jquerytools.org/1.2.6/full/jquery.tools.min.js"></script>
+		<script src="js/jquery-ui-1.8.16.custom.min.js"></script>
+		<script src="js/jquery.ui.core.js"></script>
+		<script src="js/jquery.ui.widget.js"></script>
+		<script src="js/jquery.ui.button.js"></script>
+		<script src="js/jquery.ui.mouse.js"></script>
+		<script src="js/jquery.ui.slider.js"></script>
+		<script src="js/jquery.ui.position.js"></script>
+		<script src="js/jquery.ui.tooltip.js"></script>
+		<script src="js/jquery.ui.selectmenu.js"></script>
+		
+		<script src="js/fullcalendar.min.js"></script>
+		<!--<script src="js/custom.js"></script>-->
+
+		<script type="text/javascript">
+		//Create Tabs using JQuery
+		$(function() {
+			$( "#DivIDTabs" ).tabs();
+		
+		
+			//Create Calendar using JQuery
+			$('#calendar').fullCalendar({
+			theme: true,
+				header: {
+				left: '',
+				center: 'title',
+				right: 'prev,next'
+			},
+			columnFormat: 'dddd',
+			titleFormat: '',
+			allDaySlot: false,
+			defaultView: 'agendaWeek',
+			slotMinutes: 15,
+			minTime:'8:45',
+			maxTime: '22:00',
+			weekends: false,
+			editable: true
+			});
+			
+			//Create SelectMenu using JQuery
+			$('.selectDrop').selectmenu();
+		});
+		</script>
+		
+		<script src="js/Controller.js"></script>
+		<script src="js/Model.js"></script>
+		<script src="js/View.js"></script>
+		
+		<!-- Javascript section -->
+		
+		
+	</head>
+	
+	<body class="Body">	
+	
+	<div id="DivIDContent" class="CssContent ui-corner-all">
+	
+		<div id="DivIDSelectFieldSets">
+			<fieldset id="FieldSetIDSelectFieldSets" class="ui-corner-all gray-border ">
+				<legend id="LegendIDSelectProgram" class="CssLegend">Select Program</legend>
+				
+				<select id="SelectIDFaculty"  class="selectDrop">	
+					
+					<option id="OptionIDFacultyNone" value="None">
+					---Choose a Faculty---
+					</option>		
+					
+					<option id="OptionIDENCS" value="ENCS">
+					Engineering and Computer Science
+					</option>		
+				</select> 
+				
+				<select id="SelectIDDepartment"  class="selectDrop">	
+					
+					<option id="OptionIDDepartmentNone" value="None">
+					---Choose a Department---
+					</option>		
+					
+					<option id="OptionIDSOEN" value="CSSE" >
+					Computer Science and Software Engineering
+					</option>						
+				</select> 
+				
+				<select id="SelectIDProgram"  class="selectDrop">	
+					
+					<option id="OptionIDProgramNone" value="None">
+					---Choose a Program---
+					</option>		
+					
+					
+					<option id="OptionIDBSOENENG" value="BSOEN" >
+					BEng in Software Engineering
+					</option>						
+				</select>
+			
+			</fieldset>
+			
+		</div>
+	
+		<div id="DivIDStudentInfo"  >				
+			<fieldset id="FieldSetIDStudentInfo" class="ui-corner-all gray-border">
+				<legend id="LegendIDStudentInfo" class="CssLegend" >Student Information</legend>					
+					<dfn id="DfnIDStudentID" >ID:</dfn>
+					<br></br>
+					<dfn id="DfnIDStudentName">Name:</dfn>										
+					<br></br>										
+			</fieldset>
+		</div>
+		
+		<div id="DivIDLogin">				
+			<fieldset id="FieldSetIDLogin" class="ui-corner-all gray-border">
+				<legend id="LegendIDLogin" class="CssLegend">Login</legend>
+				
+				<form>
+					<dfn id="DfnIDUserName" >User name: </dfn><input type="text" id="InputIDUserName" name="NameUserName"/>
+					<br></br>					
+					<dfn id="DfnIDPassword" >Password: </dfn><input type="text" id="InputIDPassword" name="NamePassword"/>
+					<br></br>
+				</form>
+				
+			</fieldset>
+		</div>
+		
+		
+		
+		
+		<div id="DivIDTerm">				
+			<fieldset id="FieldSetIDTerm" class="ui-corner-all gray-border">
+			<legend id="LegendIDTerm" class="CssLegend">Term</legend>
+			<div class="fg-buttonset fg-buttonset-single ui-helper-clearfix">
+				<!--<button id="ButtonIDFall" value="1" class="fg-button ui-state-default ui-state-active ui-priority-primary ui-corner-left">Fall</button>-->
+				<button id="ButtonIDFall" value="Fall" class="fg-button ui-state-default ui-priority-primary ui-corner-left">Fall</button>
+				<button id="ButtonIDWinter" value="Winter" class="fg-button ui-state-default ui-priority-primary ui-corner-right">Winter</button>
+				<!--<button id="ButtonIDSummer" value="Summer" class="fg-button ui-state-default ui-priority-primary ui-corner-right">Summer</button>-->					
+			</div>
+			</fieldset>
+		</div>
+		
+		
+		<br style="clear:both"></br>
+		
+		
+		
+		<fieldset id="FieldSetIDTabs"  class="ui-corner-all">
+		<legend id="LegendIDTabs" class="CssLegend">Course Picker</legend>	
+			<div id="DivIDTabs">
+				
+				<ul id="ULIDTabs">
+					<li><a href="#DivIDCoreEngineering">Core courses</a></li>
+					<li><a href="#DivIDOption">Options</a></li>
+					<li><a href="#DivIDElective">Electives</a></li>
+				</ul>
+				
+				<div id="DivIDCoreEngineering">	
+					
+					<fieldset id="FieldSetIDCoreEngineering"  class="ui-corner-all">
+						<legend id="LegendIDCoreEngineering" class="CssLegend">Engineering</legend>									
+						<ul id="ULIDCoreEngineering" class="checklist">
+						
+							<!-- ADD COURSES HERE-->
+							<!--<li class = "deselected" title="Principles of Electrical Engineering/nFundamentals of electric circuits: Kirchoff’s laws, voltage and current sources, Ohm’s law, series and parallel circuits. Nodal and mesh analysis of DC circuits. Superposition theorem, Thevenin and Norton Equivalents. Use of operational amplifiers. Transient analysis of simple RC, RL and RLC circuits. Steady state analysis: Phasors and impedances, power and power factor. Single and three phase circuits. Magnetic circuits and transformers. Power generation and distribution.">
+								<input value="ELEC 275" type="checkbox" id="IDELEC275">
+								<label for="IDELECT275">
+									<dfn>ELEC 275</dfn>
+								</label>
+								<a class="checkbox-select" href="#"></a>								
+							</li>
+							-->							
+							
+							
+						</ul>
+					</fieldset>
+					
+
+					<fieldset id="FieldSetIDFieldEngineering" class="ui-corner-all" >
+						<legend id="LegendIDFieldEngineering" class="CssLegend">Software Engineering</legend>				
+						<ul id="ULIDFieldEngineering" class="checklist">
+						
+							<!-- ADD COURSES HERE-->
+							<!--<li class="deselected" title="System Hardware description">
+								<input value="SOEN228" type="checkbox" id="IDSOEN228">
+								<label for="IDSOEN228">
+									<dfn>SOEN 228</dfn>
+								</label>
+								<a class="checkbox-select" href="#"></a>													
+							</li>-->
+							
+							
+						</ul>			
+					</fieldset>
+					
+				</div>
+				
+				
+				<div id="DivIDOption" >		
+					<fieldset id="FieldSetIDOption" class="ui-corner-all">
+						<legend id="LegendIDOption" class="CssLegend">Option Courses</legend>						
+						<ul id="ULIDOption" class="checklist">
+							
+							<!-- ADD COURSES HERE-->
+							<!-- <li class = "deselected"  title="Artificial Intelligence description">
+								<input value="COMP 472" type="checkbox" id="IDCOMP472">
+								<label for="IDCOMP472">
+									<dfn>COMP 472</dfn>
+								</label>
+								<a class="checkbox-select" href="#"></a>
+							</li>-->
+							
+						</ul>									
+					</fieldset>			
+				</div>
+				
+				
+				<div id="DivIDElective">
+					<fieldset id="FieldSetIDElective" class="ui-corner-all">
+						<legend id="LegendIDElective" class="CssLegend">Electives</legend>						
+						<ul id="ULIDElective" class="checklist">
+							
+							<!-- ADD COURSES HERE-->
+							<!-- <li class = "deselected"  title="Parallel programming description">
+								<input value="COMP 428" type="checkbox" id="IDCOMP428">
+								<label for="IDCOMP428">
+									<dfn>COMP 428</dfn>
+								</label>
+								<a class="checkbox-select" href="#"></a>
+							</li>-->
+							
+						</ul>			
+					</fieldset>
+				</div>
+			
+			</div>
+		
+		</fieldset>
+	
+		<div id="DivIDSelection">
+			<fieldset id="FieldSetIDSelectedCourses"  class="ui-corner-all">
+			<legend id="LegendIDSelection" class="CssLegend">Selected Courses</legend>	
+			<ul id="ULIDSelection" class="checklist">
+				
+				<!-- ADD SELECTED COURSES HERE-->				
+				<!--<li  class = "deselected" title="Parallel programming description">
+					<input value="COMP 428" type="checkbox" id="IDCOMP428">
+					<label for="IDCOMP428">
+						<dfn>COMP 428</dfn>
+					</label>
+					<a class="checkbox-select" href="#"></a>
+				</li>-->
+				
+				
+			</ul>			
+			</fieldset>
+		</div>	
+		
+		<br style="clear:both"></br>
+		
+		
+		<div id="DivIDStatusInfo">
+			<fieldset id="FieldSetIDStatusInfo" class="ui-corner-all">
+			<legend id="LegendIDStatusInfo" class="CssLegend">Status Info</legend>
+			<dfn>Program :</dfn>
+			<br></br>
+			<dfn>Number Of Credits :</dfn>
+			<br></br>
+			</fieldset>
+		</div>
+		
+		
+		<!--<div id="DivIDBrowseSchedule">
+			<fieldset id="FieldSetIDBrowseSchedule" class="ui-corner-all">
+			<legend id="LegendIDBrowseSchedule" class="CssLegend">Browse Schedule</legend>
+			<label>Previous</label>
+			<label>Next</label> 
+			</fieldset>
+		</div>-->
+		
+		<fieldset id="FieldSetIDSchedule" class="ui-corner-all">
+			<legend id="LegendIDSchedule" class="CssLegend">Schedule</legend>
+			<div id='calendar'></div>
+		</fieldset>
+		
+		<div id="DivIDConstrains">
+			<fieldset id="FieldSetIDConstraints" class="ui-corner-all">
+			<legend id="LegendIDConstaints" class="CssLegend">Constraints</legend>
+
+			<select id="SelectIDSelectDay" class="center">
+			  <option value="monday">Monday</option>
+			  <option value="tuesday">Tuesday</option>
+			  <option value="wednesday">Wednesday</option>
+			  <option value="thursday">Thursday</option>
+			  <option value="friday">Friday</option>
+			</select>
+
+			<div id="DivIDTime"> 
+				<dfn>10:00 - 20:00</dfn>
+				<br></br>
+				<button id="ButtonIDAdd">Add</button>
+				<button id="ButtonIDClear">Clear</button>
+			</div>
+			</fieldset>
+		</div>
+		
+	
+	</body>
+</html>
