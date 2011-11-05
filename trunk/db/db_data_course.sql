@@ -1,31 +1,31 @@
-INSERT INTO course (id, title, number, description, department) VALUES ('140','',' Permission of the Faculty','','1');
-INSERT INTO course (id, title, number, description, department) VALUES ('141','',' Math 201 equivalent','','1');
-INSERT INTO course (id, title, number, description, department) VALUES ('142','',' A course in C, C++, or Java','','1');
-INSERT INTO course (id, title, number, description, department) VALUES ('143','',' 18 credits in post-Cegep Mathematics','','1');
-INSERT INTO course (id, title, number, description, department) VALUES ('144','',' Completion of 60 credits','','1');
-INSERT INTO course (id, title, number, description, department) VALUES ('145','',' Permission of the Department','','1');
-INSERT INTO course (id, title, number, description, department) VALUES ('146','',' Registration in the final year of the Honours program','','1');
-INSERT INTO course (id, title, number, description, department) VALUES ('147','',' CHEM 205 equivalent','','1');
-INSERT INTO course (id, title, number, description, department) VALUES ('148','',' CHEM 206 equivalent','','1');
-INSERT INTO course (id, title, number, description, department) VALUES ('149','',' PHYS 204 equivalent','','1');
-INSERT INTO course (id, title, number, description, department) VALUES ('150','',' PHYS 206 equivalent','','1');
-INSERT INTO course (id, title, number, description, department) VALUES ('151','',' PHYS 224 equivalent','','1');
-INSERT INTO course (id, title, number, description, department) VALUES ('152','',' PHYS 226 equivalent','','1');
-INSERT INTO course (id, title, number, description, department) VALUES ('153','',' MATH 203 equivalent','','1');
-INSERT INTO course (id, title, number, description, department) VALUES ('154','',' MATH 205 equivalent','','1');
-INSERT INTO course (id, title, number, description, department) VALUES ('155','',' MATH 201 equivalent ','','1');
-INSERT INTO course (id, title, number, description, department) VALUES ('156','',' PHYS 205 equivalent','','1');
-INSERT INTO course (id, title, number, description, department) VALUES ('157','',' MAST 218 equivalent','','1');
-INSERT INTO course (id, title, number, description, department) VALUES ('158','',' six credits in Cegep Physics equivalent','','1');
-INSERT INTO course (id, title, number, description, department) VALUES ('159','',' six credits in Cegep Physics','','1');
-INSERT INTO course (id, title, number, description, department) VALUES ('160','',' MAST 219 equivalent','','1');
-INSERT INTO course (id, title, number, description, department) VALUES ('161','',' PHYS 253 equivalent','','1');
-INSERT INTO course (id, title, number, description, department) VALUES ('162','',' Students must have satisfied the requirements in §71.20.7 by passing the Engineering Writing Test (EWT), or by passing ENCS
+INSERT INTO course (id, title, number, description, department) VALUES ('140','','Permission of the Faculty','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('141','','Math 201 equivalent','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('142','','A course in C, C++, or Java','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('143','','18 credits in post-Cegep Mathematics','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('144','','Completion of 60 credits','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('145','','Permission of the Department','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('146','','Registration in the final year of the Honours program','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('147','','CHEM 205 equivalent','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('148','','CHEM 206 equivalent','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('149','','PHYS 204 equivalent','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('150','','PHYS 206 equivalent','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('151','','PHYS 224 equivalent','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('152','','PHYS 226 equivalent','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('153','','MATH 203 equivalent','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('154','','MATH 205 equivalent','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('155','','MATH 201 equivalent ','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('156','','PHYS 205 equivalent','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('157','','MAST 218 equivalent','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('158','','six credits in Cegep Physics equivalent','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('159','','six credits in Cegep Physics','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('160','','MAST 219 equivalent','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('161','','PHYS 253 equivalent','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('162','','Students must have satisfied the requirements in §71.20.7 by passing the Engineering Writing Test (EWT), or by passing ENCS
 272 with a grade of C- or higher.','','1');
-INSERT INTO course (id, title, number, description, department) VALUES ('0','',' 101-NYA','','1');
-INSERT INTO course (id, title, number, description, department) VALUES ('1','',' NYA','','1');
-INSERT INTO course (id, title, number, description, department) VALUES ('2','',' NYB','','1');
-INSERT INTO course (id, title, number, description, department) VALUES ('3','',' NYC','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('0','','101-NYA','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('1','','NYA','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('2','','NYB','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('3','','NYC','','1');
 INSERT INTO course (id, title, number, description, department) VALUES ('4','','BCEE 231','','1');
 INSERT INTO course (id, title, number, description, department) VALUES ('5','','BIOL 201','','1');
 INSERT INTO course (id, title, number, description, department) VALUES ('6','Elementary Genetics','BIOL 206','A survey of classical and contemporary developments in the study of heredity, with particular attention to human examples.
@@ -122,7 +122,7 @@ INSERT INTO course (id, title, number, description, department) VALUES ('45','Ad
 iterators, adaptors, function objects. Class design: constructors, destructors, operator overloading, inheritance, virtual
 functions, exception handling, memory management. Advanced topics: libraries, locales, STL conventions, concurrency, template
 meta-programming. Applications of C++: systems, engineering, games programming. Project.','1');
-INSERT INTO course (id, title, number, description, department) VALUES ('46',' Operating Systems','COMP 346','Fundamentals of operating system functionalities, design and implementation. Multi-programming: processes and threads, context
+INSERT INTO course (id, title, number, description, department) VALUES ('46','Operating Systems','COMP 346','Fundamentals of operating system functionalities, design and implementation. Multi-programming: processes and threads, context
 switching, queuing models and scheduling. Inter-process communication and synchronization. Principles of concurrency. Synchronization
 primitives. Deadlock detection and recovery, prevention and avoidance schemes. Memory management. Device management. File
 systems. Protection models and schemes.','1');
