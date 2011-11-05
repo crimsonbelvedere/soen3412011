@@ -12,7 +12,7 @@ DROP TABLE IF EXISTS `soen341`.`Faculty` ;
 
 CREATE  TABLE IF NOT EXISTS `soen341`.`Faculty` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `name` VARCHAR(45) NOT NULL ,
+  `description` VARCHAR(45) NOT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `soen341`.`Department` ;
 
 CREATE  TABLE IF NOT EXISTS `soen341`.`Department` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `name` VARCHAR(45) NOT NULL ,
+  `description` VARCHAR(45) NOT NULL ,
   `faculty` INT NOT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_Department_Faculty1` (`faculty` ASC) ,
@@ -81,8 +81,8 @@ CREATE  TABLE IF NOT EXISTS `soen341`.`Schedule` (
   `professor` VARCHAR(120) NULL ,
   `course` INT NOT NULL ,
   `location` VARCHAR(14) NOT NULL ,
-  `begin` TIME NOT NULL ,
-  `end` TIME NOT NULL ,
+  `begins` TIME NOT NULL ,
+  `ends` TIME NOT NULL ,
   `days` VARCHAR(40) NOT NULL ,
   `schedule_type` INT NOT NULL ,
   PRIMARY KEY (`id`) ,
@@ -128,6 +128,44 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `soen341`.`Program`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `soen341`.`Program` ;
+
+CREATE  TABLE IF NOT EXISTS `soen341`.`Program` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `description` VARCHAR(45) NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `soen341`.`Course_group`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `soen341`.`Course_group` ;
+
+CREATE  TABLE IF NOT EXISTS `soen341`.`Course_group` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `description` VARCHAR(60) NOT NULL ,
+  `program` INT NOT NULL ,
+  `course_group` INT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_Group_Program1` (`program` ASC) ,
+  INDEX `fk_Course_group_Course_group1` (`course_group` ASC) ,
+  CONSTRAINT `fk_Group_Program1`
+    FOREIGN KEY (`program` )
+    REFERENCES `soen341`.`Program` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Course_group_Course_group1`
+    FOREIGN KEY (`course_group` )
+    REFERENCES `soen341`.`Course_group` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `soen341`.`Student`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `soen341`.`Student` ;
@@ -135,11 +173,25 @@ DROP TABLE IF EXISTS `soen341`.`Student` ;
 CREATE  TABLE IF NOT EXISTS `soen341`.`Student` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `student_id` VARCHAR(45) NOT NULL ,
-  `name` VARCHAR(45) NOT NULL ,
-  `family_name` VARCHAR(45) NOT NULL ,
+  `first_name` VARCHAR(45) NOT NULL ,
+  `last_name` VARCHAR(45) NOT NULL ,
   `password` VARCHAR(45) NOT NULL ,
   `status` TINYINT(1)  NOT NULL ,
-  PRIMARY KEY (`id`) )
+  `program` INT NOT NULL ,
+  `program_option` INT NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_Student_Program1` (`program` ASC) ,
+  INDEX `fk_Student_Course_group1` (`program_option` ASC) ,
+  CONSTRAINT `fk_Student_Program1`
+    FOREIGN KEY (`program` )
+    REFERENCES `soen341`.`Program` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Student_Course_group1`
+    FOREIGN KEY (`program_option` )
+    REFERENCES `soen341`.`Course_group` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -162,44 +214,6 @@ CREATE  TABLE IF NOT EXISTS `soen341`.`Adjacency_list` (
   CONSTRAINT `fk_AdjacencyList_Course2`
     FOREIGN KEY (`adjacent_course` )
     REFERENCES `soen341`.`Course` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `soen341`.`Program`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `soen341`.`Program` ;
-
-CREATE  TABLE IF NOT EXISTS `soen341`.`Program` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
-  `name` VARCHAR(45) NULL ,
-  PRIMARY KEY (`id`) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `soen341`.`Course_group`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `soen341`.`Course_group` ;
-
-CREATE  TABLE IF NOT EXISTS `soen341`.`Course_group` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
-  `name` VARCHAR(60) NOT NULL ,
-  `program` INT NOT NULL ,
-  `course_group` INT NULL ,
-  PRIMARY KEY (`id`) ,
-  INDEX `fk_Group_Program1` (`program` ASC) ,
-  INDEX `fk_Course_group_Course_group1` (`course_group` ASC) ,
-  CONSTRAINT `fk_Group_Program1`
-    FOREIGN KEY (`program` )
-    REFERENCES `soen341`.`Program` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Course_group_Course_group1`
-    FOREIGN KEY (`course_group` )
-    REFERENCES `soen341`.`Course_group` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
