@@ -59,7 +59,21 @@
 		
 	</head>
 
-	<body>	
+	<body>
+	<!--	
+	THIS IS JENIA TEST STUFF. I WANT TO SEE IF MY DB class CAN CONNECT TO THE DATAASE
+		-->
+		
+	<?php 
+	include('php/db.php');
+	$new_db_adapter=new db_adapter();
+	$query_set=$new_db_adapter->query('select * from student');
+	$row = mysql_fetch_assoc( $query_set );
+	
+	foreach($row as $key=>$value){
+		echo "Value:".$value."</br> key:".$key."<br/>";
+	}
+	?>
 		<div id="content">
 			<div id="demo">
 				<div id="SelectfieldSets" class="ui-corner-all float-left gray-border">
