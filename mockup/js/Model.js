@@ -8,6 +8,8 @@
 	var CourseOption = {};
 	var CourseElectives = {};
 	var CourseSelection = new Array();
+	var CourseGeneratedSchedule = new Array();
+	
 	
 	function GetCourseSelection()
 	{
@@ -27,9 +29,7 @@
 			if(CourseSelection[i].Name == Course.Name)
 			{
 				//alert("Course found, remove it from the list");
-				
-				CourseSelection.splice(i,1);
-				
+				CourseSelection.splice(i,1);			
 				break;	
 			}
 			

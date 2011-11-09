@@ -40,11 +40,16 @@
 			//Create Calendar using JQuery
 			$('#calendar').fullCalendar({
 			theme: true,
-				header: {
+			header: {
 				left: '',
 				center: 'title',
 				right: 'prev,next'
 			},
+			buttonIcons:{
+				 prev: 'circle-triangle-w',
+    			next: 'circle-triangle-e'
+			},
+			height: 1200,	
 			columnFormat: 'dddd',
 			titleFormat: '',
 			allDaySlot: false,
@@ -123,9 +128,14 @@
 					<br></br>
 					<dfn id="DfnIDStudentName">Name:</dfn>										
 					<br></br>										
+					<dfn id="DfnIDStudentProgram">Program :</dfn>
+					<br></br>
+					<dfn id="DfnIDStudentNbCredits">Number Of Credits :</dfn>
+					<br></br>		
 			</fieldset>
 		</div>
 		
+	<!--
 		<div id="DivIDLogin">				
 			<fieldset id="FieldSetIDLogin" class="ui-corner-all gray-border">
 				<legend id="LegendIDLogin" class="CssLegend">Login</legend>
@@ -139,7 +149,7 @@
 				
 			</fieldset>
 		</div>
-		
+	-->	
 		
 		
 		
@@ -175,7 +185,10 @@
 					<fieldset id="FieldSetIDCoreEngineering"  class="ui-corner-all">
 						<legend id="LegendIDCoreEngineering" class="CssLegend">Engineering</legend>									
 						<ul id="ULIDCoreEngineering" class="checklist">
-						
+		
+						<br style="clear:both"></br>
+						<br style="clear:both"></br>
+						<br style="clear:both"></br>
 							<!-- ADD COURSES HERE-->
 							<!--<li class = "deselected" title="Principles of Electrical Engineering/nFundamentals of electric circuits: Kirchoff’s laws, voltage and current sources, Ohm’s law, series and parallel circuits. Nodal and mesh analysis of DC circuits. Superposition theorem, Thevenin and Norton Equivalents. Use of operational amplifiers. Transient analysis of simple RC, RL and RLC circuits. Steady state analysis: Phasors and impedances, power and power factor. Single and three phase circuits. Magnetic circuits and transformers. Power generation and distribution.">
 								<input value="ELEC 275" type="checkbox" id="IDELEC275">
@@ -195,6 +208,9 @@
 						<legend id="LegendIDFieldEngineering" class="CssLegend">Software Engineering</legend>				
 						<ul id="ULIDFieldEngineering" class="checklist">
 						
+						<br style="clear:both"></br>
+						<br style="clear:both"></br>
+						<br style="clear:both"></br>
 							<!-- ADD COURSES HERE-->
 							<!--<li class="deselected" title="System Hardware description">
 								<input value="SOEN228" type="checkbox" id="IDSOEN228">
@@ -215,7 +231,10 @@
 					<fieldset id="FieldSetIDOption" class="ui-corner-all">
 						<legend id="LegendIDOption" class="CssLegend">Option Courses</legend>						
 						<ul id="ULIDOption" class="checklist">
-							
+		
+						<br style="clear:both"></br>
+						<br style="clear:both"></br>
+						<br style="clear:both"></br>	
 							<!-- ADD COURSES HERE-->
 							<!-- <li class = "deselected"  title="Artificial Intelligence description">
 								<input value="COMP 472" type="checkbox" id="IDCOMP472">
@@ -234,8 +253,11 @@
 					<fieldset id="FieldSetIDElective" class="ui-corner-all">
 						<legend id="LegendIDElective" class="CssLegend">Electives</legend>						
 						<ul id="ULIDElective" class="checklist">
-							
-							<!-- ADD COURSES HERE-->
+		
+						<br style="clear:both"></br>
+						<br style="clear:both"></br>
+						<br style="clear:both"></br>
+										<!-- ADD COURSES HERE-->
 							<!-- <li class = "deselected"  title="Parallel programming description">
 								<input value="COMP 428" type="checkbox" id="IDCOMP428">
 								<label for="IDCOMP428">
@@ -257,6 +279,10 @@
 			<legend id="LegendIDSelection" class="CssLegend">Selected Courses</legend>	
 			<ul id="ULIDSelection" class="checklist">
 				
+			<br style="clear:both"></br>
+			<br style="clear:both"></br>
+			<br style="clear:both"></br>
+		
 				<!-- ADD SELECTED COURSES HERE-->				
 				<!--<li  class = "deselected" title="Parallel programming description">
 					<input value="COMP 428" type="checkbox" id="IDCOMP428">
@@ -274,7 +300,7 @@
 		<br style="clear:both"></br>
 		
 		
-		<div id="DivIDStatusInfo">
+		<!--<div id="DivIDStatusInfo">
 			<fieldset id="FieldSetIDStatusInfo" class="ui-corner-all">
 			<legend id="LegendIDStatusInfo" class="CssLegend">Status Info</legend>
 			<dfn>Program :</dfn>
@@ -282,7 +308,7 @@
 			<dfn>Number Of Credits :</dfn>
 			<br></br>
 			</fieldset>
-		</div>
+		</div>-->
 		
 		
 		<!--<div id="DivIDBrowseSchedule">
@@ -298,7 +324,7 @@
 			<div id='calendar'></div>
 		</fieldset>
 		
-		<div id="DivIDConstrains">
+		<!--<div id="DivIDConstrains">
 			<fieldset id="FieldSetIDConstraints" class="ui-corner-all">
 			<legend id="LegendIDConstaints" class="CssLegend">Constraints</legend>
 
@@ -317,7 +343,7 @@
 				<button id="ButtonIDClear">Clear</button>
 			</div>
 			</fieldset>
-		</div>
+		</div>-->
 		
 	
 	</body>
