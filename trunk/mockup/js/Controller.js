@@ -235,10 +235,14 @@ $(document).ready(function(){
 					if(CourseCoreEngineering.CourseArray[i].Name == $(this).parent().children('input').attr('value'))
 					{
 						//alert("Add course to selection");
-						AddCourseToSelection(CourseCoreEngineering.CourseArray[i]);
-												
+						AddCourseToSelection(CourseCoreEngineering.CourseArray[i]);							
+						
 						//Update Selection View
 						NotifyView("ULIDSelection");	
+						
+						
+						//Update the calendar 
+						NotifyView("calendar");	
 							
 						break;	
 					}
