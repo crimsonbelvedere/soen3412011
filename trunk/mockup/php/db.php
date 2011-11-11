@@ -24,6 +24,7 @@ class db_adapter{
 	// Precondition 1: Connection to the databse is established.
 	// 				2: The database table exists.
 	//              3: The sql query is syntactically correct
+	//              4: CRITICAL!!!: there is a database called soen341 and its the one that contains all the information
 	// Postcondition: NONE
 	//Example: database table Student with column first_name and last_name
 	//         There are three students in the databse:
