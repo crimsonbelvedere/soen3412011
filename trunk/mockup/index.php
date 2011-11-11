@@ -61,16 +61,19 @@
 
 	<body>
 	<!--	
-	THIS IS JENIA TEST STUFF. I WANT TO SEE IF MY DB class CAN CONNECT TO THE DATAASE
+	THIS IS AN EXAMPLE OF HOW TO USE THE db_adapter class
 		-->
 		
 	<?php 
 	include('php/db.php');
-	$new_db_adapter=new db_adapter();
-	$query_set=$new_db_adapter->query('select * from student');
-	$row = mysql_fetch_assoc( $query_set );
-	
-	foreach($row as $key=>$value){
+	//create a new db_adapter
+	$db_adapter=new db_adapter();
+	//make a query
+	$query_set=$db_adapter->query('select * from student');
+	//iterate over the results	
+	foreach($query_set as $student){
+		echo "<p>Student:</p>";
+		foreach($student as $key=>$value)
 		echo "Value:".$value."</br> key:".$key."<br/>";
 	}
 	?>
