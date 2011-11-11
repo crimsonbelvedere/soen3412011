@@ -46,7 +46,7 @@
 				right: 'prev,next'
 			},
 			buttonIcons:{
-				 prev: 'circle-triangle-w',
+				prev: 'circle-triangle-w',
     			next: 'circle-triangle-e'
 			},
 			height: 1200,	
@@ -58,7 +58,24 @@
 			minTime:'8:45',
 			maxTime: '22:00',
 			weekends: false,
-			editable: true
+			editable: true,
+			eventSources: 
+			[
+	        // your event source
+	        	{
+		            events:
+		            [
+					    {
+					        title  : 'Course name, section professor....',
+					        start  : '2011-11-11 12:15:00',
+					        end	   : '2011-11-11 13:30:00',
+					        allDay : false // will make the time show
+					    }
+					],
+					color: 'white',     // an option!
+            		textColor: 'red' // an option!
+				}
+			]
 			});
 			
 			//Create SelectMenu using JQuery
@@ -171,7 +188,7 @@
 		
 		
 		<fieldset id="FieldSetIDTabs"  class="ui-corner-all">
-		<legend id="LegendIDTabs" class="CssLegend">Course Picker</legend>	
+		<legend id="LegendIDTabs" class="CssLegend">Course Selector</legend>	
 			<div id="DivIDTabs">
 				
 				<ul id="ULIDTabs">
