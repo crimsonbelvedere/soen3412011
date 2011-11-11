@@ -1,4 +1,35 @@
 
+function AddCoursePermutationWhitoutCollision(Course)
+{
+	//acreate all the different combinasion
+	//a permutation contais a lecture a turorial and a lab
+	var CoursePermutation = new Array();
+	
+	
+	for (var i=0; i < Course.LectureArray.length *Course.TutorialArray.length * Course.LaboratoryArray.length ; i++) 
+	{
+		for (var i=0; i < Course.LectureArray.length; i++) 
+		{
+			for (var j=0; j < Course.TutorialArray.length ; j++) 
+			{
+				for (var k=0; k < Course.LaboratoryArray.length ; k++) 
+				{
+					CoursePermutation[i].Lecture	=	Course.LectureArray[i];
+					CoursePermutation[i].Tutorial	=	Course.TutorialArray[j];
+					CoursePermutation[i].Laboratory	=	Course.LaboratoryArray[k];		
+				}
+			}
+			
+		}
+	}
+	//InsertPermutationToSchedule(Permutation,0);
+	
+	//NotifyView("calendar");	
+}
+
+
+
+
 function RetreiveCourses()
 {
 	if(GetFaculty() === undefined ||  GetFaculty() == "None" ||  GetProgram() === undefined || GetProgram() == "None" ||  GetDepartment() === undefined || GetDepartment() == "None" || GetSemester() === undefined )
@@ -56,26 +87,26 @@ function AjaxRetreiveCourses(CourseCategory)
 		alert("Description: " + Schedule.CourseArray[0].Description);   	
 		alert("Number of Credits: " + Schedule.CourseArray[0].NumberOfCredits);   	
 		
-		alert("LectureID: " + Schedule.CourseArray[0].SectionArray[0].LectureArray[0].LectureID);	 			
-		alert("Lecture classroom: " + Schedule.CourseArray[0].SectionArray[0].LectureArray[0].Classrom); 
-		alert("Lecture Professor: " + Schedule.CourseArray[0].SectionArray[0].LectureArray[0].Professor);
-		alert("Lecture Days: " + Schedule.CourseArray[0].SectionArray[0].LectureArray[0].Days);
-		alert("Lecture StartingTime: " + Schedule.CourseArray[0].SectionArray[0].LectureArray[0].StartingTime);
-		alert("Lecture EndTime: " + Schedule.CourseArray[0].SectionArray[0].LectureArray[0].EndTime);
+		alert("LectureID: " + Schedule.CourseArray[0].LectureArray[0].LectureID);	 			
+		alert("Lecture classroom: " + Schedule.CourseArray[0].LectureArray[0].Classrom); 
+		alert("Lecture Professor: " + Schedule.CourseArray[0].LectureArray[0].Professor);
+		alert("Lecture Days: " + Schedule.CourseArray[0].LectureArray[0].Days);
+		alert("Lecture StartingTime: " + Schedule.CourseArray[0].LectureArray[0].StartingTime);
+		alert("Lecture EndTime: " + Schedule.CourseArray[0].LectureArray[0].EndTime);
 		
-		alert("TutorialID: " + Schedule.CourseArray[0].SectionArray[0].TutorialArray[0].TutorialID);	 			
-		alert("Tutorial classroom: " + Schedule.CourseArray[0].SectionArray[0].TutorialArray[0].Classrom); 
-		alert("Tutorial Professor: " + Schedule.CourseArray[0].SectionArray[0].TutorialArray[0].Professor);
-		alert("Tutorial Days: " + Schedule.CourseArray[0].SectionArray[0].TutorialArray[0].Days);
-		alert("Tutorial StartingTime: " + Schedule.CourseArray[0].SectionArray[0].TutorialArray[0].StartingTime);
-		alert("Tutorial EndTime: " + Schedule.CourseArray[0].SectionArray[0].TutorialArray[0].EndTime);
+		alert("TutorialID: " + Schedule.CourseArray[0].TutorialArray[0].TutorialID);	 			
+		alert("Tutorial classroom: " + Schedule.CourseArray[0].TutorialArray[0].Classrom); 
+		alert("Tutorial Professor: " + Schedule.CourseArray[0].TutorialArray[0].Professor);
+		alert("Tutorial Days: " + Schedule.CourseArray[0].TutorialArray[0].Days);
+		alert("Tutorial StartingTime: " + Schedule.CourseArray[0].TutorialArray[0].StartingTime);
+		alert("Tutorial EndTime: " + Schedule.CourseArray[0].TutorialArray[0].EndTime);
 		
-		alert("LaboratoryID: " + Schedule.CourseArray[0].SectionArray[0].LaboratoryArray[0].LaboratoryID);	 			
-		alert("Laboratory classroom: " + Schedule.CourseArray[0].SectionArray[0].LaboratoryArray[0].Classrom); 
-		alert("Laboratory Professor: " + Schedule.CourseArray[0].SectionArray[0].LaboratoryArray[0].Professor);
-		alert("Laboratory Days: " + Schedule.CourseArray[0].SectionArray[0].LaboratoryArray[0].Days);
-		alert("Laboratory StartingTime: " + Schedule.CourseArray[0].SectionArray[0].LaboratoryArray[0].StartingTime);
-		alert("Laboratory EndTime: " + Schedule.CourseArray[0].SectionArray[0].LaboratoryArray[0].EndTime);
+		alert("LaboratoryID: " + Schedule.CourseArray[0].LaboratoryArray[0].LaboratoryID);	 			
+		alert("Laboratory classroom: " + Schedule.CourseArray[0].LaboratoryArray[0].Classrom); 
+		alert("Laboratory Professor: " + Schedule.CourseArray[0].LaboratoryArray[0].Professor);
+		alert("Laboratory Days: " + Schedule.CourseArray[0].LaboratoryArray[0].Days);
+		alert("Laboratory StartingTime: " + Schedule.CourseArray[0].LaboratoryArray[0].StartingTime);
+		alert("Laboratory EndTime: " + Schedule.CourseArray[0].LaboratoryArray[0].EndTime);
 		*/
 		
 	},
@@ -242,7 +273,8 @@ $(document).ready(function(){
 						
 						
 						//Update the calendar 
-						NotifyView("calendar");	
+						AddCoursePermutationWhitoutCollision(CourseCoreEngineering.CourseArray[i]);
+						//NotifyView("calendar");	
 							
 						break;	
 					}

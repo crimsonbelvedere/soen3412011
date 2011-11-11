@@ -9,56 +9,8 @@ function NotifyView(ElementID)
 	if(ElementID == "calendar")
 	{
 		alert("Updating the calendar");		
-	
-		var LocalCourseSelection = GetCourseSelection();
-		
-		//take the first course, first section (lecture and tutorial) and try to fit it will the next one
-		//if there is no confilct add it to the calendar.
-		//find every possible combination
-		
-		/*ex: 
-		 
-		Course 1 has 2 lectures and each lecture has 3 tutorials and 2 Labs
-		Course 2 has 2 lectures and each lecture has 2 tutorials and 2 Labs
-		Course 3 has 1 lectures and each lecture has 2 tutorials and 2 Labs
-		
-		All possible combination are these, total = n lectures * n tutorials * n labs (2*3*2 = 12) 
 		
 		
-		C1.1)Course 1	->		Lecture A	->	Tutorial T1	->	Lab L1
-		C1.2)Course 1	->		Lecture A	->	Tutorial T1	->	Lab L2
-		C1.3)Course 1	->		Lecture A	->	Tutorial T2	->	Lab L1
-		C1.4)Course 1	->		Lecture A	->	Tutorial T2	->	Lab L2
-		C1.5)Course 1	->		Lecture A	->	Tutorial T3	->	Lab L1
-		C1.6)Course 1	->		Lecture A	->	Tutorial T3	->	Lab L2		
-		C1.7)Course 1	->		Lecture B	->	Tutorial T1	->	Lab L1
-		C1.8)Course 1	->		Lecture B	->	Tutorial T1	->	Lab L2
-		C1.9)Course 1	->		Lecture B	->	Tutorial T2	->	Lab L1
-		C1.10)Course 1	->		Lecture B	->	Tutorial T2	->	Lab L2
-		C1.11)Course 1	->		Lecture B	->	Tutorial T3	->	Lab L1
-		C1.12)Course 1	->		Lecture B	->	Tutorial T3	->	Lab L2
-		
-		
-		For C1.1) maximum of (2*3*2) * (2*2*2) = 12 * 8 = 96	
-		[Course 1	->		Lecture A	->	Tutorial T1	->	Lab L1]  
-		C2.1)Course 2	->		Lecture A	->	Tutorial T1	->	Lab L1
-		C2.2)Course 2	->		Lecture A	->	Tutorial T1	->	Lab L2
-		C2.3)Course 2	->		Lecture A	->	Tutorial T2	->	Lab L1
-		C2.4)Course 2	->		Lecture A	->	Tutorial T2	->	Lab L2
-		C2.5)Course 2	->		Lecture B	->	Tutorial T1	->	Lab L1
-		C2.6)Course 2	->		Lecture B	->	Tutorial T1	->	Lab L2
-		C2.7)Course 2	->		Lecture B	->	Tutorial T2	->	Lab L1
-		C2.8)Course 2	->		Lecture B	->	Tutorial T2	->	Lab L2
-		
-		
-		For C1.1 and C2.1) 2*3*2 *2*2*2 *1*2*2 = 12*8*4= 384
-		C3.1)Course 3	->		Lecture A	->	Tutorial T1	->	Lab L1
-		C3.2)Course 3	->		Lecture A	->	Tutorial T1	->	Lab L2
-		C3.3)Course 3	->		Lecture A	->	Tutorial T2	->	Lab L1
-		C3.4)Course 3	->		Lecture A	->	Tutorial T2	->	Lab L2
-		
-		*/
-	
 	}	
 	
 	/*Populate tabs with query courses*/
