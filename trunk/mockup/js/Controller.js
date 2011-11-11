@@ -1,27 +1,50 @@
 
 function AddCoursePermutationWhitoutCollision(Course)
 {
+	
+	alert("Generate permutaions");
+	
 	//acreate all the different combinasion
 	//a permutation contais a lecture a turorial and a lab
-	var CoursePermutation = new Array();
+	//var CoursePermutation = new Array() ;
+	var CoursePermutation = {};
 	
+	alert("Max Lect "+Course.LectureArray.length );
+	alert("Max Tut "+Course.TutorialArray.length);
+	alert("Max Lab "+Course.LaboratoryArray.length);
 	
-	for (var i=0; i < Course.LectureArray.length *Course.TutorialArray.length * Course.LaboratoryArray.length ; i++) 
-	{
-		for (var i=0; i < Course.LectureArray.length; i++) 
+	alert("Maximum permutation " + (Course.LectureArray.length * Course.TutorialArray.length * Course.LaboratoryArray.length));  
+	
+	//for (var i=0; i < (Course.LectureArray.length * Course.TutorialArray.length * Course.LaboratoryArray.length ); i++) 
+	//{
+		for (var j=0; j < Course.LectureArray.length; j++) 
 		{
-			for (var j=0; j < Course.TutorialArray.length ; j++) 
+			for (var k=0; k < Course.TutorialArray.length ; k++) 
 			{
-				for (var k=0; k < Course.LaboratoryArray.length ; k++) 
+				for (var l=0; l < Course.LaboratoryArray.length ; l++) 
 				{
-					CoursePermutation[i].Lecture	=	Course.LectureArray[i];
-					CoursePermutation[i].Tutorial	=	Course.TutorialArray[j];
-					CoursePermutation[i].Laboratory	=	Course.LaboratoryArray[k];		
+					/*
+					CoursePermutation[i].Lecture	=	Course.LectureArray[j];
+					CoursePermutation[i].Tutorial	=	Course.TutorialArray[k];
+					CoursePermutation[i].Laboratory	=	Course.LaboratoryArray[l];		
+					
+					alert("Lect"+CoursePermutation[i].Lecture);
+					alert("Tut"+CoursePermutation[i].Tutorial);
+					alert("Lab"+CoursePermutation[i].Laboratory);
+					*/
+					CoursePermutation.Lecture	=	Course.LectureArray[j];
+					CoursePermutation.Tutorial	=	Course.TutorialArray[k];
+					CoursePermutation.Laboratory	=Course.LaboratoryArray[l];		
+					
+					alert("Lect "+CoursePermutation.Lecture.LectureID);
+					alert("Tut "+CoursePermutation.Tutorial.TutorialID);
+					alert("Lab "+CoursePermutation.Laboratory.LaboratoryID);
 				}
 			}
 			
 		}
-	}
+	//}
+
 	//InsertPermutationToSchedule(Permutation,0);
 	
 	//NotifyView("calendar");	
@@ -270,7 +293,6 @@ $(document).ready(function(){
 						
 						//Update Selection View
 						NotifyView("ULIDSelection");	
-						
 						
 						//Update the calendar 
 						AddCoursePermutationWhitoutCollision(CourseCoreEngineering.CourseArray[i]);

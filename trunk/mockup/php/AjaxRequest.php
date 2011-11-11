@@ -76,8 +76,11 @@ $Category= $_GET['Category'];
 $RequestedSchedule = new Schedule;
 $Course0 = new Course;
 $Lecture0= new Lecture;
+$Lecture1= new Lecture;
 $Tutorial0= new Tutorial;
+$Tutorial1= new Tutorial;
 $Laboratory0 = new Laboratory;
+$Laboratory1 = new Laboratory;
 
 
 $Course0->Name="SOEN258";
@@ -89,31 +92,54 @@ $Lecture0->Professor="Francott";
 $Lecture0->Days="Monday";
 $Lecture0->StartingTime="8:45";
 $Lecture0->EndTime="10:00";
-$Lecture0->LectureID="AA/LECA";
+$Lecture0->LectureID="L0";
 
+$Lecture1->Classrom="H-831";
+$Lecture1->Professor="Francott";
+$Lecture1->Days="Monday";
+$Lecture1->StartingTime="8:45";
+$Lecture1->EndTime="10:00";
+$Lecture1->LectureID="L1";
 
 $Tutorial0->Classrom="H-831";
 $Tutorial0->Professor="TA TUT";
 $Tutorial0->Days="Monday";
 $Tutorial0->StartingTime="12:00";
 $Tutorial0->EndTime="13:15";
-$Tutorial0->TutorialID="AA/TUTA";
+$Tutorial0->TutorialID="T0";
+
+$Tutorial1->Classrom="H-831";
+$Tutorial1->Professor="TA TUT";
+$Tutorial1->Days="Monday";
+$Tutorial1->StartingTime="12:00";
+$Tutorial1->EndTime="13:15";
+$Tutorial1->TutorialID="T1";
+
 
 $Laboratory0->Classrom="H-831";
 $Laboratory0->Professor="TA LAB";
 $Laboratory0->Days="Tuesday";
 $Laboratory0->StartingTime="9:00";
 $Laboratory0->EndTime="11:15";
-$Laboratory0->LaboratoryID="AA/LABA";
+$Laboratory0->LaboratoryID="Lb0";
 
+$Laboratory1->Classrom="H-831";
+$Laboratory1->Professor="TA LAB";
+$Laboratory1->Days="Tuesday";
+$Laboratory1->StartingTime="9:00";
+$Laboratory1->EndTime="11:15";
+$Laboratory1->LaboratoryID="Lb1";
 
 //Populate Object structure from lower level to higher level
 //Test with loop of 10 elements
 //for ($i=0; $i < 1 ; $i++) { 
 
 	array_push($Course0->LectureArray,$Lecture0);
+	array_push($Course0->LectureArray,$Lecture1);
 	array_push($Course0->TutorialArray,$Tutorial0);
+	array_push($Course0->TutorialArray,$Tutorial1);
 	array_push($Course0->LaboratoryArray,$Laboratory0);
+	array_push($Course0->LaboratoryArray,$Laboratory1);
 	array_push($RequestedSchedule->CourseArray,$Course0);
 	
 	//array_push($Course0->PrequisiteArray
