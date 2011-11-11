@@ -62,6 +62,7 @@
 	var CourseOption = {};
 	var CourseElectives = {};
 	var CourseSelection = new Array();
+	var ValidPermutation = new Array();
 	
 	//1 schedule contains an array of section courses
 	//var Permutations = new Array();
@@ -77,6 +78,17 @@
 	{
 		return Schedules[ScheduleID].Sections;
 	}*/
+	
+	function GetValidPermutation()
+	{
+		return ValidPermutation;
+	}
+	
+	
+	function AddValidPermutation(Permutation)
+	{
+		ValidPermutation.push(Permutation);
+	}
 	
 	function GetCourseSelection()
 	{

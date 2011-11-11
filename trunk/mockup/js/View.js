@@ -10,6 +10,39 @@ function NotifyView(ElementID)
 	{
 		alert("Updating the calendar");		
 		
+		 /*var eventobj = 
+		 {
+		 	events: 
+		 	[
+		        {
+					title  : 'Course name, section professor....',
+					start  : '2011-11-10 12:15:00',
+					end	   : '2011-11-10 13:30:00',
+					allDay : false // will make the time show
+		        }
+	
+    		]
+    	}*/
+    	var EventObjects = 
+    	{
+    		events:
+    		[
+    		
+    		]
+    	}
+    	var Events = {};
+    	var ScheduleArray = GetValidPermutation();
+		
+		
+    	Events.title = ScheduleArray[0].Lecture.StartingTime
+    	Events.title
+    	Events.title
+    	Events.title
+    	EventObjects.events
+    	
+		$('#calendar').fullCalendar( 'addEventSource', eventobj );
+
+		
 		
 	}	
 	

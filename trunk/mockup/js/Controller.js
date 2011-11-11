@@ -8,46 +8,45 @@ function AddCoursePermutationWhitoutCollision(Course)
 	//a permutation contais a lecture a turorial and a lab
 	//var CoursePermutation = new Array() ;
 	var CoursePermutation = {};
+	var AllCoursePossibility = new Array();
 	
 	alert("Max Lect "+Course.LectureArray.length );
 	alert("Max Tut "+Course.TutorialArray.length);
 	alert("Max Lab "+Course.LaboratoryArray.length);
 	
 	alert("Maximum permutation " + (Course.LectureArray.length * Course.TutorialArray.length * Course.LaboratoryArray.length));  
-	
-	//for (var i=0; i < (Course.LectureArray.length * Course.TutorialArray.length * Course.LaboratoryArray.length ); i++) 
-	//{
-		for (var j=0; j < Course.LectureArray.length; j++) 
+	for (var j=0; j < Course.LectureArray.length; j++) 
+	{
+		for (var k=0; k < Course.TutorialArray.length ; k++) 
 		{
-			for (var k=0; k < Course.TutorialArray.length ; k++) 
+			for (var l=0; l < Course.LaboratoryArray.length ; l++) 
 			{
-				for (var l=0; l < Course.LaboratoryArray.length ; l++) 
+				CoursePermutation.Name				=	Course.Name;
+				CoursePermutation.Description		=	Course.Description;
+				CoursePermutation.NumberOfCredits	=	Course.NumberOfCredits;
+				
+				CoursePermutation.Lecture		=	Course.LectureArray[j];
+				CoursePermutation.Tutorial		=	Course.TutorialArray[k];
+				CoursePermutation.Laboratory	=	Course.LaboratoryArray[l];		
+				
+				alert("Lect "+CoursePermutation.Lecture.LectureID);
+				alert("Tut "+CoursePermutation.Tutorial.TutorialID);
+				alert("Lab "+CoursePermutation.Laboratory.LaboratoryID);
+				
+				if(GetCourseSelection().length == 1)
 				{
-					/*
-					CoursePermutation[i].Lecture	=	Course.LectureArray[j];
-					CoursePermutation[i].Tutorial	=	Course.TutorialArray[k];
-					CoursePermutation[i].Laboratory	=	Course.LaboratoryArray[l];		
-					
-					alert("Lect"+CoursePermutation[i].Lecture);
-					alert("Tut"+CoursePermutation[i].Tutorial);
-					alert("Lab"+CoursePermutation[i].Laboratory);
-					*/
-					CoursePermutation.Lecture	=	Course.LectureArray[j];
-					CoursePermutation.Tutorial	=	Course.TutorialArray[k];
-					CoursePermutation.Laboratory	=Course.LaboratoryArray[l];		
-					
-					alert("Lect "+CoursePermutation.Lecture.LectureID);
-					alert("Tut "+CoursePermutation.Tutorial.TutorialID);
-					alert("Lab "+CoursePermutation.Laboratory.LaboratoryID);
+					AddValidPermutation(CoursePermutation);
+				}
+				else
+				{
+					//compare and store
 				}
 			}
-			
 		}
-	//}
-
-	//InsertPermutationToSchedule(Permutation,0);
+		
+	}
 	
-	//NotifyView("calendar");	
+	NotifyView("calendar");	
 }
 
 
