@@ -1,4 +1,5 @@
 <?php 
+
 class Course {
 	
 	public $Name;
@@ -54,14 +55,7 @@ $Category= $_GET['Category'];
 
 
 
-
 //getCousesFromDb($Faculty...)
-
-
-
-
-
-
 
 
 
@@ -87,28 +81,28 @@ $Course0->NumberOfCredits =3;
 
 $Lecture0->Classrom="H-831";
 $Lecture0->Professor="Francott";
-$Lecture0->Days="Monday";
+$Lecture0->Days="M-W--";
 $Lecture0->StartingTime="8:45:00";
 $Lecture0->EndTime="9:45:00";
 $Lecture0->LectureID="L0";
 
 $Lecture1->Classrom="H-831";
 $Lecture1->Professor="Francott";
-$Lecture1->Days="Monday";
+$Lecture1->Days="M-W--";
 $Lecture1->StartingTime="10:00:00";
 $Lecture1->EndTime="11:00:00";
 $Lecture1->LectureID="L1";
 
 $Tutorial0->Classrom="H-831";
 $Tutorial0->Professor="TA TUT";
-$Tutorial0->Days="Monday";
+$Tutorial0->Days="----F";
 $Tutorial0->StartingTime="12:00:00";
 $Tutorial0->EndTime="13:00:00";
 $Tutorial0->TutorialID="T0";
 
 $Tutorial1->Classrom="H-831";
 $Tutorial1->Professor="TA TUT";
-$Tutorial1->Days="Monday";
+$Tutorial1->Days="---T-";
 $Tutorial1->StartingTime="14:00:00";
 $Tutorial1->EndTime="15:00:00";
 $Tutorial1->TutorialID="T1";
@@ -116,14 +110,14 @@ $Tutorial1->TutorialID="T1";
 
 $Laboratory0->Classrom="H-831";
 $Laboratory0->Professor="TA LAB";
-$Laboratory0->Days="Tuesday";
+$Laboratory0->Days="--W--";
 $Laboratory0->StartingTime="16:00:00";
 $Laboratory0->EndTime="17:00:00";
 $Laboratory0->LaboratoryID="Lb0";
 
 $Laboratory1->Classrom="H-831";
 $Laboratory1->Professor="TA LAB";
-$Laboratory1->Days="Tuesday";
+$Laboratory1->Days="M----";
 $Laboratory1->StartingTime="18:00:00";
 $Laboratory1->EndTime="19:00:00";
 $Laboratory1->LaboratoryID="Lb1";

@@ -2,9 +2,9 @@ function IsTimeConflict(D1,S1,E1,D2,S2,E2)
 {
 	//Convert string in usable format
 	//Find out if it is the Same Day
-	if(D1 == D2)
+	if(CompareDay(D1,D2))
 	{
-		if(	(S1 < E1 && E1 < S2 && S2 < E2)  || (S2 < E2 && E2 < S1 && S1 < E1))	
+		if(	(CompareTime(S1,E1) == -1 && CompareTime(S1,S2) == -1 && CompareTime(S2,E2) == -1 )  || (CompareTime(E2,E2) == -1 && CompareTime(E2,S1) == -1 && CompareTime(S1,E1) == -1))	
 		{
 			alert("There is no time confict bewteen:"+S1+" "+E1+" "+S2+" "+E2);
 			return false;
@@ -109,21 +109,22 @@ function SolveCompleteCourseSectionTable()
 	alert("Number of courses in the complete course section table:"+CompleteCourseSectionTable.length);
 	//alert("Number of courses in the Valid matrix:"+GetValidPossibilityMatrix().length);
 	
+	//Compare the last added couse section list whit the rest of the matrix.
 	if(CompleteCourseSectionTable.length > 1)
 	{
-		for (var i=0; i < CompleteCourseSectionTable.length - 1; i++) 
+		/*for (var i=0; i < CompleteCourseSectionTable.length - 1; i++) 
 		{
 			alert("Number of section :"+CompleteCourseSectionTable[i].length);
 	
 		 	for (var j=0; j < CompleteCourseSectionTable[i].length; j++) 
 		 	{
-		   		/*alert("Name: "+CompleteCourseSectionTable[i][j].Name);			
-	   			alert("Descp:"+CompleteCourseSectionTable[i][j].Description);	
-		   		alert("Nb Cred "+CompleteCourseSectionTable[i][j].NumberOfCredits);
-	   			alert("LectID "+CompleteCourseSectionTable[i][j].Lecture.LectureID);			
-	   			alert("TutID "+CompleteCourseSectionTable[i][j].Tutorial.TutorialID);
-	   			alert("LabID "+CompleteCourseSectionTable[i][j].Laboratory.LaboratoryID);
-	   			*/
+		   		//alert("Name: "+CompleteCourseSectionTable[i][j].Name);			
+	   			//alert("Descp:"+CompleteCourseSectionTable[i][j].Description);	
+		   		//alert("Nb Cred "+CompleteCourseSectionTable[i][j].NumberOfCredits);
+	   			//alert("LectID "+CompleteCourseSectionTable[i][j].Lecture.LectureID);			
+	   			//alert("TutID "+CompleteCourseSectionTable[i][j].Tutorial.TutorialID);
+	   			//alert("LabID "+CompleteCourseSectionTable[i][j].Laboratory.LaboratoryID);
+	   			
 	   			for (var k=0; k < CompleteCourseSectionTable[CompleteCourseSectionTable.length - 1].length; k++) 
 		 		{
 		 			
