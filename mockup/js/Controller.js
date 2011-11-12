@@ -381,7 +381,7 @@ $(document).ready(function(){
 	//Ready Function document is loaded()
 	alert("Document is loaded"); 
 	// testing Daystr functions and CompareDay function
-	/*var day1 = "--w-f";
+	var day1 = "--w-f";
 	var day2 = "--w-f";
 	alert(day1);
 	alert(day2);
@@ -395,7 +395,7 @@ $(document).ready(function(){
 	}
 	else
 		alert("conflict");
-	*/
+	
 	 var startingTime1 = "14:45";
 	 var startingTime2 = "14:30";	
 	 var startingTime3 = "11:45";	

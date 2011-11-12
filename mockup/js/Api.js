@@ -23,13 +23,18 @@ function Timestr(timestring)
 	return time;
 	
 }
-function CompareDay(week1, week2)
+function CompareDay(days1, days2)
 {
+	var week1 = Daystr(days1);
+	var week2 = Daystr(days2);
 	for(var j=0; j<week1.size;j++)
 	{
-		if (d1[j]==d2[j])
+		if (week1[j]==week2[j])
+		{}
+		else
 		return false;
 	}
+	return true;
 }
 function CompareTime(Time1, Time2)
 {
