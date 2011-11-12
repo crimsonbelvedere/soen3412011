@@ -380,8 +380,38 @@ $(document).ready(function(){
 	
 	//Ready Function document is loaded()
 	alert("Document is loaded"); 
-
-	 		
+	// testing Daystr functions and CompareDay function
+	/*var day1 = "--w-f";
+	var day2 = "--w-f";
+	alert(day1);
+	alert(day2);
+	var week1 = Daystr(day1);
+	var week2 = Daystr(day2);
+	alert(week1);
+	alert(week2);
+	if(CompareDay(week1,week2))
+	{
+		alert("no conflict");
+	}
+	else
+		alert("conflict");
+	*/
+	 var startingTime1 = "14:45";
+	 var startingTime2 = "14:30";	
+	 var startingTime3 = "11:45";	
+	 var startingTime4 = "18:00";	
+	 var startingTime5 = "18:45";	
+	 var startingTime6 = "15:15";	
+	 var startingTime7 = "08:45";		
+	 alert(CompareTime(startingTime1,startingTime2));
+	 alert(CompareTime(startingTime2,startingTime1));
+	 alert(CompareTime(startingTime3,startingTime4));
+	 alert(CompareTime(startingTime4,startingTime4));
+	 alert(CompareTime(startingTime1,startingTime6));
+	 alert(CompareTime(startingTime5,startingTime2));
+	 alert(CompareTime(startingTime7,startingTime2));
+	 alert(CompareTime(startingTime4,startingTime5));
+	 	
 	//Select Events
 	$("#SelectIDFaculty").change(function() 
 	{ 
