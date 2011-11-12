@@ -1,41 +1,262 @@
-
-function AddCoursePermutationWhitoutCollision(Course)
+function IsTimeConflict(D1,S1,E1,D2,S2,E2)
 {
+	//Convert string in usable format
+	//Find out if it is the Same Day
+	if(D1 == D2)
+	{
+		if(	(S1 < E1 && E1 < S2 && S2 < E2)  || (S2 < E2 && E2 < S1 && S1 < E1))	
+		{
+			alert("There is no time confict bewteen:"+S1+" "+E1+" "+S2+" "+E2);
+			return false;
+		}
+		else
+		{
+			alert("There is a time confict bewteen:"+S1+" "+E1+" "+S2+" "+E2);
+			return true;
+		}
+	}
+}
+
+function IsSectionTimeConfict(Section1,Section2)
+{
+	//a Section can contain a lecture and optionnaly a lab and a tutorial
 	
-	alert("Generate permutaions");
+	if(Section1.Lecture === undefined || Section2.Lecture === undefined)
+	{
+		return true;
+	}	
+	else
+	{
+		//Compare lectures
+ 		if(IsTimeConflict(Section1.Lecture.Days,Section1.Lecture.StartingTime,Section1.Lecture.EndingTime,Section2.Lecture.Days,Section2.Lecture.StartingTime,Section2.Lecture.EndingTime))	
+		{
+			return true;
+		}
+
+		if(Section2.Tutorial !== undefined)
+		{
+			//Compare Lecture , turorial 		
+			if(IsTimeConflict(Section1.Lecture.Days, Section1.Lecture.StartingTime,Section1.Lecture.EndingTime,Section2.Tutorial.Days,Section2.Tutorial.StartingTime,Section2.Tutorial.EndingTime))	
+			{
+				return true;
+			}
+		}
+
+		if(Section2.Laboratory !== undefined)
+		{
+			//Compare Lecture , Laboratory		
+			if(IsTimeConflict(Section1.Lecture.Days, Section1.Lecture.StartingTime,Section1.Lecture.EndingTime,Section2.Laboratory.Days, Section2.Laboratory.StartingTime,Section2.Laboratory.EndingTime))	
+			{
+				return true;
+			}
+		}
+		
+		if(Section1.Tutorial !== undefined)
+		{
+			//Compare Tutorial , Lecture
+			if(IsTimeConflict(Section1.Tutorial.Days, Section1.Tutorial.StartingTime,Section1.Tutorial.EndingTime,Section2.Lecture.Days,Section2.Lecture.StartingTime,Section2.Lecture.EndingTime))	
+			{
+				return true;
+			}
+		}
+		
+		if(Section1.Tutorial !== undefined && Section2.Tutorial !== undefined)
+		{
+			//Compare tutorial , tutorial
+			if(IsTimeConflict(Section1.Tutorial.Days, Section1.Tutorial.StartingTime,Section1.Tutorial.EndingTime,Section2.Tutorial.Days,Section2.Tutorial.StartingTime,Section2.Tutorial.EndingTime))	
+			{
+				return true;
+			}
+		}
+		
+		if(Section1.Laboratory !== undefined)
+		{
+			//Compare Lab, Lecture
+			if(IsTimeConflict(Section1.Laboratory.Days ,Section1.Laboratory.StartingTime,Section1.Laboratory.EndingTime,Section2.Lecture.Days,Section2.Lecture.StartingTime,Section2.Lecture.EndingTime))	
+			{
+				return true;
+			}
+		}
+		
+		if(Section1.Laboratory !== undefined && Section2.Tutorial !== undefined)
+		{
+			//Compare Lab, Tutorial
+			if(IsTimeConflict(Section1.Laboratory.Days, Section1.Laboratory.StartingTime,Section1.Laboratory.EndingTime,Section2.Tutorial.Days,Section2.Tutorial.StartingTime,Section2.Tutorial.EndingTime))	
+			{
+				return true;
+			}
+		}
+		
+		if(Section1.Laboratory !== undefined && Section2.Laboratory !== undefined)
+		{
+			//Compare Lab, Lab
+			if(IsTimeConflict(Section1.Laboratory.Days, Section1.Laboratory.StartingTime,Section1.Laboratory.EndingTime,Section2.Laboratory.Days,Section2.Laboratory.StartingTime,Section2.Laboratory.EndingTime))	
+			{
+				return true;
+			}
+		}		
+	}
 	
-	//acreate all the different combinasion
-	//a permutation contais a lecture a turorial and a lab
-	//var CoursePermutation = new Array() ;
-	var CoursePermutation = {};
-	var AllCoursePossibility = new Array();
+	//No conflict in time periods
+	return false;
+}
+
+function SolveCompleteCourseSectionTable()
+{
+	var CompleteCourseSectionTable = GetCompleteCourseSectionTable();
 	
-	alert("Max Lect "+Course.LectureArray.length );
-	alert("Max Tut "+Course.TutorialArray.length);
-	alert("Max Lab "+Course.LaboratoryArray.length);
+	//There is only one course so just  make all the possibility equal to the valid martrix	
+	alert("Number of courses in the complete course section table:"+CompleteCourseSectionTable.length);
+	//alert("Number of courses in the Valid matrix:"+GetValidPossibilityMatrix().length);
 	
-	alert("Maximum permutation " + (Course.LectureArray.length * Course.TutorialArray.length * Course.LaboratoryArray.length));  
+	if(CompleteCourseSectionTable.length > 1)
+	{
+		for (var i=0; i < CompleteCourseSectionTable.length - 1; i++) 
+		{
+			alert("Number of section :"+CompleteCourseSectionTable[i].length);
+	
+		 	for (var j=0; j < CompleteCourseSectionTable[i].length; j++) 
+		 	{
+		   		/*alert("Name: "+CompleteCourseSectionTable[i][j].Name);			
+	   			alert("Descp:"+CompleteCourseSectionTable[i][j].Description);	
+		   		alert("Nb Cred "+CompleteCourseSectionTable[i][j].NumberOfCredits);
+	   			alert("LectID "+CompleteCourseSectionTable[i][j].Lecture.LectureID);			
+	   			alert("TutID "+CompleteCourseSectionTable[i][j].Tutorial.TutorialID);
+	   			alert("LabID "+CompleteCourseSectionTable[i][j].Laboratory.LaboratoryID);
+	   			*/
+	   			for (var k=0; k < CompleteCourseSectionTable[CompleteCourseSectionTable.length - 1].length; k++) 
+		 		{
+		 			
+		   			alert("Compare "+CompleteCourseSectionTable[i][j].Name+" with "+CompleteCourseSectionTable[CompleteCourseSectionTable.length - 1][k].Name);
+		   			alert("Name: "+CompleteCourseSectionTable[CompleteCourseSectionTable.length - 1][k].Name);			
+		   			alert("Descp:"+CompleteCourseSectionTable[CompleteCourseSectionTable.length - 1][k].Description);	
+			   		alert("Nb Cred "+CompleteCourseSectionTable[CompleteCourseSectionTable.length - 1][k].NumberOfCredits);
+		   			alert("LectID "+CompleteCourseSectionTable[CompleteCourseSectionTable.length - 1][k].Lecture.LectureID);			
+		   			alert("TutID "+CompleteCourseSectionTable[CompleteCourseSectionTable.length - 1][k].Tutorial.TutorialID);
+		   			alert("LabID "+CompleteCourseSectionTable[CompleteCourseSectionTable.length - 1][k].Laboratory.LaboratoryID);
+		   			
+		   			//if there is a time conflict we don t put this combinasion in the 
+		   			//valid table
+		   			
+		   			//AddToCourseScheduleList(CompleteCourseSectionTable[CompleteCourseSectionTable.length - 1][k]);
+	   				//IsSectionTimeConfict(Section1,Section2)
+		 		
+		 		}
+		 	}
+		}
+	}
+	else
+	{
+		alert("Number of sections :"+CompleteCourseSectionTable[0].length);
+
+	   	for (var j=0; j < CompleteCourseSectionTable[0].length; j++) 
+	 	{
+	   		alert("Name: "+CompleteCourseSectionTable[0][j].Name);			
+	   		alert("Descp:"+CompleteCourseSectionTable[0][j].Description);	
+	   		alert("Nb Cred "+CompleteCourseSectionTable[0][j].NumberOfCredits);
+	   		alert("LectID "+CompleteCourseSectionTable[0][j].Lecture.LectureID);			
+	   		alert("TutID "+CompleteCourseSectionTable[0][j].Tutorial.TutorialID);
+	   		alert("LabID "+CompleteCourseSectionTable[0][j].Laboratory.LaboratoryID);
+	   		
+	   		//Directly add the section in the valid storage
+	   		AddToCourseScheduleList(CompleteCourseSectionTable[0][j]);
+	 	}
+	}
+	
+	
+	/*if(FullPossiblityMatrix().length == 1)
+	{					
+		//ThisCoursePossibility.push(CourseSection);
+		//AddPossibilityToSchedule(ThisCoursePossibility);
+	}
+	else
+	{
+		//compare and store
+	}*/
+	
+}
+
+function GenerateCourseSectionList(Course)
+{
+	alert("Generate all possible section from a course");
+	
+	var CourseSection = {};
+	var CourseSectionList = 
+	[
+	
+	];
+	
 	for (var j=0; j < Course.LectureArray.length; j++) 
 	{
 		for (var k=0; k < Course.TutorialArray.length ; k++) 
 		{
 			for (var l=0; l < Course.LaboratoryArray.length ; l++) 
 			{
-				CoursePermutation.Name				=	Course.Name;
-				CoursePermutation.Description		=	Course.Description;
-				CoursePermutation.NumberOfCredits	=	Course.NumberOfCredits;
+				CourseSection.Name				=	Course.Name;
+				CourseSection.Description		=	Course.Description;
+				CourseSection.NumberOfCredits	=	Course.NumberOfCredits;
 				
-				CoursePermutation.Lecture		=	Course.LectureArray[j];
-				CoursePermutation.Tutorial		=	Course.TutorialArray[k];
-				CoursePermutation.Laboratory	=	Course.LaboratoryArray[l];		
+				CourseSection.Lecture		=	Course.LectureArray[j];
+				CourseSection.Tutorial		=	Course.TutorialArray[k];
+				CourseSection.Laboratory	=	Course.LaboratoryArray[l];		
 				
-				alert("Lect "+CoursePermutation.Lecture.LectureID);
-				alert("Tut "+CoursePermutation.Tutorial.TutorialID);
-				alert("Lab "+CoursePermutation.Laboratory.LaboratoryID);
+				//alert("Lect "+CourseSection.Lecture.LectureID);
+				//alert("Lect Start Time"+CourseSection.Lecture.StartingTime);
+				//alert("Lect End Time"+CourseSection.Lecture.EndTime);
+				
+				//alert("Tut "+CourseSection.Tutorial.TutorialID);
+				//alert("Lab "+CourseSection.Laboratory.LaboratoryID);
+				
+				CourseSectionList.push(CourseSection);
+			}
+		}
+		
+	}
+	return CourseSectionList;
+}
+
+/*
+function CreateSectionFromCourses(Course)
+{
+	
+	alert("Generate permutaions");
+	
+	//acreate all the different combinasion
+	//a Section contais a lecture a turorial and a lab
+	//var CourseSection = new Array() ;
+	var CourseSection = {};
+	var ThisCoursePossibility = new Array();
+	
+	alert("Max Lect "+Course.LectureArray.length );
+	alert("Max Tut "+Course.TutorialArray.length);
+	alert("Max Lab "+Course.LaboratoryArray.length);
+	
+	alert("Maximum Section " + (Course.LectureArray.length * Course.TutorialArray.length * Course.LaboratoryArray.length));  
+	for (var j=0; j < Course.LectureArray.length; j++) 
+	{
+		for (var k=0; k < Course.TutorialArray.length ; k++) 
+		{
+			for (var l=0; l < Course.LaboratoryArray.length ; l++) 
+			{
+				CourseSection.Name				=	Course.Name;
+				CourseSection.Description		=	Course.Description;
+				CourseSection.NumberOfCredits	=	Course.NumberOfCredits;
+				
+				CourseSection.Lecture		=	Course.LectureArray[j];
+				CourseSection.Tutorial		=	Course.TutorialArray[k];
+				CourseSection.Laboratory	=	Course.LaboratoryArray[l];		
+				
+				//alert("Lect "+CourseSection.Lecture.LectureID);
+				//alert("Lect Start Time"+CourseSection.Lecture.StartingTime);
+				//alert("Lect End Time"+CourseSection.Lecture.EndTime);
+				
+				//alert("Tut "+CourseSection.Tutorial.TutorialID);
+				//alert("Lab "+CourseSection.Laboratory.LaboratoryID);
 				
 				if(GetCourseSelection().length == 1)
-				{
-					AddValidPermutation(CoursePermutation);
+				{					
+					ThisCoursePossibility.push(CourseSection);
+					AddPossibilityToSchedule(ThisCoursePossibility);
 				}
 				else
 				{
@@ -49,7 +270,7 @@ function AddCoursePermutationWhitoutCollision(Course)
 	NotifyView("calendar");	
 }
 
-
+*/
 
 
 function RetreiveCourses()
@@ -80,35 +301,36 @@ function AjaxRetreiveCourses(CourseCategory)
 		//alert("Before Sending Ajax request");
 	},
 	
-	success:function(Schedule){
+	success:function(CourseArray){
 	//do your stuff with the JSON data
-		//alert("JSON request succeeded");
+		alert("JSON request succeeded");
 		
 		if(CourseCategory == "FieldEngineering")
 		{
-			SetCourseFieldEngineering(Schedule);
+			SetCourseListFieldEngineering(CourseArray);
 			NotifyView("ULID"+CourseCategory);	
 		}
 		else if(CourseCategory == "CoreEngineering")
 		{
-			SetCourseCoreEngineering(Schedule);
+			SetCourseListCoreEngineering(CourseArray);
 			NotifyView("ULID"+CourseCategory);	
 		}
 		else  if (CourseCategory == "Option")
 		{
-			SetCourseOption(Schedule);
+			SetCourseListOption(CourseArray);
 			NotifyView("ULID"+CourseCategory);	
 		}
 		else  if (CourseCategory == "Elective")
 		{
-			SetCourseElectives(Schedule);
+			SetCourseListElectives(CourseArray);
 			NotifyView("ULID"+CourseCategory);	
 		}
 		
-		/*alert("Name: " + Schedule.CourseArray[0].Name);   	
-		alert("Description: " + Schedule.CourseArray[0].Description);   	
-		alert("Number of Credits: " + Schedule.CourseArray[0].NumberOfCredits);   	
+		alert("Name: " + CourseArray[0].Name);   	
+		alert("Description: " + CourseArray[0].Description);   	
+		alert("Number of Credits: " + CourseArray[0].NumberOfCredits);   	
 		
+		/*
 		alert("LectureID: " + Schedule.CourseArray[0].LectureArray[0].LectureID);	 			
 		alert("Lecture classroom: " + Schedule.CourseArray[0].LectureArray[0].Classrom); 
 		alert("Lecture Professor: " + Schedule.CourseArray[0].LectureArray[0].Professor);
@@ -278,23 +500,30 @@ $(document).ready(function(){
 				//add the course in the selection tab
 				//retreive course list in the according tab
 				//search for the course object				
-				var CourseCoreEngineering = GetCourseCoreEngineering();
+				var CourseListCoreEngineering = GetCourseListCoreEngineering();
 				
-				for (var i=0; i < CourseCoreEngineering.CourseArray.length ; i++) 
+				for (var i=0; i < CourseListCoreEngineering.length ; i++) 
 				{
 					//alert(CourseCoreEngineering.CourseArray[i].Name);
 					//alert($(this).parent().children('input').attr('value'));
 					
-					if(CourseCoreEngineering.CourseArray[i].Name == $(this).parent().children('input').attr('value'))
+					if(CourseListCoreEngineering[i].Name == $(this).parent().children('input').attr('value'))
 					{
 						//alert("Add course to selection");
-						AddCourseToSelection(CourseCoreEngineering.CourseArray[i]);							
+						AddCourseToCourseListSelection(CourseListCoreEngineering[i]);							
 						
 						//Update Selection View
 						NotifyView("ULIDSelection");	
 						
-						//Update the calendar 
-						AddCoursePermutationWhitoutCollision(CourseCoreEngineering.CourseArray[i]);
+						//Update the calendaSection/Create all possible section with a a course
+						var SingleCourseSectionList = GenerateCourseSectionList(CourseListCoreEngineering[i]);
+					
+						//Add course section list to the storage table.	
+						AddToCompleteCourseSectionTable(SingleCourseSectionList);
+						
+						//Solve and filter matrix
+						SolveCompleteCourseSectionTable();
+						
 						//NotifyView("calendar");	
 							
 						break;	
@@ -329,18 +558,18 @@ $(document).ready(function(){
 			if(	$(this).parent().parent().attr('id') == "ULIDCoreEngineering")
 			{
 				
-				var CourseCoreEngineering = GetCourseCoreEngineering();
+				var CourseListCoreEngineering = GetCourseListCoreEngineering();
 				
-				for (var i=0; i < CourseCoreEngineering.CourseArray.length ; i++) 
+				for (var i=0; i < CourseListCoreEngineering.CourseArray.length ; i++) 
 				{
 					//alert(CourseCoreEngineering.CourseArray[i].Name);
 					//alert($(this).parent().children('input').attr('value'));
 					
-					if(CourseCoreEngineering.CourseArray[i].Name == $(this).parent().children('input').attr('value'))
+					if(CourseListCoreEngineering.CourseArray[i].Name == $(this).parent().children('input').attr('value'))
 					{
 						//alert("Remove course from selection");
 						
-						RemoveCourseFromSelection(CourseCoreEngineering.CourseArray[i]);
+						RemoveCourseFromCourseListSelection(CourseListCoreEngineering.CourseArray[i]);
 												
 						//Update Selection View
 						NotifyView("ULIDSelection");	

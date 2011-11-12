@@ -9,20 +9,7 @@ function NotifyView(ElementID)
 	if(ElementID == "calendar")
 	{
 		alert("Updating the calendar");		
-		
-		 /*var eventobj = 
-		 {
-		 	events: 
-		 	[
-		        {
-					title  : 'Course name, section professor....',
-					start  : '2011-11-10 12:15:00',
-					end	   : '2011-11-10 13:30:00',
-					allDay : false // will make the time show
-		        }
-	
-    		]
-    	}*/
+
     	var EventObjects = 
     	{
     		events:
@@ -30,19 +17,60 @@ function NotifyView(ElementID)
     		
     		]
     	}
-    	var Events = {};
-    	var ScheduleArray = GetValidPermutation();
+    		
+		var PossiblitySchedule = GetScheduledCourses();
 		
-		
-    	Events.title = ScheduleArray[0].Lecture.StartingTime
-    	Events.title
-    	Events.title
-    	Events.title
-    	EventObjects.events
+		/*var Events = {};
+		Events.title 	= PossiblitySchedule[0].Name+" Lecture";
+    	Events.start	= "2011-11-09 " + ScheduleArray[0].Lecture.StartingTime;
+    	Events.end		= "2011-11-09 " + ScheduleArray[0].Lecture.EndTime;
+    	Events.allDay 	= false;
+    	EventObjects.events.push(Events);
     	
-		$('#calendar').fullCalendar( 'addEventSource', eventobj );
-
+	   	var Events = {};
+		Events.title 	= ScheduleArray[1].Name+" Lecture";
+    	Events.start	= "2011-11-11 " + ScheduleArray[1].Lecture.StartingTime;
+    	Events.end		= "2011-11-11 " + ScheduleArray[1].Lecture.EndTime;
+    	Events.allDay 	= false;
+    	EventObjects.events.push(Events);
+    	
+	    $('#calendar').fullCalendar( 'addEventSource', EventObjects );  */
+	   /*
+		alert("Number of permutation to generate data from:"+ ValidPermutation.length);
 		
+		for (var i=0; i < ValidPermutation.length; i++) 
+		{
+		
+			var Events = {};	
+			Events.title 	= ValidPermutation[i].Name+" Lecture";
+	    	Events.start	= "2011-11-08 " + ValidPermutation[i].Lecture.StartingTime;
+	    	Events.end		= "2011-11-08 " + ValidPermutation[i].Lecture.EndTime;
+	    	Events.allDay 	= false;
+			alert("Lect Time: "+Events.start+" "+Events.end);
+	    	EventObjects.events.push(Events);
+	    	
+	    	var Events = {};
+			Events.title 	= ValidPermutation[i].Name+" Tutorial";
+	    	Events.start	= "2011-11-09 " + ValidPermutation[i].Tutorial.StartingTime;
+	    	Events.end		= "2011-11-09 " + ValidPermutation[i].Tutorial.EndTime;
+	    	Events.allDay 	= false;
+	    	alert("Tut Time: "+Events.start+" "+Events.end);
+	    	EventObjects.events.push(Events);
+	    
+	    	var Events = {};
+			Events.title 	= ValidPermutation[i].Name+" Laboratory";
+	    	Events.start	= "2011-11-10 " + ValidPermutation[i].Laboratory.StartingTime;
+	    	Events.end		= "2011-11-10 " + ValidPermutation[i].Laboratory.EndTime;
+	    	Events.allDay 	= false;	
+	    	alert("Labo Time: "+Events.start+" "+Events.end);
+	    	EventObjects.events.push(Events);
+	    	
+		
+		}
+    	
+		$('#calendar').fullCalendar( 'addEventSource', EventObjects );  
+
+		*/
 		
 	}	
 	
@@ -55,7 +83,7 @@ function NotifyView(ElementID)
 		//Clear the current selection and replace it by the entire new one		
 		$("#"+ElementID).empty();
 		
-		var LocalCourseSelection = GetCourseSelection();
+		var LocalCourseSelection = GetCourseListSelection();
 		
 		for (var i=0; i < LocalCourseSelection.length ; i++) 
 		{
@@ -88,19 +116,19 @@ function NotifyView(ElementID)
 		$("#"+ElementID).empty();
 		$("ULIDSelection").empty();
 		
-		var LocalCourseCoreEngineering = GetCourseCoreEngineering();
+		var LocalCourseCoreEngineering = GetCourseListCoreEngineering();
 				
 		//Populate the CoreEngineering Tab				
-		for (var i=0; i < LocalCourseCoreEngineering.CourseArray.length ; i++) 
+		for (var i=0; i < LocalCourseCoreEngineering.length ; i++) 
 		{
 		
 			
 			HtmlCode = ""; 
 		
-			HtmlCode +='<li class="deselected" title="' + LocalCourseCoreEngineering.CourseArray[i].Description + '">';
-			HtmlCode +='<input value="' +LocalCourseCoreEngineering.CourseArray[i].Name + '" type="checkbox" id="ID' + LocalCourseCoreEngineering.CourseArray[i].Name + '">';
-			HtmlCode +='<label for="ID' + LocalCourseCoreEngineering.CourseArray[i].Name + '">';
-			HtmlCode +='<dfn>' + LocalCourseCoreEngineering.CourseArray[i].Name + '</dfn>';
+			HtmlCode +='<li class="deselected" title="' + LocalCourseCoreEngineering[i].Description + '">';
+			HtmlCode +='<input value="' +LocalCourseCoreEngineering[i].Name + '" type="checkbox" id="ID' + LocalCourseCoreEngineering[i].Name + '">';
+			HtmlCode +='<label for="ID' + LocalCourseCoreEngineering[i].Name + '">';
+			HtmlCode +='<dfn>' + LocalCourseCoreEngineering[i].Name + '</dfn>';
 			HtmlCode +='</label>';
 			HtmlCode +='<a class="checkbox-select" href="#DivIDTabs"></a>';
 			HtmlCode +='</li>';
@@ -110,21 +138,14 @@ function NotifyView(ElementID)
 			$(HtmlCode).appendTo("#"+ElementID);
 			  
 		};
-		
-		//Change all the html
-		//$("#"+ElementID).html(HtmlCode);  		
-		
+			
 	}
-	
+	/*
 	if(ElementID == "ULIDFieldEngineering")
 	{
 		alert("#"+ElementID);	
 		
-		/*lert("Name: " +GetCourseFieldEngineering().CourseArray[0].Name);
-		alert("Description: " +GetCourseFieldEngineering().CourseArray[0].Description);
-		alert("NumberOfCredits: " +GetCourseFieldEngineering().CourseArray[0].NumberOfCredits);*/
-	
-		 
+			 
 		for (var i=0; i < GetCourseFieldEngineering().CourseArray.length ; i++) 
 		{
 		
@@ -152,9 +173,6 @@ function NotifyView(ElementID)
 	{
 		alert("#"+ElementID);	
 		
-		/*alert("Name: " +GetCourseOption().CourseArray[0].Name);
-		alert("Description: " +GetCourseOption().CourseArray[0].Description);
-		alert("NumberOfCredits: " +GetCourseOption().CourseArray[0].NumberOfCredits);*/
 	
 			
 		for (var i=0; i < GetCourseOption().CourseArray.length  ; i++) 
@@ -184,10 +202,6 @@ function NotifyView(ElementID)
 	{
 		alert("#"+ElementID);	
 		
-		/*alert("Name: " +GetCourseElectives().CourseArray[0].Name);
-		alert("Description: " +GetCourseElectives().CourseArray[0].Description);
-		alert("NumberOfCredits: " +GetCourseElectives().CourseArray[0].NumberOfCredits);*/
-	
 		
 			
 		for (var i=0; i < GetCourseElectives().CourseArray.length ; i++) 
@@ -212,7 +226,7 @@ function NotifyView(ElementID)
 		
 	}
 	
-	
+	*/
 	
 	//Buttons Update
 	if(ElementID == "ButtonIDFall")
@@ -248,20 +262,5 @@ function NotifyView(ElementID)
 	}
 	
 	
-	/*if(ElementID == "ButtonIDSummer")
-	{
-		alert("#"+ElementID);
-		
-		//Update the View
-		$("#"+ElementID).parents('.fg-buttonset-single:first').find(".fg-button.ui-state-active").removeClass("ui-state-active");
-		if( $("#"+ElementID).is('.ui-state-active.fg-button-toggleable, .fg-buttonset-multi .ui-state-active') )
-		{ 
-			$("#"+ElementID).removeClass("ui-state-active"); 
-		}
-		else 
-		{ 
-			$("#"+ElementID).addClass("ui-state-active"); 
-		}	
-	}*/
 	
 }

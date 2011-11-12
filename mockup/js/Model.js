@@ -1,161 +1,344 @@
+	//1 instance of this object.
+	var State = 
+	{	
+		/*
+		Faculty:"",
+		Department:"",		
+		Program:"",				
+		Semester:""
+		*/
+	};
+	
+	var CourseListCoreEngineering = 
+	[
+		/* 
+		Course: 
+		{
+			Name:"",
+			Description:"",
+			NumberOfCredits:"",
+			LectureArray:
+			[
+				{
+					Days:"",
+					StartingTime:"",
+					EndTime:"",
+					Professor:"",
+					Classrom:"",
+					LectureID:""
+				}
+			],
+			TutorialArray:
+			[
+				{
+					Days:"",
+					StartingTime:"",
+					EndTime:"",
+					Professor:"",
+					Classrom:"",
+					TutorialID:""
+				}
+			],
+			LaboratoryArray:
+			[
+				{
+					Days:"",
+					StartingTime:"",
+					EndTime:"",
+					Professor:"",
+					Classrom:"",
+					LaboratoryID:""
+				}
+			]
+		}
+		*/		
+	];
 
-	/* State Data structure Description
-	"State" : {
-		
-		"Faculty":"",
-		"Department":"",		
-		"Program":"",				
-		"Semester":"",
-	}
-	*/	
-	var State = {};
+
+	//1 instance of this object.
+	var CourseListFieldEngineering = 
+	[
+		/* 
+		Course: 
+		{
+			Name:"",
+			Description:"",
+			NumberOfCredits:"",
+			LectureArray:
+			[
+				{
+					Days:"",
+					StartingTime:"",
+					EndTime:"",
+					Professor:"",
+					Classrom:"",
+					LectureID:""
+				}
+			],
+			TutorialArray:
+			[
+				{
+					Days:"",
+					StartingTime:"",
+					EndTime:"",
+					Professor:"",
+					Classrom:"",
+					TutorialID:""
+				}
+			],
+			LaboratoryArray:
+			[
+				{
+					Days:"",
+					StartingTime:"",
+					EndTime:"",
+					Professor:"",
+					Classrom:"",
+					LaboratoryID:""
+				}
+			]
+		}
+		*/	
+	];
 	
-	/*Course Data structure Description
-	"Course" : {
+	//1 instance of this object.
+	var CourseListOption = 
+	[
+		/* 
+		Course: 
+		{
+			Name:"",
+			Description:"",
+			NumberOfCredits:"",
+			LectureArray:
+			[
+				{
+					Days:"",
+					StartingTime:"",
+					EndTime:"",
+					Professor:"",
+					Classrom:"",
+					LectureID:""
+				}
+			],
+			TutorialArray:
+			[
+				{
+					Days:"",
+					StartingTime:"",
+					EndTime:"",
+					Professor:"",
+					Classrom:"",
+					TutorialID:""
+				}
+			],
+			LaboratoryArray:
+			[
+				{
+					Days:"",
+					StartingTime:"",
+					EndTime:"",
+					Professor:"",
+					Classrom:"",
+					LaboratoryID:""
+				}
+			]
+		}
+		*/	
+	];
 	
-	"Name":""
-	"Description":""
-	"PrequisiteArray": {
-		
-	},
-	"SectionArray": {
-		
-		"LectureArray":{
-			
-			"Days":"",
-			"StartingTime":"",
-			"EndTime":"",
-			"Professor":"",
-			"Classrom":"",
-			"LectureID:"",
-		
-		},
-		"TutorialArray":{
-			
-			"Days":"",
-			"StartingTime":"",
-			"EndTime":"",
-			"Professor":"",
-			"Classrom":"",
-			"TutorialID:"",
-		
-		}, 
-		"LaboratoryArray":{
-			
-			"Days":"",
-			"StartingTime":"",
-			"EndTime":"",
-			"Professor":"",
-			"Classrom":"",
-			"LaboratoryID:"",
-			
-		}, 
-		"SectionNumber":""
+	//1 instance of this object.
+	var CourseListElectives = 
+	[
+		/* 
+		Course: 
+		{
+			Name:"",
+			Description:"",
+			NumberOfCredits:"",
+			LectureArray:
+			[
+				{
+					Days:"",
+					StartingTime:"",
+					EndTime:"",
+					Professor:"",
+					Classrom:"",
+					LectureID:""
+				}
+			],
+			TutorialArray:
+			[
+				{
+					Days:"",
+					StartingTime:"",
+					EndTime:"",
+					Professor:"",
+					Classrom:"",
+					TutorialID:""
+				}
+			],
+			LaboratoryArray:
+			[
+				{
+					Days:"",
+					StartingTime:"",
+					EndTime:"",
+					Professor:"",
+					Classrom:"",
+					LaboratoryID:""
+				}
+			]
+		}
+		*/	
+	];
 	
-	},
-	"NumberOfCredits":"1.5, 3, 4",
-	"TermArray":"Fall,Winter",
-	}
-	 */
-	var CourseFieldEngineering = {};
-	var CourseCoreEngineering = {};
-	var CourseOption = {};
-	var CourseElectives = {};
-	var CourseSelection = new Array();
-	var ValidPermutation = new Array();
+	//1 instance of this object.
+	var CourseListSelection = 
+	[
+		/* 
+		Course: 
+		{
+			Name:"",
+			Description:"",
+			NumberOfCredits:"",
+			LectureArray:
+			[
+				{
+					Days:"",
+					StartingTime:"",
+					EndTime:"",
+					Professor:"",
+					Classrom:"",
+					LectureID:""
+				}
+			],
+			TutorialArray:
+			[
+				{
+					Days:"",
+					StartingTime:"",
+					EndTime:"",
+					Professor:"",
+					Classrom:"",
+					TutorialID:""
+				}
+			],
+			LaboratoryArray:
+			[
+				{
+					Days:"",
+					StartingTime:"",
+					EndTime:"",
+					Professor:"",
+					Classrom:"",
+					LaboratoryID:""
+				}
+			]
+		}
+		*/	
+	];
+		
+	// ValidSchedue	
+	var CourseScheduleList = 
+	[
 	
-	//1 schedule contains an array of section courses
-	//var Permutations = new Array();
-	//var Schedule = new Array();
-	//Course actually shown in the schedule.
+	];
+		
+	//  matrix that contains array of course combiantion	
+	var  CompleteCourseSectionTable = 
+	[
 	
-	/*function InsertPermutationToSchedule(Permutation,ScheduleID)
+	];
+
+	/*function GetValidPossibilityMatrix()
 	{
-		Schedule[ScheduleID].Permutations.push(Permutation);
+		return ValidPossibilityMatrix;
 	}*/
 	
-	/*function GetSectionsFromSchedule(ScheduleID)
+	function AddToCourseScheduleList(ValidCourseSectionArrangment)
 	{
-		return Schedules[ScheduleID].Sections;
-	}*/
+		CourseScheduleList.push(ValidCourseSectionArrangment);
+	}
 	
-	function GetValidPermutation()
+	function GetCompleteCourseSectionTable()
 	{
-		return ValidPermutation;
+		return CompleteCourseSectionTable;
+	}
+	
+	function AddToCompleteCourseSectionTable(SingleCourseSectionList)
+	{
+		CompleteCourseSectionTable.push(SingleCourseSectionList);
 	}
 	
 	
-	function AddValidPermutation(Permutation)
+	//Course List Selection api
+	function GetCourseListSelection()
 	{
-		ValidPermutation.push(Permutation);
+		return CourseListSelection;
 	}
 	
-	function GetCourseSelection()
-	{
-		return CourseSelection;
-	}
-	
-	function AddCourseToSelection(Course)
+	function AddCourseToCourseListSelection(Course)
 	{
 		//Create course Structure object
-		CourseSelection.push(Course);
+		CourseListSelection.push(Course);
 	}
 	
-	function RemoveCourseFromSelection(Course)
+	function RemoveCourseFromCourseListSelection(Course)
 	{
-		for (var i=0; i < CourseSelection.length; i++) 
+		for (var i=0; i < CourseListSelection.length; i++) 
 		{			
-			if(CourseSelection[i].Name == Course.Name)
+			if(CourseListSelection[i].Name == Course.Name)
 			{
 				//alert("Course found, remove it from the list");
-				CourseSelection.splice(i,1);			
+				CourseListSelection.splice(i,1);			
 				break;	
 			}
 			
 		};
 	}
 	
-	
-	function SetCourseFieldEngineering(Courses)
+	//Course List FieldEngineeing
+	function SetCourseListFieldEngineering(Courses)
 	{
-		CourseFieldEngineering = Courses;
+		CourseListFieldEngineering = Courses;
 	}
-	function GetCourseFieldEngineering()
+	function GetCourseListFieldEngineering()
 	{
-		return CourseFieldEngineering;
-	}
-	
-	
-	function SetCourseCoreEngineering(Courses)
-	{
-		CourseCoreEngineering = Courses;
-	}
-	function GetCourseCoreEngineering()
-	{
-		return CourseCoreEngineering;
+		return CourseListFieldEngineering;
 	}
 	
-	
-	function SetCourseElectives(Courses)
+	//Course List Core Engineeing
+	function SetCourseListCoreEngineering(Courses)
 	{
-		CourseElectives = Courses;
+		CourseListCoreEngineering = Courses;
 	}
-	function GetCourseElectives()
+	function GetCourseListCoreEngineering()
 	{
-		return CourseElectives;
-	}
-	
-	
-	function SetCourseOption(Courses)
-	{
-		CourseOption = Courses;
-	}
-	function GetCourseOption()
-	{
-		return CourseOption;
+		return CourseListCoreEngineering;
 	}
 	
+	//Course List Electives
+	function SetCourseListElectives(Courses)
+	{
+		CourseListElectives = Courses;
+	}
+	function GetCourseListElectives()
+	{
+		return CourseListElectives;
+	}
 	
+	//Course List Option
+	function SetCourseListOption(Courses)
+	{
+		CourseListOption = Courses;
+	}
+	function GetCourseListOption()
+	{
+		return CourseListOption;
+	}
+	
+	//State.Faculty
 	function SetFaculty(Faculty)
 	{
 		State.Faculty = Faculty;
@@ -165,7 +348,7 @@
 		return State.Faculty;
 	}
 	
-		
+	//State.Department
 	function SetDepartment(Department)
 	{
 		State.Department = Department;
@@ -175,7 +358,7 @@
 		return State.Department;
 	}
 	
-		
+	//State.Program
 	function SetProgram(Program)
 	{
 		State.Program = Program;
@@ -185,7 +368,7 @@
 		return State.Program;
 	}
 	
-	
+	//State.Semester 
 	function SetSemester(Semester)
 	{
 		State.Semester = Semester;
