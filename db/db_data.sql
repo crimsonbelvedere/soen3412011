@@ -1,3 +1,9 @@
+
+
+	 
+
+
+
 INSERT INTO faculty (description) VALUES ('Engineering and Computer Science');
 
 INSERT INTO department(description,faculty) VALUES ('Computer Science and Software Engineering','1');
@@ -18,4 +24,8 @@ INSERT INTO course_group (description,program,course_group) VALUES ('Basic Scien
 INSERT INTO course_group (description,program,course_group) VALUES ('Computer Games (CG) Option','1','2');
 INSERT INTO course_group (description,program,course_group) VALUES ('Web Services and Applications (WSA) Option','1','2');
 INSERT INTO course_group (description,program,course_group) VALUES ('Real-Time, Embedded, and Avionics Software (REA) Option','1','2');
+
+
+/** TO insert this you must have the courses info in the database **/
+insert into group_has_course values(6,1)
 
