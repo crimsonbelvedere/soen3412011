@@ -77,8 +77,10 @@
 		echo "Value:".$value."</br> key:".$key."<br/>";
 	}
 	?>
+	
 		<div id="content">
-			<div id="demo">
+		<a href="php/queries.php"> queries</a><!--DEBUG-->
+		<div id="demo">
 				<div id="SelectfieldSets" class="ui-corner-all float-left gray-border">
 					<fieldset class="ui-corner-all gray-border left">
 						<legend>Select Program</legend>
