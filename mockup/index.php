@@ -65,6 +65,7 @@
 		-->
 		
 	<?php 
+	/**
 	include('php/db.php');
 	//create a new db_adapter
 	$db_adapter=new db_adapter();
@@ -75,11 +76,10 @@
 		echo "<p>Student:</p>";
 		foreach($student as $key=>$value)
 		echo "Value:".$value."</br> key:".$key."<br/>";
-	}
+	}**/
 	?>
-	
 		<div id="content">
-		<a href="php/queries.php"> queries</a><!--DEBUG-->
+		<!--<a href="php/queries.php"> queries</a>DEBUG-->
 		<div id="demo">
 				<div id="SelectfieldSets" class="ui-corner-all float-left gray-border">
 					<fieldset class="ui-corner-all gray-border left">
