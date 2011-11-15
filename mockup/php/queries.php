@@ -23,7 +23,8 @@ if($DEBUG){
 }
 
 /**
- * return an array with courses inside it.
+ * return an array with Course objects inside it.
+ * In the course object, only the title and description of the course are defined. The rest is null.
  * Each course, is an instance of the Course class from AjaxRequest.
  * The courses are selected by faculty description, department description, program description, and semester (which is an int).
  * **/
