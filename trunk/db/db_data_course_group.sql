@@ -29,7 +29,7 @@ INSERT INTO group_has_course (course_group,course) VALUES ('6','46');
 INSERT INTO group_has_course (course_group,course) VALUES ('6','47');
 INSERT INTO group_has_course (course_group,course) VALUES ('6','48');
 INSERT INTO group_has_course (course_group,course) VALUES ('7','6');
-INSERT INTO group_has_course (course_group,course) VALUES ('7','7');
+
 INSERT INTO group_has_course (course_group,course) VALUES ('7','8');
 INSERT INTO group_has_course (course_group,course) VALUES ('7','9');
 INSERT INTO group_has_course (course_group,course) VALUES ('7','16');

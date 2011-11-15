@@ -1,0 +1,1690 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
+
+DROP SCHEMA IF EXISTS `soen341` ;
+CREATE SCHEMA IF NOT EXISTS `soen341` DEFAULT CHARACTER SET utf8 ;
+USE `soen341` ;
+
+-- -----------------------------------------------------
+-- Table `soen341`.`Faculty`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `soen341`.`Faculty` ;
+
+CREATE  TABLE IF NOT EXISTS `soen341`.`Faculty` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(45) NOT NULL ,
+  `description` VARCHAR(45) NOT NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `soen341`.`Department`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `soen341`.`Department` ;
+
+CREATE  TABLE IF NOT EXISTS `soen341`.`Department` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(45) NOT NULL ,
+  `faculty` INT NOT NULL ,
+  `description` VARCHAR(60) NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_Department_Faculty1` (`faculty` ASC) ,
+  CONSTRAINT `fk_Department_Faculty1`
+    FOREIGN KEY (`faculty` )
+    REFERENCES `soen341`.`Faculty` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `soen341`.`Course`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `soen341`.`Course` ;
+
+CREATE  TABLE IF NOT EXISTS `soen341`.`Course` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `title` VARCHAR(100) NULL ,
+  `number` VARCHAR(200) NOT NULL ,
+  `description` VARCHAR(1200) NULL ,
+  `department` INT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_CourseType_Department1` (`department` ASC) ,
+  CONSTRAINT `fk_CourseType_Department1`
+    FOREIGN KEY (`department` )
+    REFERENCES `soen341`.`Department` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `soen341`.`Schedule_type`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `soen341`.`Schedule_type` ;
+
+CREATE  TABLE IF NOT EXISTS `soen341`.`Schedule_type` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `description` VARCHAR(10) NOT NULL ,
+  `abbreviation` VARCHAR(4) NOT NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `soen341`.`Schedule`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `soen341`.`Schedule` ;
+
+CREATE  TABLE IF NOT EXISTS `soen341`.`Schedule` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `term` INT NOT NULL ,
+  `professor` VARCHAR(120) NULL ,
+  `course` INT NOT NULL ,
+  `location` VARCHAR(14) NOT NULL ,
+  `begin` TIME NOT NULL ,
+  `end` TIME NOT NULL ,
+  `days` VARCHAR(40) NOT NULL ,
+  `schedule_type` INT NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_Section_Course1` (`course` ASC) ,
+  INDEX `fk_Schedule_ScheduleType1` (`schedule_type` ASC) ,
+  CONSTRAINT `fk_Section_Course1`
+    FOREIGN KEY (`course` )
+    REFERENCES `soen341`.`Course` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Schedule_ScheduleType1`
+    FOREIGN KEY (`schedule_type` )
+    REFERENCES `soen341`.`Schedule_type` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `soen341`.`Prerequisite_group`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `soen341`.`Prerequisite_group` ;
+
+CREATE  TABLE IF NOT EXISTS `soen341`.`Prerequisite_group` (
+  `course` INT NOT NULL ,
+  `prerequisite` INT NOT NULL ,
+  `prerequisite_group` INT NOT NULL ,
+  `concurrent` TINYINT(1)  NOT NULL ,
+  INDEX `fk_Course_has_Prerequisites_Course1` (`course` ASC) ,
+  INDEX `fk_Course_has_Prerequisites_Course2` (`prerequisite` ASC) ,
+  PRIMARY KEY (`prerequisite_group`, `prerequisite`, `course`) ,
+  CONSTRAINT `fk_Course_has_Prerequisites_Course1`
+    FOREIGN KEY (`course` )
+    REFERENCES `soen341`.`Course` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Course_has_Prerequisites_Course2`
+    FOREIGN KEY (`prerequisite` )
+    REFERENCES `soen341`.`Course` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `soen341`.`Student`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `soen341`.`Student` ;
+
+CREATE  TABLE IF NOT EXISTS `soen341`.`Student` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `student_id` VARCHAR(45) NOT NULL ,
+  `first_name` VARCHAR(45) NOT NULL ,
+  `last_name` VARCHAR(45) NOT NULL ,
+  `password` VARCHAR(45) NOT NULL ,
+  `status` TINYINT(1)  NOT NULL ,
+  `program_option` VARCHAR(150) NOT NULL ,
+  `program` VARCHAR(150) NOT NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `soen341`.`Adjacency_list`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `soen341`.`Adjacency_list` ;
+
+CREATE  TABLE IF NOT EXISTS `soen341`.`Adjacency_list` (
+  `course` INT NOT NULL ,
+  `adjacent_course` INT NOT NULL ,
+  INDEX `fk_AdjacencyList_Course1` (`course` ASC) ,
+  INDEX `fk_AdjacencyList_Course2` (`adjacent_course` ASC) ,
+  PRIMARY KEY (`course`, `adjacent_course`) ,
+  CONSTRAINT `fk_AdjacencyList_Course1`
+    FOREIGN KEY (`course` )
+    REFERENCES `soen341`.`Course` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_AdjacencyList_Course2`
+    FOREIGN KEY (`adjacent_course` )
+    REFERENCES `soen341`.`Course` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `soen341`.`Program`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `soen341`.`Program` ;
+
+CREATE  TABLE IF NOT EXISTS `soen341`.`Program` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(45) NULL ,
+  `description` VARCHAR(100) NOT NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `soen341`.`Course_group`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `soen341`.`Course_group` ;
+
+CREATE  TABLE IF NOT EXISTS `soen341`.`Course_group` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(60) NOT NULL ,
+  `program` INT NOT NULL ,
+  `course_group` INT NULL ,
+  `description` VARCHAR(100) NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_Group_Program1` (`program` ASC) ,
+  INDEX `fk_Course_group_Course_group1` (`course_group` ASC) ,
+  CONSTRAINT `fk_Group_Program1`
+    FOREIGN KEY (`program` )
+    REFERENCES `soen341`.`Program` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Course_group_Course_group1`
+    FOREIGN KEY (`course_group` )
+    REFERENCES `soen341`.`Course_group` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `soen341`.`Group_has_course`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `soen341`.`Group_has_course` ;
+
+CREATE  TABLE IF NOT EXISTS `soen341`.`Group_has_course` (
+  `course_group` INT NOT NULL ,
+  `course` INT NOT NULL ,
+  PRIMARY KEY (`course_group`, `course`) ,
+  INDEX `fk_Group_has_Course_Course1` (`course` ASC) ,
+  INDEX `fk_Group_has_Course_Group1` (`course_group` ASC) ,
+  CONSTRAINT `fk_Group_has_Course_Group1`
+    FOREIGN KEY (`course_group` )
+    REFERENCES `soen341`.`Course_group` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Group_has_Course_Course1`
+    FOREIGN KEY (`course` )
+    REFERENCES `soen341`.`Course` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `soen341`.`Student_has_course`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `soen341`.`Student_has_course` ;
+
+CREATE  TABLE IF NOT EXISTS `soen341`.`Student_has_course` (
+  `student` INT NOT NULL ,
+  `course` INT NOT NULL ,
+  PRIMARY KEY (`student`, `course`) ,
+  INDEX `fk_Student_has_Course_Course1` (`course` ASC) ,
+  INDEX `fk_Student_has_Course_Student1` (`student` ASC) ,
+  CONSTRAINT `fk_Student_has_Course_Student1`
+    FOREIGN KEY (`student` )
+    REFERENCES `soen341`.`Student` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Student_has_Course_Course1`
+    FOREIGN KEY (`course` )
+    REFERENCES `soen341`.`Course` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+use soen341;
+INSERT INTO faculty (description) VALUES ('Engineering and Computer Science');
+
+INSERT INTO department(description,faculty) VALUES ('Computer Science and Software Engineering','1');
+
+INSERT INTO program (description) VALUES ('BEng in Software Engineering');
+
+INSERT INTO Schedule_type (description,abbreviation) VALUES ('Lecture','Lect');
+INSERT INTO Schedule_type (description,abbreviation) VALUES ('Lab','Lab');
+INSERT INTO Schedule_type (description,abbreviation) VALUES ('Tutorial','Tut');
+
+INSERT INTO course_group (description,program) VALUES ('Core Courses','1');
+INSERT INTO course_group (description,program) VALUES ('Options','1');
+INSERT INTO course_group (description,program) VALUES ('Electives','1');
+INSERT INTO course_group (description,program,course_group) VALUES ('Engineering Core','1','1');
+INSERT INTO course_group (description,program,course_group) VALUES ('Software Engineering Core','1','1');
+INSERT INTO course_group (description,program,course_group) VALUES ('Computer Science Group','1','1');
+INSERT INTO course_group (description,program,course_group) VALUES ('Basic Science Courses','1','1');
+INSERT INTO course_group (description,program,course_group) VALUES ('Computer Games (CG) Option','1','2');
+INSERT INTO course_group (description,program,course_group) VALUES ('Web Services and Applications (WSA) Option','1','2');
+INSERT INTO course_group (description,program,course_group) VALUES ('Real-Time, Embedded, and Avionics Software (REA) Option','1','2');
+
+
+
+
+
+INSERT INTO course (id, title, number, description, department) VALUES ('140','','Permission of the Faculty','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('141','','Math 201 equivalent','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('142','','A course in C, C++, or Java','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('143','','18 credits in post-Cegep Mathematics','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('144','','Completion of 60 credits','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('145','','Permission of the Department','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('146','','Registration in the final year of the Honours program','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('147','','CHEM 205 equivalent','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('148','','CHEM 206 equivalent','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('149','','PHYS 204 equivalent','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('150','','PHYS 206 equivalent','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('151','','PHYS 224 equivalent','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('152','','PHYS 226 equivalent','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('153','','MATH 203 equivalent','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('154','','MATH 205 equivalent','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('155','','MATH 201 equivalent ','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('156','','PHYS 205 equivalent','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('157','','MAST 218 equivalent','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('158','','six credits in Cegep Physics equivalent','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('159','','six credits in Cegep Physics','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('160','','MAST 219 equivalent','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('161','','PHYS 253 equivalent','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('162','','Students must have satisfied the requirements in §71.20.7 by passing the Engineering Writing Test (EWT), or by passing ENCS
+272 with a grade of C- or higher.','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('0','','101-NYA','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('1','','NYA','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('2','','NYB','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('3','','NYC','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('4','','BCEE 231','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('5','','BIOL 201','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('6','Elementary Genetics','BIOL 206','A survey of classical and contemporary developments in the study of heredity, with particular attention to human examples.
+This course is open to the general student body. Lectures only.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('7','Environmental Biology','BIOL 208','This course examines the principles and concepts of ecosystems, the interaction of organisms and their environment. Energy
+flow and nutrient cycling in ecosystems, population dynamics, and community organization. Lectures only.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('8','Biodiversity and Ecology','BIOL 226','This course introduces the evolution, biodiversity, and ecology of organisms. The origin and diversity of life, from prokaryotes,
+through simple eukaryotes to multi-cellular organisms are introduced. Natural selection, speciation, and phylogeny, stressing
+evolutionary relationships in conjunction with changing conditions on earth, are presented. The course introduces major concepts
+in ecology: the physical and chemical environment, population structure, life histories, species interactions, communities,
+and ecosystems. Lectures only.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('9','Molecular and General Genetics','BIOL 261','Basic genetic principles, including mechanisms of meiosis and mitosis, Mendelian genetics, recombination, gene mapping, and
+chromosome rearrangements; an introduction to molecular genetics, including nucleic acid structure and biosynthesis transcription
+and translation; the course also includes an introduction to recombinant DNA technology and to concepts of population genetics.
+Lectures and tutorials.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('10','','Cegep Biology 301','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('11','','Cegep Mathematics 103','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('12','','Cegep Mathematics 105','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('13','','Cegep Mathematics 203','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('14','','CHEM 205','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('15','','CHEM 206','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('16','Discovering Biotechnology','CHEM 209','The course begins with an exploration of the roles of genes and proteins in life processes. It then proceeds to an examination
+of the basic scientific principles behind manipulation of biological molecules to produce desired changes. Students are introduced
+to the specific applications of the technology to medicine, agriculture, and the environment. Economic and ethical issues
+raised by biotechnology are also examined.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('17','Introductory Analytical Chemistry I','CHEM 217','Precipitation methods and solubility products; activity, chemical equilibria and titration curves of neutralization and complexation
+systems; treatment of analytical data. Lectures and laboratory.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('18','Introductory Organic Chemistry I','CHEM 221','Basic aspects of orbitals and their role in covalent bonding; delocalization of electrons. Alkanes: structure, nomenclature,
+isomerism, reactions. Introductory stereochemistry: enantiomers, diastereomers, conformers, Fischer and Newman projections,
+specification of chirality, E/Z isomerism. Conformations of cyclic compounds. Alkylhalides: SN1; SN2; E1; E2 reaction mechanisms.
+Free-radical reactions, organometallic compounds. Chemistry of alkenes, alkynes, and dienes. Lectures and laboratory.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('19','Physical Chemistry I: Thermodynamics','CHEM 234','The properties of real gases; fugacities; first, second and third laws of thermodynamics; the Phase Rule; one- and two-component
+systems; real solutions, and partial molal properties. Lectures, problem assignments, and assigned readings.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('20','','COEN 231','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('21','','COEN 243','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('22','','COEN 244','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('23','','COEN 311','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('24','','COEN 312','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('25','Microprocessor Systems','COEN 317','Introduction to microprocessor interfacing. Bus functions, bus interconnections, synchronous and asynchronous bus. Signal
+flow and data transfer, decoding for I/O and memory, memory organization and structures. Interfacing examples; parallel interfacing,
+serial interfacing, the interrupt system; bus arbitration and DMA. Analog-to-digital and digital-to-analog structures and
+interfacing. Floppy disc and CRT controllers; bus standards; local area networks. Benchmarking and comparative study of recent
+microprocessors. Lectures: three hours per week. Laboratory: 30 hours total.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('26','Introduction to Real-Time Systems','COEN 320','Fundamentals of real-time systems: definitions, requirements, design issues and applications. Real-time operating systems
+(RTOS) feature: multitasking, process management, scheduling, interprocess communication and synchronization, real-time memory
+management, clocks and timers, interrupt and exception handling, message queues, asynchronous input/output. Concurrent programming
+languages: design issues and examples, POSIX threads and semaphores. Introduction to real-time uniprocessor scheduling policies:
+static vs. dynamic, pre-emptive vs. non-pre-emptive, specific techniques - rate-monotonic algorithm, earliest-deadline-first,
+deadline monotonic, least-laxity-time-first; clock-driven scheduling. Design and specification techniques - Finite state machine
+based State-chart, Dataflow diagram, Petri nets. Reliability and fault-tolerance. Case studies of RTOS - QNX, VxWorks, and
+research prototypes. Lectures: three hours per week. Tutorial: one hour per week.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('27','','COEN 346','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('28','','COEN 352','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('29','Computer Science Industrial Experience Reflective Learning I','COMP 108','This course is a reflective learning module for students in their related field which is based on their academic requirements
+and their first industrial experience.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('30','Introduction to Computing','COMP 201','Overview of computing systems. Problem solving and algorithms. Introduction to computer programming. Hardware, software and
+data storage, programming languages, data organization, program design and development','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('31','Computer Science Industrial Experience Reflective Learning II','COMP 208','This course expands on the students'' second industrial experience term in their related field of study to further develop
+their knowledge and work-related skills.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('32','Fundamentals of Programming','COMP 218','Computers and computing: problem solving with computers, basic data types, expressions, assignments, control structures, simple
+library functions, programmer-defined functions, arrays of basic types. Basic elements of object-oriented programming: classes,
+objects and methods.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('33','System Hardware','COMP 228','Levels of system abstraction and von Neumann model. Basics of digital logic design. Data representation and manipulation.
+Instruction set architecture. Processor internals. Assembly language programming. Memory subsystem and cache management. I/O
+subsystem. Introduction to network organization and architecture.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('34','System Software','COMP 229','Hardware-software interface, system kernel, system services, system evolution. Assemblers, compilers, linkers, and loaders.
+System component interfaces. User-level view of operating systems.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('35','Mathematics for Computer Science','COMP 232','Sets. Propositional logic and predicate calculus. Functions and relations. Elements of number theory. Proof techniques: direct
+proof, indirect proof, proof by contradiction, proof by induction.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('36','Probability and Statistics for Computer Science','COMP 233','Combinatorics. Axioms of probability. Conditional probability. Discrete and continuous probability distributions. Expectation
+and moments. Hypothesis testing. Parameter estimation. Correlation and linear regression. Applications to computer science.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('37','Mathematics for Computer Science II','COMP 239','Counting and number theory. Permutations and combinations. Recurrence relations. Graphs and trees.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('38','Object-Oriented Programming I','COMP 248','Introduction to programming. Basic data types, variables, expressions, assignments, control flow. Classes, objects, methods.
+Information hiding, public vs. private visibility, data abstraction and encapsulation. References. Arrays.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('39','Object-Oriented Programming II','COMP 249','Design of classes. Inheritance. Polymorphism. Static and dynamic binding. Abstract classes. Exception handling. File I/O.
+Recursion. Interfaces and inner classes. Graphical user interfaces. Generics. Collections and iterators.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('40','Introduction to Database Applications','COMP 318','This is a hands-on course on database technology intended for non-computer science students in engineering, science, business,
+or arts. It emphasizes practical issues in application development while introducing the fundamentals of databases with a
+focus on the relational data model and the Structured Query Language (SQL). Upon completion of this course, students will
+be able to design and implement databases, and develop user interfaces to access, search, and update the database through
+the Internet using the Web technology.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('41','Computer Architecture','COMP 326','Computer architecture models: control-flow and data-flow. Concurrency and locality, data dependency theory. Instruction level
+parallelism. Instruction scheduling. Pipelined processors. Vector processors. Thread level parallelism. Multiprocessors. Shared
+memory models. Coherence protocols. Interconnection networks. Performance issues. Advanced topics in contemporary computer
+architectures.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('42','Digital System Design','COMP 327','Basic theory and techniques related to the design of digital systems: design specifications, manipulation of Boolean expressions
+and its relation to logic circuit design. Sequential circuit design. Design with SSI and MSI circuits. Interfacing with devices.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('43','Introduction to Theoretical Computer Science','COMP 335','Finite state automata and regular languages. Push-down automata and context-free languages. Pumping lemmas. Applications to
+parsing. Turing machines. Undecidability and decidability.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('44','Combinatorics','COMP 339','General principles of counting, permutations, combinations, identities, partitions, generating functions, Fibonacci numbers,
+Stirling numbers, Catalan numbers, principle of inclusion-exclusion. Graphs, sub-graphs, isomorphism, Euler graphs, Hamilton
+paths and cycles, planar graphs, Kuratowski''s Theorem, trees, colouring, 5-colour theorem, matching, Hall''s theorem.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('45','Advanced Program Design with C++','COMP 345','Introduction to C++. I/O with stream classes. Pointers and their uses. The Standard Template Library (STL): containers, algorithms,
+iterators, adaptors, function objects. Class design: constructors, destructors, operator overloading, inheritance, virtual
+functions, exception handling, memory management. Advanced topics: libraries, locales, STL conventions, concurrency, template
+meta-programming. Applications of C++: systems, engineering, games programming. Project.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('46','Operating Systems','COMP 346','Fundamentals of operating system functionalities, design and implementation. Multi-programming: processes and threads, context
+switching, queuing models and scheduling. Inter-process communication and synchronization. Principles of concurrency. Synchronization
+primitives. Deadlock detection and recovery, prevention and avoidance schemes. Memory management. Device management. File
+systems. Protection models and schemes.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('47','Principles of Programming Languages','COMP 348','Survey of programming paradigms: Imperative, functional, and logic programming. Issues in the design and implementation of
+programming languages. Declaration models: binding, visibility, and scope. Type systems, including static and dynamic typing.
+Parameter passing mechanisms. Hybrid language design.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('48','Data Structures and Algorithms','COMP 352','Abstract data types: stacks and queues, trees, priority queues, dictionaries. Data structures: arrays, linked lists, heaps,
+hash tables, search trees. Design and analysis of algorithms: asymptotic notation, recursive algorithms, searching and sorting,
+tree traversal, graph algorithms.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('49','Databases','COMP 353','Introduction to database management systems. Conceptual database design: the entity-relationship model. The relational data
+model and relational algebra: functional dependencies and normalization. The SQL language and its application in defining,
+querying, and updating databases; integrity constraints; triggers. Developing database applications. Other data models: Datalog.
+Object-oriented data model and ODL. Semi-structured data. Project.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('50','Introduction to Software Engineering','COMP 354','Software development process models (e.g. linear vs. iterative). Project management; roles, activities and deliverables for
+each software life cycle phase. Requirements management: analysis, elicitation, and scope. Architecture, design and the mapping
+of requirements to design and design to implementation. Traceability. Software quality assurance: verification, validation
+and the role of testing. Maintenance and evolution. Project.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('51','Elementary Numerical Methods','COMP 361','Vector and matrix norms. Numerical methods for solving linear systems, Gaussian elimination, LU decomposition, error analysis.
+Numerical solution of nonlinear equations, Newton''s method, fixed point iterations. Interpolation and approximation, Taylor,
+Lagrange, Chebyshev and Legendre polynomials. Cubic spline interpolation. Numerical differentiation, numerical integration,
+Gauss quadrature. Discrete least-squares approximation. Initial value problems in ordinary differential equations, stiff differential
+equations. Boundary value problems in ordinary differential equations.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('52','Techniques in Symbolic Computation','COMP 367','Symbolic computation and its use in pure and applied mathematics, in particular in algebra, number theory, cryptography, coding
+theory, and combinatorics. Programming in a symbolic computing system (e.g. MAPLE).','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('53','Computer Graphics','COMP 371','Introduction to computer graphics and graphics hardware. Introduction to graphics API and graphics systems architecture. Mathematics
+of 2D and 3D transformations, and 2D and 3D viewing. Colour and basic rendering algorithms. Visual realism and visibility.
+Illumination and shading, global illumination techniques, and textures. Introduction to curves and surfaces, and 3D object
+modelling. Introduction to computer animation. Project.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('54','Introduction to Game Development','COMP 376','Introduction to design and implementation aspects of computer gaming: basic game design, story-telling and narratives, and
+game genres. Virtual environments, 2D and 3D game engines, and game development tools. Character development, gameplay strategies,
+level design in games, and user interfaces. Architecture of game consoles, analog and digital controllers, and the incorporation
+of graphics, sound, and music in game implementations. Project.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('55','Multicore Programming','COMP 426','Fundamental concepts of computer architecture. Architecture of the selected multicore platform. Review of shared-memory parallel
+programming. The difficulties inherent to parallel programming. Scalability of programming models. The stream programming
+model for multicore. Implicit and explicit threading. Implicit and explicit orchestration of data movement, both on chip and
+off. Adapting standard algorithms to multicore. Critical assessment of the available system-software support. Project.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('56','Parallel Programming','COMP 428','Parallel programming techniques as a natural extension to sequential programming. Overview of parallel programming architectures
+and models. Parallel programming issues: locality, granularity, scheduling, data decomposition and distribution, load balancing,
+communication and synchronization, determinacy and non-determinacy, cost and performance. Techniques and tools for message-passing
+parallel programming. Case studies. Project.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('57','Compiler Design','COMP 442','Compiler organization and implementation: lexical analysis and parsing, syntax-directed translation, code optimization. Run-time
+systems. Project.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('58','System Software Design','COMP 444','Detailed examination of the design, implementation and system call interface of a contemporary operating system: its kernel,
+file system, process and thread management including scheduling, file system design and implementation, memory management,
+device management, I/O management, interprocess communication and synchronization mechanisms, system call interface, interrupt
+handling, and other advanced issues. Project.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('59','Data Communication and Computer Networks','COMP 445','Network architectures: OSI and Internet models. Link layer: error detection, multiple access protocols, addressing. Local
+area networks: Ethernet, ATM, switches and hubs. Network layer: forwarding and routing, IP, routing algorithms, multicast.
+Transport layer: connectionless and connection-oriented transport, reliable data transport, congestion control, QoS, UDP and
+TCP. Application layer: DNS, the Web and http, file transfer, and e-mail. Introduction to network security, multimedia protocols
+and wireless networking.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('60','Database Design','COMP 451','Storage management. Buffer management. Data organization. Index structures. Query optimization and execution. Transaction
+management. Recovery. Concurrency control. Database performance analysis and tuning. New trends in database technology. Project.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('61','Design and Analysis of Algorithms','COMP 465','Order statistics: worst-case, average-case and amortized analysis. Algorithm design techniques: greedy algorithms, dynamic
+programming. Selected algorithms from graph theory, linear programming, number theory, string matching, and computational
+geometry. A survey of hard problems, NP-completeness, and approximation algorithms.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('62','Artificial Intelligence','COMP 472','Scope of AI. First-order logic. Automated reasoning. Search and heuristic search. Game-playing. Planning. Knowledge representation.
+Probabilistic reasoning. Introduction to machine learning. Introduction to natural language processing. Project.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('63','Pattern Recognition','COMP 473','Preprocessing. Feature extraction and selection. Similarity between patterns and distance measurements. Syntactic and statistical
+approaches. Clustering analysis. Bayesian decision theory and discriminant functions. Neural networks and machine learning.
+Applications. Project.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('64','Intelligent Systems','COMP 474','Rule-based expert systems, blackboard architecture, and agent-based. Knowledge acquisition and representation. Uncertainty
+and conflict resolution. Reasoning and explanation. Design of intelligent systems. Project.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('65','Human-Computer Interaction','COMP 475','Importance of human-computer interactions in modern computer applications: desktop, hand-held, and embedded computers. Empirical
+nature of user interface testing and evaluation. Input and output: devices, methods and media. Human cognition and user modelling.
+Relating task models and dialog models to user interface (UI) design. Principles of graphical UI design and user-centred design.
+Usability definitions and usability testing. Relevant ISO standards. Case studies.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('66','Advanced Game Development','COMP 476','Introduction to advanced aspects of computer games. Artificial Intelligence: acting, game state, perception, reacting, searching,
+and learning. Group behaviour, non-player characters and bots, opponent modelling, and strategy. Physics-based techniques:
+path-finding and collision detection and response. Networked gaming: multi-player games, networking and distributed game design,
+massively multi-player online games (MMOGs). Improving realism: advanced rendering techniques such as ray-tracing, GPU programming,
+3D scene management, level-of-detail, terrains, and 3D sound. Testing for games. Project.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('67','Animation for Computer Games','COMP 477','Introduction to the algorithms, data structures, and techniques used in modelling and rendering dynamic scenes. Topics include
+principles of traditional animation, production pipeline, animation hardware and software, orientation representation and
+interpolation, modelling physical and articulated objects, forward and inverse kinematics, motion control and capture, key-frame,
+procedural, and behavioural animation, camera animation, scripting system, and free-form deformation. Project.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('68','Image Processing','COMP 478','Digital image fundamentals, image transforms (Fourier, Walsh, Haar, Hotelling, wavelet), image enhancement (histogram processing,
+spatial filtering, high- and low-pass filtering), image restoration, image compression (elements of information theory, image
+compression models, error-free compression, lossy compression, image compression standards), image segmentation (line detection,
+Hough transform, edge detection and linking, thresholding, region splitting and merging), representation and description (chain
+codes, signatures, skeletons, shape descriptors, moments, texture). Project.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('69','Information Retrieval and Web Search','COMP 479','Basics of information retrieval (IR): boolean, vector space and probabilistic models. Tokenization and creation of inverted
+files. Weighting schemes. Evaluation of IR systems: precision, recall, F-measure. Relevance feedback and query expansion.
+Application of IR to Web search engines: XML, link analysis, PageRank algorithm. Text categorization and clustering techniques
+as used in spam filtering. Project.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('70','Computer Science Project I','COMP 490','Students will work on a computer science project under the supervision of a faculty member and submit a suitable written report
+on the work carried out. Students planning to register for this course should consult with the Department prior to registration
+in the final year of study.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('71','Computer Science Project II','COMP 492','Students will work on a computer science project under the supervision of a faculty member and submit a suitable written report
+on the work carried out. Students planning to register for this course should consult with the Department prior to registration
+in their final year of study.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('72','Honours Seminar','COMP 495','Students are required to attend a number of departmental seminars and submit a written report on them.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('73','Topics in Computer Science','COMP 498','This course may be offered in a given year upon the authorization of the Department. The content may vary from offering to
+offering and will be chosen to complement the available elective courses.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('74','Principles of Electrical Engineering','ELEC 275','Fundamentals of electric circuits: Kirchoff''s laws, voltage and current sources, Ohm''s law, series and parallel circuits.
+Nodal and mesh analysis of DC circuits. Superposition theorem, Thevenin and Norton Equivalents. Use of operational amplifiers.
+Transient analysis of simple RC, RL and RLC circuits. Steady state analysis: Phasors and impedances, power and power factor.
+Single and three phase circuits. Magnetic circuits and transformers. Power generation and distribution. Lectures: three hours
+per week. Tutorial: two hours per week. Laboratory: 15 hours total.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('75','','ELEC 370','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('76','','ELEC 372','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('77','','ENCS 281','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('78','Technical Writing and Communication','ENCS 282','Technical writing form and style. Technical and scientific papers, abstracts, reports. Library research and referencing methods
+for engineers and computer scientists. Technical communication using information technology: document processing software,
+computer-assisted presentation, analysis and design of Web presentation, choice and use of appropriate tools. Students will
+prepare an individual major report and make an oral presentation. Lectures: three hours per week. Tutorial: two hours per
+week.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('79','Professional Practice and Responsibility','ENGR 201','Health and safety issues for engineering projects: Quebec and Canadian legislation; safe work practices; general laboratory
+safety common to all engineering disciplines, and specific laboratory safety pertaining to particular engineering disciplines.
+Review of the legal framework in Quebec, particularly the Professional Code and the Engineers Act, as well as professional
+ethics. Lectures: one and a half hours per week. Tutorial: one hour per week, alternate weeks.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('80','Sustainable Development and Environmental Stewardship','ENGR 202','Introduction to the concept of sustainable development and the approaches for achieving it. Relationships with economic, social,
+and technological development. Methods for evaluating sustainability of engineering projects, including utilization of relevant
+databases and software. Impact of engineering design and industrial development on the environment. Case studies. Lectures:
+one and a half hours per week.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('81','Applied Ordinary Differential Equations','ENGR 213','This course introduces engineering students to the theory and application of ordinary differential equations. Definition and
+terminology, initial-value problems, separable differential equations, linear equations, exact equations, solutions by substitution,
+linear models, orthogonal trajectories, complex numbers, form of complex numbers: powers and roots, theory: linear equations,
+homogeneous linear equations with constant coefficients, undetermined coefficients, variation of parameters, Cauchy-Euler
+equation, reduction of order, linear models: initial value, review of power series, power series solutions, theory, homogeneous
+linear systems, solution by diagonalisation, non-homogeneous linear systems. Eigenvalues and eigenvectors. Lectures: three
+hours per week. Tutorial: two hours per week.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('82','Applied Advanced Calculus','ENGR 233','This course introduces engineering students to the theory and application of advanced calculus. Functions of several variables,
+partial derivatives, total and exact differentials, approximations with differentials. Tangent plane and normal line to a
+surface, directional derivatives, gradient. Double and triple integrals. Polar, cylindrical, and spherical coordinates. Change
+of variables in double and triple integrals. Vector differential calculus; divergence, curl, curvature, line integrals, Green''s
+theorem, surface integrals, divergence theorem, applications of divergence theorem, Stokes'' theorem. Lectures: three hours
+per week. Tutorial: two hours per week.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('83','Engineering Management Principles and Economics','ENGR 301','Introduction to project delivery systems. Principles of project management; role and activity of a manager; enterprise organizational
+charts; cost estimating; planning and control. Company finances; interest and time value of money; discounted cash flow; evaluation
+of projects in private and public sectors; depreciation methods; business tax regulations; decision tree; sensitivity analysis.
+Lectures: three hours per week.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('84','Probability and Statistics in Engineering','ENGR 371','Axioms of probability theory. Events. Conditional probability. Bayes theorem. Random variables. Mathematical expectation.
+Discrete and continuous probability density functions. Transformation of variables. Probabilistic models, statistics, and
+elements of hypothesis testing (sampling distributions and interval estimation). Introduction to statistical quality control.
+Applications to engineering problems. Lectures: three hours per week. Tutorial: one hour per week.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('85','Numerical Methods in Engineering','ENGR 391','Roots of algebraic and transcendental equations; function approximation; numerical differentiation; numerical integration;
+solution of simultaneous algebraic equations; numerical integration of ordinary differential equations. Lectures: three hours
+per week. Tutorial: one hour per week.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('86','Impact of Technology on Society','ENGR 392','Social history of technology and of science including the industrial revolution and modern times. Engineering and scientific
+creativity, social and environmental problems created by uncontrolled technology, appropriate technology. Lectures: three
+hours per week.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('87','Special Technical Report','ENGR 411','Registration in this course is by departmental permission only. Students in the BEng program must submit a project report
+associated with their final-year Capstone Design project course. While a portion of the requirements for the written report
+will depend on the associated project course for which the student is registered, the report should also conform to the set
+of instructions available through the departmental offices or the Office of Student Academic Services of the Faculty.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('88','Earthquakes, Volcanoes, and Plate Tectonics','GEOL 206','This course is for students with little or no previous background in the earth sciences, providing an up-to-date account of
+our present knowledge of earthquakes and volcanoes, and the use of this information in the development of the theory of plate
+tectonics. Areas of concentration are: nature, distribution, and causes of earthquakes and volcanic eruptions, measuring earthquakes,
+great earthquakes and volcanic eruptions in world history, products of volcanic eruptions, and hazards from, and prediction
+of, earthquakes and volcanic eruptions. The theory of plate tectonics and the evolution of mountain belts of the world are
+studied. Lectures only.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('89','The Earth, Moon and the Planets','GEOL 208','The course emphasizes the cosmic perspective of the Earth and focuses attention on how the results of the last two decades
+of planetary exploration have brought about an intellectual revolution concerning the planets, especially their surface features,
+processes, and histories. Lectures only.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('90','','MAST 217','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('91','','MAST 218','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('92','','MAST 219','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('93','','MAST 234','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('94','','MATH 201','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('95','','MATH 203','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('96','','MATH 204','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('97','','MATH 205','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('98','','MATH 208','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('99','','MATH 209','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('100','','MECH 215','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('101','','MECH 370','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('102','','MECH 371','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('103','Flight Control Systems','MECH 480','Basic flight control and flight dynamics principles. Aircraft dynamic equations and performance data. Implementation of aircraft
+control: control surfaces and their operations, development of thrust and its control; autopilot systems, their algorithms,
+dynamics and interaction problems. Flight instruments, principles of operation and dynamics. Cockpit layouts - basic configuration,
+ergonomic design, control field forces; advanced concepts in instruments, avionics and displays; HUD; flight management systems,
+and communication equipment. Introduction to flight simulation: overview of visual, audio and motion simulator systems; advanced
+concepts in flight simulators. Lectures: three hours per week. Laboratory: two hours per week, alternate weeks.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('104','Avionic Navigation Systems','MECH 482','Basics of modern electronic navigation systems, history of air navigation, earth coordinate and mapping systems; basic theory
+and analysis of modern electronic navigation instrumentation, communication and radar systems, approach aids, airborne systems,
+transmitters and antenna coverage; noise and losses, target detection, digital processing, display systems and technology;
+demonstration of avionic systems using flight simulator. Lectures: three hours per week.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('105','','PHYS 204','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('106','','PHYS 205','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('107','','PHYS 206','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('108','','PHYS 224','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('109','','PHYS 226','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('110','Optics','PHYS 252','Wave equation, phasors, EM waves, linear, circular and elliptical polarization, polariscope, Malus'' law, dichroism, polaroid,
+polarizing Prism, quarter and half wave plates, wave superposition, interference, Young''s double slit experiment, Michelson
+interferometer, reflectance and transmittance of thin films, interferometers, dispersion, elements of Fourier analysis, diffraction,
+single slit diffraction, double slit, Fraunhofer and Fresnel limits, diffraction grating, Fresnel diffraction, instruments,
+introduction to lasers.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('111','Electricity and Magnetism I','PHYS 253','Electrostatics, Gauss'' law, electric potential, curl and divergence of fields, capacitance, RC circuits, Laplace''s equation,
+Legendre equation, method of images, multipole expansion, dielectrics, polarization, dipole moments, electric displacement.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('112','','PHYS 270','','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('113','Energy and Environment','PHYS 273','Nuclear energy stored in the earth. Geothermal energy. Biological energy stored in the earth. Second law of thermodynamics.
+Entropy. Food energy. Home heating and cooling. Solar heating. Transportation of people, goods, and energy. Recycling materials.
+Resource conservation and humanity''s ability to change - need for a conservation ethic, need for alternate energy sources,
+need for public knowledge. Lectures only.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('114','Thermodynamics','PHYS 334','Equation of state, ideal and real gases, thermodynamic surfaces, first law of thermodynamics, isothermal and adiabatic processes,
+the energy equation, liquefaction of gases, Carnot engine, second law of thermodynamics, entropy, third law, thermodynamic
+potentials, Clausius-Clapeyron equation, kinetic theory, equipartition of energy, Van der Waals'' equation, transport phenomena,
+probability and thermal distributions. Lectures only.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('115','Electricity and Magnetism II','PHYS 354','Biot-Savart Law, Ampere''s law, divergence and curl of B, magnetic vector potential, magnetization, ferromagnetism, electromagnetic
+induction, motional EMF, inductance, transformer, ac-circuits, Maxwell''s equations, the wave equation, polarization, reflection
+and transmission of em waves, rectangular wave guide, half-wave antenna. Lectures only.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('116','Introduction to Astronomy','PHYS 384','The celestial sphere. The solar system. Celestial mechanics. Basic stellar characteristics. The galaxy - structure and content.
+Extragalactic objects. Lectures only.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('117','Astrophysics','PHYS 385','The stars, stellar atmospheres, motion, interiors, and populations. Variable stars. Nebulae. Radio, X-ray, and infrared sources.
+The galaxy - population and dynamics. The extragalactic universe. Lectures only.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('118','System Hardware','SOEN 228','Processor structure, Data and Instructions, Instruction Set Processor (ISP) level view of computer hardware, assembly language
+level use. Memory systems - RAM and disks, hierarchy of memories. I/O organization, I/O devices and their diversity, their
+interconnection to CPU and Memory. Communication between computers at the physical level. Networks and computers.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('119','Web Programming','SOEN 287','Internet architecture and protocols. Web applications through clients and servers. Markup languages. Client-side programming
+using scripting languages. Static website contents and dynamic page generation through server-side programming. Preserving
+state (client-side) in Web applications.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('120','Information Systems Security','SOEN 321','Protocol layers and security protocols. Intranets and extranets. Mobile computing. Electronic commerce. Security architectures
+in open-network environments. Cryptographic security protocols. Threats, attacks, and vulnerabilities. Security services:
+confidentiality; authentication; integrity; access control; non-repudiation; and availability. Security mechanisms: encryption;
+data-integrity mechanisms; digital signatures; keyed hashes; access-control mechanisms; challenge-response authentication;
+traffic padding; routing control; and notarization. Key-management principles. Distributed and embedded firewalls. Security
+zones.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('121','Introduction to Formal Methods for Software Engineering','SOEN 331','Assertions. Static and dynamic checking. Method specification using preconditions and postconditions. Strengthening and weakening.
+Design by contract. Hoare logic. Invariants. Class specification using invariants. Software tools for assertion checking and
+verification. Reliable software development.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('122','Software Process','SOEN 341','Basic principles of software engineering. Introduction to software process models. Activities in each phase, including review
+activities. Working in teams: organization; stages of formation; roles; conflict resolution. Notations used in software documentation.
+How to review, revise, and improve software documentation.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('123','Software Requirements and Specifications','SOEN 342','Requirements engineering. Functional and non-functional requirements. Traceability. Test generation. Formal and informal specifications.
+Formal specification languages. Reasoning with specifications. Correctness issues. Verification.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('124','Software Architecture and Design I','SOEN 343','From requirements to design to implementation. Planned vs. evolutionary design and refactoring. Model-driven design and Unified
+Modelling Language (UML). Structural and behavioural design descriptions and specifications. General and domain-specific design
+principles, patterns and idioms. Object-oriented design concepts such as interfaces vs. abstract types, polymorphism, generics,
+and delegation vs. subclassing. Introduction to software architecture (styles and view models). Design quality. Design rationale.
+Design methodologies (e.g. based on responsibility assignment). Test-driven development.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('125','Software Architecture and Design II','SOEN 344','Architectural activities, roles, and deliverables. Architectural view models. Architectural styles (including client-server,
+layered, pipes-and-filters, event-based, process control) and frameworks. Architectural analysis and the interplay with requirements
+elicitation. Notations for expressing architectural designs, structural and behavioural specifications. From architectural
+design to detailed design. Domain specific architectures and design patterns. Evaluation and performance estimation of designs.
+Advanced object-oriented design patterns and idioms.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('126','Software Testing, Verification and Quality Assurance','SOEN 345','Testing strategies. Specification-based vs. code-based, black-box vs. white-box, functional vs. structural testing; unit,
+integration, system, acceptance, and regression testing. Verification vs. validation. Test planning, design and artifacts.
+Introduction to software reliability and quality assurance. Formal verification methods, oracles; static and dynamic program
+verification.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('127','User Interface Design','SOEN 357','The human side: I/O; memory; and information processing. Interaction: mental models; human error; interaction frameworks and
+paradigms. Direct manipulation. User interface design: principles; standards; and guidelines. User-centred design: standards
+and design rationale; heuristic evaluation; iterative design; and prototyping. Task-centred design. Rationalized design: usability
+engineering; dialogue notations; user models; diagrammatic notations; and textual notations. Evaluation: with the user; without
+the user; quantitative; and qualitative. Implementation support. Help and documentation.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('128','Management, Measurement and Quality Control','SOEN 384','Organization of large software development. Roles of team members, leaders, managers, stakeholders, and users. Tools for monitoring
+and controlling a schedule. Financial, organizational, human, and computational resources allocation and control. Project
+and quality reviews, inspections, and walkthroughs. Risk management. Communication and collaboration. Cause and effects of
+project failure. Project management via the Internet. Quality assurance and control.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('129','Control Systems and Applications','SOEN 385','Mathematical modelling of dynamical systems; block diagrams; feedback; open and closed loops. Linear differential equations;
+time domain analysis; free, forced, and total response; steady state and transient response. Laplace transform and inverse
+transform; second order systems. Transfer functions and stability. Control system design: PID and root locus techniques. Computer
+simulation of control systems. Applications.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('130','Web-Based Enterprise Application Design','SOEN 387','Hypertext Transfer Protocol (HTTP), Web mark-up languages and encodings. Document Object Models (DOM). Client/server and layered
+architectures for Web-based Enterprise Applications (WEA). Presentation, Domain and Data Source design patterns. Client-side
+programming. Java servlets and Java Server Pages. Authentication, security and transaction processing.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('131','Software Engineering Team Design Project','SOEN 390','Students will work in teams to design and implement a software project from requirements provided by the coordinator. Each
+team will demonstrate the software and prepare adequate documentation for it. In addition, each student will write an individual
+report.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('132','Embedded Systems and Software','SOEN 422','Characteristics of embedded systems. Microcontroller architecture and typical target systems. Programming issues related to
+mixed languages. Real-time kernel services: task management; intertask communication and synchronization; memory management;
+time management; interrupt support; configuration; and initialization. Development methods: state machines and fuzzy logic.
+Debugging methods for interrupts. Testing and simulation methods.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('133','Distributed Systems','SOEN 423','Principles of distributed computing: scalability, transparency, concurrency, consistency, fault tolerance, high availability.
+Client-server interaction technologies: interprocess communication, sockets, group communication, remote procedure call, remote
+method invocation, object request broker, CORBA, Web services. Server design techniques: process replication, fault tolerance
+through passive replication, high availability through active replication, coordination and agreement, transactions and concurrency
+control.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('134','Formal Methods','SOEN 431','Components of formal systems. Formal methods; levels of formalism. Integrating formal methods into the existing software life-cycle
+process model for a given project. Attributes of a formal specification language. Formal notations based on extended finite
+state machines; case studies involving the design of user interfaces, reactive systems, and concurrent systems. Software development
+using formal methods, including tools for: type checking; debugging; verifying checkable properties; validation of refinements;
+and code generation from refinements.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('135','Management of Evolving Systems','SOEN 448','Software maintenance: corrective; perfective; and adaptive. Software reuse; construction of reusable software. Techniques
+for reverse engineering and re-engineering software. Software development as "growing" software. Long-term evolution of software
+systems. Legacy systems.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('136','Component Engineering','SOEN 449','Review of high-level language concepts and abstraction mechanisms. Programming with functional and logical languages. Typed
+vs. untyped languages. The use of scripting languages and other language-based techniques to assemble systems from high-level
+components.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('137','Web Services and Applications','SOEN 487','Analysis and design of Web services and applications. Advanced architectures for the design, deployment, and testing of large
+multi-server Web services and applications. Service Oriented Architecture (SOA). Electronic Commerce. Security. Load balancing.
+Stress testing.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('138','Capstone Software Engineering Design Project','SOEN 490','Students will work in teams of between six and nine members to construct a significant software application. The class will
+meet at regular intervals. Team members will give a presentation of their contribution to the project.','1');
+INSERT INTO course (id, title, number, description, department) VALUES ('139','Topics in Software Engineering','SOEN 498','This course may be offered in a given year upon the authorization of the Department. The content may vary from offering to
+offering and will be chosen to complement the available elective courses.','1');
+
+
+
+insert into group_has_course values(6,1);
+insert into group_has_course values (5,1);
+insert into group_has_course values (5,2);
+insert into group_has_course values (4,2);
+insert into group_has_course values (6,4);
+insert into group_has_course values (7,1);
+insert into group_has_course values (1,6);
+insert into group_has_course values (7,4);
+insert into group_has_course values (1,2);
+insert into group_has_course values (7,7);
+insert into group_has_course values (1,8);
+
+
+
+
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','USHINSKY, SOPHIA','6','LOY HB-130','14:45','16:00','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','GRANT, JAMES','8','LOY SP-S110','11:45','13:00','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','WELADJI, ROBERT','8','LOY SP-S110','08:45','10:00','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','HICKEY, DONAL','9','LOY SP-S110','11:45','13:00','--W-F--','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','HICKEY, DONAL','9','LOY SP-S110','11:45','13:00','--W-F--','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','9','LOY CJ-1.125','13:30','15:30','-T-----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','9','LOY CJ-1.125','15:30','17:30','-T-----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','9','LOY CC-405','13:30','15:30','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','9','LOY CC-405','15:30','17:30','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','9','LOY CC-425','13:30','15:30','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','9','LOY CC-425','15:30','17:30','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','9','LOY CC-312','13:30','15:30','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','9','LOY CC-312','15:30','17:30','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','9','LOY CC-305','13:30','15:30','-T-----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','9','LOY CC-305','15:30','17:30','-T-----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','9','LOY CJ-1.129','13:30','15:30','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','9','LOY CJ-1.129','15:30','17:30','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','9','LOY CJ-1.121','13:30','15:30','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','9','LOY CJ-1.121','15:30','17:30','---J---','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','PAWELEK, PETER','16','SGW FG-B040','18:00','20:15','-T-----','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','GELINAS, YVES','17','LOY CC-320','10:15','11:30','--W-F--','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','MCCLORY, MICHAEL','17','LOY CC-112','18:00','20:15','--W----','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','17','LOY','09:00','13:00','M------','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','17','LOY','13:30','17:30','M------','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','17','LOY','13:30','17:30','-T-----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','17','LOY','13:30','17:30','---J---','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','17','LOY','18:30','22:30','M------','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','17','LOY','18:30','22:30','---J---','2');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','KAWAI, STEPHEN','18','LOY HB-130','10:15','11:30','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','KAWAI, STEPHEN','18','LOY CC-111','18:00','20:15','---J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','ROBIDOUX, SEBASTIEN','18','LOY CC-112','10:15','11:30','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','CUCCIA, LOUIS','18','LOY CC-116','18:00','20:15','---J---','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','18','LOY','09:00','13:00','M------','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','18','LOY','13:30','17:30','-T-----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','18','LOY','13:30','17:30','--W----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','18','LOY','13:30','17:30','----F--','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','18','LOY','18:30','22:30','-T-----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','18','LOY','18:30','22:30','--W----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','18','LOY SP-112','18:30','22:30','-T-----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','18','LOY','13:30','17:30','M------','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','18','LOY','13:30','17:30','--W----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','18','LOY','13:30','17:30','---J---','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','18','LOY','09:00','13:00','----F--','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','18','LOY','18:30','22:30','-T-----','2');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','LAWRENCE, MARCUS','19','LOY CC-111','08:45','10:00','--W-F--','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','LAMOUREUX, GUILLAUME','19','LOY CC-320','18:00','20:15','---J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','LAWRENCE, MARCUS','19','LOY CC-321','10:15','11:30','--W-F--','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','GLEASON, SCOTT','25','SGW H-431','11:45','13:00','-T-J---','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','25','SGW H-859','08:45','11:30','M------','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','25','SGW H-859','14:45','17:30','M------','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','25','SGW H-859','14:45','17:30','-T-----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','25','SGW H-859','10:15','13:00','--W----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','25','SGW H-859','14:45','17:30','--W----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','25','SGW H-859','08:45','11:30','-T-----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','25','SGW H-859','08:45','11:30','---J---','2');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','ABDI, SAMAR','26','SGW H-561','16:15','17:30','M-W----','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','26','SGW MB-2.285','14:45','15:35','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','26','SGW H-439','10:15','11:05','---J---','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','KLASA, STANISLAS L','30','SGW MB-S2.455','17:45','20:15','-T-----','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','30','SGW MB-2.255','20:30','23:00','---J---','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','30','SGW MB-2.255','20:30','21:20','-T-----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','30','SGW MB-2.255','13:15','14:05','-T-----','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','TITUS, KERLY','33','SGW MB-3.430','13:15','14:30','M-W----','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','33','SGW FG-B050','17:45','20:15','--W----','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','33','SGW H-521','17:45','20:15','-T-----','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','33','SGW H-529','14:45','16:25','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','33','SGW H-613','14:45','16:25','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','33','SGW FG-B030','20:30','22:10','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','33','SGW FG-B050','20:30','22:10','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','33','SGW H-634','20:30','22:10','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','33','SGW H-437','20:30','22:10','-T-----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','33','SGW H-634','20:30','22:10','-T-----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','33','SGW H-632','20:30','22:10','-T-----','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','MEARNS, ROBERT A','35','SGW H-557','13:15','14:30','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','NARAYANAN, LATA','35','SGW H-459','13:15','14:30','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','DOEDEL, EUSEBIUS','35','SGW H-1070','17:45','20:15','--W----','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','35','SGW H-603','13:15','14:30','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','35','SGW H-557','17:45','20:15','--W----','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','35','SGW MB-2.265','16:15','17:55','-T-----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','35','SGW MB-S2.455','14:45','16:25','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','35','SGW MB-2.265','20:30','22:10','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','35','SGW MB-S2.105','16:15','17:55','-T-----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','35','SGW H-627','14:45','16:25','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','35','SGW H-437','20:30','22:10','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','35','SGW H-1070','20:30','22:10','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','35','SGW H-1011','20:30','22:10','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','35','SGW H-625','14:45','16:25','-T-----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','35','SGW MB-3.285','16:15','17:55','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','35','SGW MB-3.255','20:30','22:10','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','35','SGW MB-2.285','20:30','22:10','--W----','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','FEVENS, THOMAS','36','SGW MB-S1.401','13:15','14:30','--W-F--','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','36','SGW H-423','13:15','14:30','M-W----','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','36','SGW H-937','17:45','20:15','M------','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','36','SGW H-627','10:15','11:55','-T-----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','36','SGW H-625','10:15','11:55','-T-----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','36','SGW MB-S1.105','14:45','16:35','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','36','SGW H-611','14:45','16:35','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','36','SGW H-607','11:45','13:35','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','36','SGW H-437','11:45','13:35','-T-----','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','HOUARI, NORA','38','SGW H-557','08:45','10:00','M-W----','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','ACEMIAN, NANCY','38','SGW H-561','08:45','10:00','M-W----','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','KOSSEIM, LEILA','38','SGW H-509','17:45','20:15','----F--','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','38','SGW MB-S2.115','08:45','10:00','--W-F--','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','38','SGW H-459','10:15','11:55','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','38','SGW H-619','10:15','11:55','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','38','SGW H-634','08:45','10:25','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','38','SGW H-632','08:45','10:25','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','38','SGW H-633 1','10:15','11:55','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','38','SGW H-627','10:15','11:55','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','38','SGW H-632','20:30','22:10','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','38','SGW H-634','20:30','22:10','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','38','SGW H-607','17:45','19:25','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','38','SGW H-562','11:45','13:25','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','38','SGW MB-S2.455','11:45','13:25','--W----','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','ACEMIAN, NANCY','39','SGW FG-B040','14:45','16:00','M-W----','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','39','SGW H-459','10:15','11:30','--W-F--','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','39','SGW H-403','17:45','20:15','---J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','39','SGW MB-1.437','17:45','20:15','----F--','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','39','SGW MB-1.301','12:45','14:25','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','39','SGW MB-1.301','16:15','17:55','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','39','SGW H-564','10:15','11:55','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','39','SGW H-427','11:45','13:25','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','39','SGW H-529','20:30','22:10','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','39','SGW MB-2.255','17:45','19:25','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','39','SGW H-441','10:15','11:55','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','39','SGW H-625','11:45','13:25','M------','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','41','SGW H-625','17:45','20:15','M------','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','41','SGW H-632','20:30','21:20','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','41','SGW H-632','21:30','22:20','M------','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','SHIRI-VARNAAMKHAASTI, NEMATOLLAAH','43','SGW H-459','11:45','13:00','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','GOSWAMI, DHRUBAJYOTI','43','SGW H-459','17:45','20:15','----F--','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','43','SGW H-540','11:45','13:00','-T-J---','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','43','SGW MB-2.285','13:15','14:05','-T-----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','43','SGW MB-3.265','13:15','14:05','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','43','SGW H-437','20:30','21:20','-T-----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','43','SGW MB-2.255','20:30','21:20','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','43','SGW H-632','13:15','14:05','-T-----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','43','SGW H-437','13:15','14:05','---J---','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','HOUARI, NORA','45','SGW H-520','16:15','17:30','M-W----','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','PAQUET, JOEY','45','SGW H-629','17:45','20:15','--W----','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','45','SGW H-403','14:45','16:00','--W-F--','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','45','SGW H-427','17:45','19:35','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','45','SGW H-621','17:45','19:35','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','45','SGW H-629','20:30','22:20','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','45','SGW H-631','20:30','22:20','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','45','SGW','16:15','18:05','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','45','SGW','16:15','18:05','--W----','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','HANNA, AIMAN','46','SGW H-607','17:45','20:15','-T-----','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','TITUS, KERLY','46','SGW H-431','17:45','20:15','---J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','46','SGW H-521','17:45','20:15','--W----','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','46','SGW','00:00','00:00','-------','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','46','SGW','00:00','00:00','-------','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','46','SGW','00:00','00:00','-------','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','46','SGW','00:00','00:00','-------','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','46','SGW','00:00','00:00','-------','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','46','SGW H-634','20:30','21:20','-T-----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','46','SGW H-632','20:30','21:20','-T-----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','46','SGW H-431','20:30','21:20','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','46','SGW H-523','20:30','21:20','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','46','SGW H-529','20:30','21:20','--W----','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','BENTAHAR, JAMAL','47','SGW H-620','08:45','10:00','M-W----','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','PROBST, DAVID','47','SGW H-633','17:45','20:15','--W----','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','47','SGW H-629','14:45','16:00','M-W----','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','47','SGW H-423','10:15','11:05','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','47','SGW H-609','10:15','11:05','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','47','SGW H-439','14:45','15:35','-T-----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','47','SGW H-619','14:45','15:35','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','47','SGW MB-3.265','16:15','17:05','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','47','SGW H-439','16:15','17:05','--W----','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','HANNA, AIMAN','48','SGW H-433','13:15','14:30','--W-F--','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','HAARSLEV, VOLKER MATTHIAS','48','SGW H-401','13:15','14:30','--W-F--','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','48','SGW MB-S2.115','13:15','14:30','M-W----','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','48','SGW H-529','14:45','15:35','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','48','SGW H-427','11:45','12:35','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','48','SGW H-423','14:45','15:35','-T-----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','48','SGW H-613','14:45','15:35','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','48','SGW MB-2.265','16:15','17:05','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','48','SGW MB-S2.135','16:15','17:05','--W----','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','DESAI, BIPIN C.','49','SGW H-423','14:45','17:30','--W----','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','49','SGW H-459','13:15','14:30','M-W----','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','49','SGW','17:45','19:35','--W----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','49','SGW','13:15','15:05','----F--','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','49','SGW','17:15','19:05','--W----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','49','SGW','17:15','19:05','--W----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','49','SGW MB-2.285','09:15','10:05','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','49','SGW MB-1.301','09:15','10:05','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','49','SGW H-625','16:15','17:05','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','49','SGW H-523','16:15','17:05','--W----','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','RILLING, JUERGEN','50','SGW H-423','11:45','13:00','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','50','SGW FG-B070','17:45','20:15','---J---','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','50','SGW','17:00','18:30','----F--','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','50','SGW','09:00','10:30','----F--','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','50','SGW','00:00','00:00','-------','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','50','SGW','00:00','00:00','-------','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','50','SGW MB-1.301','13:15','14:05','-T-----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','50','SGW H-632','13:15','14:05','-T-----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','50','SGW MB-S2.465','20:30','21:20','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','50','SGW FG-B030','20:30','21:20','---J---','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','GHADERPANAH, SADEGH','51','SGW H-631','17:45','20:15','----F--','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','51','SGW MB-S2.285','17:45','20:15','M------','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','51','SGW H-631','20:30','21:20','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','51','SGW H-629','20:30','21:20','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','51','SGW H-400','17:45','18:35','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','51','SGW MB-S2.105','18:45','19:35','--W----','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','52','SGW H-603','11:45','13:00','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','MOKHOV, SERGUEI','53','SGW H-633','13:15','14:30','M-W----','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','53','SGW H-603 1','13:15','14:30','M-W----','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','53','SGW','16:15','18:05','M------','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','53','SGW','16:15','18:05','--W----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','53','SGW','16:15','18:05','--W----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','53','SGW','14:45','16:35','---J---','2');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','FEVENS, THOMAS','54','SGW H-562','13:15','14:30','-T-J---','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','54','SGW','14:45','16:30','---J---','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','54','SGW','14:45','16:30','-T-----','2');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','55','SGW MB-S2.445','14:45','17:30','---J---','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','55','SGW','17:45','19:25','---J---','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','55','SGW','17:45','19:25','---J---','2');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','56','SGW MB-2.265','11:45','13:00','-T-J---','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','56','SGW','00:00','00:00','-------','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','56','SGW','00:00','00:00','-------','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','56','SGW H-937 1','13:15','14:05','-T-----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','56','SGW H-937 1','13:15','14:05','---J---','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','57','SGW H-540','17:45','20:15','M------','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','57','SGW','20:30','22:20','M------','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','57','SGW','15:45','17:30','M------','2');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','JAUMARD, BRIGITTE','59','SGW H-403','10:15','11:30','M-W----','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','59','SGW H-629','10:15','11:30','M-W----','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','59','SGW','13:15','15:05','M------','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','59','SGW','17:45','19:35','M------','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','59','SGW','11:45','13:35','M------','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','59','SGW','11:45','13:35','--W----','2');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','60','SGW OS-106','17:45','20:15','M------','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','60','SGW','00:00','00:00','-------','2');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','61','SGW H-562','16:15','17:30','-T-J---','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','61','SGW MB-2.255','20:30','21:25','-T-----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','61','SGW H-634','20:30','21:25','---J---','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','BERGLER, SABINE','62','SGW H-401','11:45','13:00','M-W----','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','62','SGW H-540','17:45','20:15','--W----','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','62','SGW','16:15','18:15','-T-----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','62','SGW','16:15','18:15','--W----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','62','SGW','20:25','22:25','--W----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','62','SGW','17:45','19:45','---J---','2');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','KRZYZAK, ADAM','63','SGW H-564','17:45','20:15','---J---','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','63','SGW','20:30','22:20','---J---','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','63','SGW','20:30','22:20','---J---','2');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','SUEN, CHING YEE','64','SGW H-603 1','17:45','20:15','----F--','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','64','SGW H-627','17:45','20:15','M------','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','64','SGW','15:00','17:00','-T-----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','64','SGW','18:00','20:00','-T-----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','64','SGW','15:00','17:00','-T-----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','64','SGW','18:00','20:00','-T-----','2');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','66','SGW H-537','14:45','16:00','-T-J---','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','66','SGW','00:00','00:00','-------','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','66','SGW','00:00','00:00','-------','2');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','67','SGW H-562','13:15','14:30','M-W----','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','67','SGW','14:45','16:35','M------','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','67','SGW','14:45','16:35','--W----','2');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','BERGLER, SABINE','69','SGW MB-2.265','13:15','14:30','M-W----','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','69','SGW','14:45','16:35','M------','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','69','SGW','14:45','16:35','--W----','2');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','OPATRNY, JAROSLAV','70','SGW','00:00','00:00','-------','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','70','SGW','00:00','00:00','-------','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','OPATRNY, JAROSLAV','71','SGW','00:00','00:00','-------','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','71','SGW','00:00','00:00','-------','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','OPATRNY, JAROSLAV','72','SGW','00:00','00:00','-------','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','72','SGW','00:00','00:00','-------','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','RAMACHANDRAN, VENKATANARAYANA','74','SGW FG-B040','11:45','13:00','--W-F--','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','RAMACHANDRAN, VENKATANARAYANA','74','SGW MB-3.210','08:45','10:00','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','74','SGW H-553','17:45','20:15','-T-----','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','74','SGW H-822','11:45','14:30','-T-----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','74','SGW H-822','11:45','14:30','---J---','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','74','SGW H-822','08:45','11:30','--W----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','74','SGW H-822','08:45','11:30','----F--','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','74','SGW H-822','08:45','11:30','M------','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','74','SGW H-822','14:45','17:30','M------','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','74','SGW H-822','14:45','17:30','----F--','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','74','SGW H-822','08:45','11:30','M------','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','74','SGW H-822','08:45','11:30','M------','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','74','SGW H-822','17:45','20:15','---J---','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','74','SGW H-822','17:45','20:30','--W----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','74','SGW H-822','17:45','20:30','M------','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','74','SGW FG-B070','13:15','14:55','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','74','SGW FG-B060','13:15','14:55','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','74','SGW H-544','14:45','16:25','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','74','SGW H-540','14:45','16:25','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','74','SGW H-562','09:45','11:25','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','74','SGW H-537','10:15','11:55','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','74','SGW H-564','10:15','11:55','--W----','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','GRENIER, BRUNO','78','SGW H-553','14:45','16:00','M-W----','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','GRIMES, KEN','78','SGW H-411','14:45','16:00','M-W----','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','GRENIER, BRUNO','78','SGW FG-C070','17:45','20:15','-T-----','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','78','SGW H-415','14:45','16:00','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','78','SGW H-411','17:45','20:15','-T-----','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','78','SGW H-615','08:20','10:00','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','78','SGW H-537','08:20','10:00','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','78','SGW MB-1.301','08:20','10:00','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','78','SGW H-529','16:15','17:55','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','78','SGW H-615','16:15','17:55','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','78','SGW H-603 1','16:15','17:55','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','78','SGW H-439','16:15','17:55','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','78','SGW H-429','16:15','17:55','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','78','SGW MB-2.285','16:15','17:55','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','78','SGW H-621','16:15','17:55','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','78','SGW H-615','16:15','17:55','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','78','SGW H-400','16:15','17:55','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','78','SGW H-615','16:15','17:55','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','78','SGW H-439','16:15','17:55','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','78','SGW MB-2.255','16:15','17:55','M------','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','ALAURENT, REMI','79','SGW H-937','16:15','17:30','-T-----','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','GOPAKUMAR, GOVIND','79','SGW H-937','16:15','17:30','---J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','79','SGW H-110','16:15','17:30','-T-----','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','79','SGW H-937','16:15','17:30','---J---','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','79','SGW H-633','08:45','09:35','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','79','SGW H-633','08:45','09:35','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','79','SGW H-459','16:15','17:05','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','79','SGW H-459','16:15','17:05','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','79','SGW H-535','17:45','18:35','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','79','SGW H-535','17:45','18:35','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','79','SGW H-401','16:15','17:05','-T-----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','79','SGW H-401','16:15','17:05','-T-----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','79','SGW FG-B080','08:45','09:35','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','79','SGW FG-B080','08:45','09:35','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','79','SGW FG-B080','16:15','17:05','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','79','SGW FG-B080','16:15','17:05','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','79','SGW FG-B080','08:45','09:35','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','79','SGW FG-B080','08:45','09:35','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','79','SGW FG-B080','16:15','17:05','-T-----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','79','SGW FG-B080','16:15','17:05','-T-----','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','HADJINICOLAOU, JOHN','80','SGW FG-B060','16:15','17:30','----F--','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','HADJINICOLAOU, JOHN','80','SGW H-415','16:15','17:30','---J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','80','SGW MB-2.210','16:15','17:30','---J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','80','SGW H-531','17:45','19:00','--W----','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','KOKOTOV, ALEXEY','81','SGW H-520','11:45','13:00','M-W----','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','KRITCHEVSKI, EVGENIJ','81','SGW H-1070','08:45','10:00','--W-F--','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','VATISTAS, GEORGIOS','81','SGW H-520','10:15','11:30','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','RODRIGUEZ RAMOS, REINALDO','81','SGW H-620','11:45','13:00','--W-F--','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','ALECSANDRU, CIPRIAN','81','SGW H-531','08:45','10:00','--W-F--','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','KRITCHEVSKI, EVGENIJ','81','SGW H-1070','10:15','11:30','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','RODRIGUEZ RAMOS, REINALDO','81','SGW H-411','17:45','20:15','----F--','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','FRANK, MARIANA','81','SGW H-507','14:45','16:00','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','81','SGW FG-B040','14:45','16:00','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','KOROTKIN, DMITRY','81','SGW H-1070','14:45','16:00','-T-J---','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','81','SGW H-625','13:15','14:55','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','81','SGW H-544','13:15','14:55','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','81','SGW H-562','08:20','10:00','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','81','SGW H-564','08:20','10:00','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','81','SGW H-603 1','13:15','14:55','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','81','SGW H-562','13:15','14:55','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','81','SGW H-564','14:15','15:55','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','81','SGW H-562','14:15','15:55','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','81','SGW H-544','13:45','15:25','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','81','SGW H-540','13:45','15:25','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','81','SGW H-544','13:15','14:55','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','81','SGW H-540','13:15','14:55','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','81','SGW H-537','15:45','17:25','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','81','SGW H-540','15:45','17:25','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','81','SGW H-520','18:00','19:40','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','81','SGW FG-B055','17:45','19:25','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','81','SGW H-603 1','16:10','17:50','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','81','SGW H-537','17:45','19:25','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','81','SGW H-540','15:45','17:25','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','81','SGW H-611','15:45','17:25','----F--','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','GOHAR, IMAN','82','SGW H-415','13:15','14:30','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','RODRIGUEZ RAMOS, REINALDO','82','SGW H-501','13:15','14:30','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','STERN, RONALD','82','SGW H-620','16:15','17:30','M-W----','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','GUO, YUJIN','82','SGW H-1070','11:45','13:00','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','DAFNI, GALIA','82','SGW H-620','08:45','10:00','--W-F--','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','82','SGW H-435','10:15','11:30','--W-F--','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','STERN, RONALD','82','SGW H-520','08:45','10:00','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','LI, S. SAMUEL','82','SGW H-1070','08:45','10:00','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','KOKOTOV, ALEXEY','82','SGW H-1070','10:15','11:30','--W-F--','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','82','SGW H-544','10:45','12:25','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','82','SGW H-540','10:45','12:25','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','82','SGW H-615','10:45','12:25','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','82','SGW H-625','10:45','12:25','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','82','SGW H-613','17:45','19:25','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','82','SGW H-613','19:40','21:20','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','82','SGW H-537','14:15','15:55','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','82','SGW H-627','14:15','15:55','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','82','SGW H-564','08:20','10:00','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','82','SGW H-540','13:15','14:55','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','82','SGW H-403','09:45','11:25','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','82','SGW H-564','09:45','11:25','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','82','SGW H-562','09:45','11:25','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','82','SGW H-537','13:15','14:55','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','82','SGW H-544','08:20','10:00','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','82','SGW H-540','08:20','10:00','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','82','SGW H-544','14:15','15:55','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','82','SGW H-562','14:15','15:55','----F--','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','SCHMITT, KETRA','83','SGW H-507','16:15','17:30','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','BIALSKI, MONICA','83','SGW FG-B060','16:15','17:30','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','BUDAWARA, NASMA','83','SGW H-407','17:45','20:15','----F--','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','WILLIS, CHRISTOPHER','83','SGW H-531','17:45','20:15','----F--','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','83','SGW FG-B060','16:15','17:30','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','83','SGW H-553','17:45','20:15','M------','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','LI, SIMON','84','SGW H-531','13:15','14:30','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','TIAN, ZHIGANG','84','SGW H-531','13:15','14:30','M-W----','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','TADAYON, RAHIM','84','SGW H-539','08:45','10:00','--W-F--','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','GHRAYEB, ALI','84','SGW H-531','17:45','20:15','M------','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','84','SGW H-531','14:45','16:00','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','84','SGW FG-B060','10:15','11:30','--W-F--','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','84','SGW H-507','17:45','20:15','----F--','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','84','SGW H-427','11:45','12:35','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','84','SGW MB-2.435','10:15','11:05','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','84','SGW H-564','16:15','17:05','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','84','SGW H-540','13:15','14:05','-T-----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','84','SGW H-625','13:15','14:05','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','84','SGW H-433','13:15','14:05','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','84','SGW H-509','13:15','14:05','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','84','SGW H-611','17:45','18:35','-T-----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','84','SGW H-607','17:45','18:35','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','84','SGW H-607','18:45','19:35','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','84','SGW H-400 2','10:15','11:05','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','84','SGW H-562','10:15','11:05','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','84','SGW MB-2.255','10:15','11:05','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','84','SGW H-615','08:45','09:35','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','84','SGW H-400 2','08:45','09:35','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','84','SGW H-400','08:45','09:35','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','84','SGW H-529','14:45','15:35','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','84','SGW H-603 1','14:45','15:35','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','84','SGW H-623','14:45','15:35','M------','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','BHAT, RAMA','85','SGW H-820','16:15','17:30','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','DOLATABADI, ALI','85','SGW FG-B040','16:15','17:30','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','85','SGW H-411','13:15','14:30','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','85','SGW H-553','08:45','10:00','--W-F--','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','85','SGW H-411','17:45','20:15','---J---','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','85','SGW H-929','14:15','15:05','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','85','SGW H-929','16:15','17:05','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','85','SGW H-905','14:15','15:05','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','85','SGW H-905','16:15','17:05','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','85','SGW H-627','11:45','12:35','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','85','SGW H-423','13:15','14:05','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','85','SGW H-429','11:45','12:35','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','85','SGW H-400 2','13:15','14:05','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','85','SGW H-615','15:15','16:05','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','85','SGW MB-2.265','13:15','14:05','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','85','SGW H-615','20:30','21:20','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','85','SGW H-400 2','20:30','21:20','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','85','SGW H-529','17:45','18:35','-T-----','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','GRENIER, BRUNO','86','SGW H-633','08:45','11:15','----F--','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','GRENIER, BRUNO','86','SGW H-459','16:15','17:30','M-W----','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','GOPAKUMAR, GOVIND','86','SGW H-633','17:45','20:15','---J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','86','SGW H-403','11:45','13:00','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','86','SGW H-423','16:15','17:30','M-W----','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','86','SGW H-403','17:45','20:15','-T-----','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','T.B.A.','87','SGW','00:00','00:00','-------','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','87','SGW','00:00','00:00','-------','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','PEROUT, ALENA','89','SGW H-937','18:00','20:15','-T-----','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','ZHANG, YOUMIN','103','SGW FG-B070','17:45','20:15','---J---','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','103','SGW H-0011','11:45','13:35','M------','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','103','SGW H-0011','11:45','13:35','M------','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','103','SGW H-0011','12:05','13:55','--W----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','103','SGW H-0011','12:05','13:55','--W----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','103','SGW H-0011','09:45','11:35','--W----','2');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','RODRIGUES, LUIS','104','SGW H-605','14:45','17:30','M------','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','ZAZUBOVITS, VALTER','110','LOY CJ-1.129','10:15','11:30','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','SHIN, JOSEPH','111','LOY CC-426','13:15','14:30','--W-F--','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','KALMAN, LASZLO','114','LOY CC-301','14:45','16:00','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','SHIN, JOSEPH','115','LOY CJ-1.129','11:45','13:00','--W-F--','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','118','SGW FG-B055','20:30','23:00','M------','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','118','SGW','10:00','12:00','-T-----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','118','SGW','10:00','12:00','--W----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','118','SGW','16:00','18:00','---J---','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','118','SGW','16:00','18:00','-T-----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','118','SGW H-607','16:15','17:55','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','118','SGW H-613','16:15','17:55','--W----','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','YAN, YUHONG','119','SGW H-403','08:45','10:00','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','119','SGW H-459','08:45','10:00','-T-J---','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','119','SGW H-603','14:45','16:00','-T-J---','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','119','SGW H-611','10:15','11:55','-T-----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','119','SGW FG-B050','18:15','19:55','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','119','SGW MB-S2.455','10:15','11:55','-T-----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','119','SGW H-441','10:15','11:55','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','119','SGW H-619','16:15','17:55','-T-----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','119','SGW H-621','16:15','17:55','---J---','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','121','SGW H-540','16:15','17:30','-T-J---','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','121','SGW H-564','14:15','16:05','----F--','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','FANCOTT, TERRILL','122','SGW H-401','10:15','11:30','--W-F--','1');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','122','SGW FG-B070','08:45','10:00','--W-F--','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','122','SGW H-831','11:45','12:35','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','122','SGW H-831','12:45','13:35','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','122','SGW H-427','12:15','13:05','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','122','SGW MB-2.255','13:15','14:05','----F--','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','WITTE, RENE','123','SGW FG-B080','11:45','13:00','--W-F--','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','123','SGW H-905','15:45','16:35','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','123','SGW H-819','15:45','16:35','----F--','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','SINNIG, DANIEL','124','SGW FG-B080','13:15','14:30','--W-F--','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','124','SGW H-967','14:45','15:35','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','124','SGW H-967','14:45','15:35','----F--','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','125','SGW H-501','13:15','14:30','-T-J---','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','125','SGW H-621','14:45','15:35','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','125','SGW H-623','14:45','15:35','---J---','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','126','SGW MB-S1.430','14:45','16:00','M-W----','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','126','SGW MB-S2.105','16:15','17:05','--W----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','126','SGW MB-S2.105','17:45','18:35','--W----','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','127','SGW H-633','10:15','11:30','--W-F--','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','127','SGW H-613','11:45','12:35','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','127','SGW H-441','11:45','12:35','----F--','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','ORMANDJIEVA, OLGA','128','SGW H-561','10:15','11:30','--W-F--','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','128','SGW H-400 2','09:15','10:05','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','128','SGW H-615','09:15','10:05','----F--','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','129','SGW H-561','11:45','13:00','-T-J---','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','129','SGW MB-1.301','10:45','11:35','-T-----','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','129','SGW MB-1.301','10:45','11:35','---J---','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','129','SGW H-615','10:45','11:35','M------','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','THIEL, STUART','130','SGW H-631','11:45','13:00','M-W----','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','130','SGW H-562','11:45','12:35','----F--','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','130','SGW H-564','11:45','12:35','----F--','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','131','SGW FG-B030','16:15','17:55','M------','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','131','SGW','15:45','18:25','---J---','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','131','SGW','15:45','18:25','-T-----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','131','SGW H-403','18:15','19:05','M------','3');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','131','SGW OS-202','18:15','19:05','M------','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','FANCOTT, TERRILL','132','SGW H-562','17:45','20:15','--W----','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','132','SGW','21:10','23:00','--W----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','132','SGW H-529','20:20','21:05','--W----','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','JAYAKUMAR, RAJAGOPALAN','133','SGW H-619','13:15','14:30','-T-J---','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','133','SGW','15:45','17:30','-T-----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('2','133','SGW H-603 1','14:45','15:35','-T-----','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','T.B.A.','137','SGW MB-2.285','17:45','20:15','--W----','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','137','SGW','20:30','22:20','--W----','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('4','137','SGW MB-S1.255','16:15','17:05','--W----','3');
+INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('3','CONSTANTINIDES, CONSTANTINOS','138','SGW MB-S1.401','18:25','20:15','----F--','1');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('3','138','SGW MB-2.265','08:45','10:45','-T-J---','2');
+INSERT INTO schedule (term,course,location,begin,end,days,schedule_type) VALUES ('3','138','SGW MB-1.301','08:45','10:45','-T-J---','2');
+
+
+
+insert into student (student_id, first_name, last_name, password, status, program, program_option) values (1111, 'John', 'Smith', 1111, True, 1, 1);
+insert into student (student_id, first_name, last_name, password, status, program, program_option) values (2222, 'Jack', 'White', 1111, False, 1, 2);
+insert into student (student_id, first_name, last_name, password, status, program, program_option) values (3333, 'Jane', 'Doe', 1111, True, 1, 3);
+
+
+
+INSERT INTO student_has_course (student,course) VALUES ('1','35');
+INSERT INTO student_has_course (student,course) VALUES ('1','38');
+INSERT INTO student_has_course (student,course) VALUES ('1','79');
+INSERT INTO student_has_course (student,course) VALUES ('1','81');
+INSERT INTO student_has_course (student,course) VALUES ('1','16');
+
+INSERT INTO student_has_course (student,course) VALUES ('1','39');
+INSERT INTO student_has_course (student,course) VALUES ('1','82');
+INSERT INTO student_has_course (student,course) VALUES ('1','118');
+INSERT INTO student_has_course (student,course) VALUES ('1','119');
+INSERT INTO student_has_course (student,course) VALUES ('1','88');
+
+INSERT INTO student_has_course (student,course) VALUES ('2','35');
+INSERT INTO student_has_course (student,course) VALUES ('2','38');
+INSERT INTO student_has_course (student,course) VALUES ('2','79');
+INSERT INTO student_has_course (student,course) VALUES ('2','81');
+INSERT INTO student_has_course (student,course) VALUES ('2','110');
+
+INSERT INTO student_has_course (student,course) VALUES ('2','39');
+INSERT INTO student_has_course (student,course) VALUES ('2','82');
+INSERT INTO student_has_course (student,course) VALUES ('2','118');
+INSERT INTO student_has_course (student,course) VALUES ('2','119');
+INSERT INTO student_has_course (student,course) VALUES ('2','6');
+
+INSERT INTO student_has_course (student,course) VALUES ('2','47');
+INSERT INTO student_has_course (student,course) VALUES ('2','48');
+INSERT INTO student_has_course (student,course) VALUES ('2','78');
+INSERT INTO student_has_course (student,course) VALUES ('2','80');
+INSERT INTO student_has_course (student,course) VALUES ('2','16');
+
+INSERT INTO student_has_course (student,course) VALUES ('2','46');
+INSERT INTO student_has_course (student,course) VALUES ('2','74');
+INSERT INTO student_has_course (student,course) VALUES ('2','84');
+INSERT INTO student_has_course (student,course) VALUES ('2','121');
+INSERT INTO student_has_course (student,course) VALUES ('2','122');
+
+INSERT INTO student_has_course (student,course) VALUES ('3','35');
+INSERT INTO student_has_course (student,course) VALUES ('3','38');
+INSERT INTO student_has_course (student,course) VALUES ('3','79');
+INSERT INTO student_has_course (student,course) VALUES ('3','81');
+INSERT INTO student_has_course (student,course) VALUES ('3','16');
+
+INSERT INTO student_has_course (student,course) VALUES ('3','39');
+INSERT INTO student_has_course (student,course) VALUES ('3','82');
+INSERT INTO student_has_course (student,course) VALUES ('3','118');
+INSERT INTO student_has_course (student,course) VALUES ('3','119');
+INSERT INTO student_has_course (student,course) VALUES ('3','17');
+
+INSERT INTO student_has_course (student,course) VALUES ('3','47');
+INSERT INTO student_has_course (student,course) VALUES ('3','48');
+INSERT INTO student_has_course (student,course) VALUES ('3','78');
+INSERT INTO student_has_course (student,course) VALUES ('3','80');
+INSERT INTO student_has_course (student,course) VALUES ('3','18');
+
+INSERT INTO student_has_course (student,course) VALUES ('3','46');
+INSERT INTO student_has_course (student,course) VALUES ('3','74');
+INSERT INTO student_has_course (student,course) VALUES ('3','84');
+INSERT INTO student_has_course (student,course) VALUES ('3','121');
+INSERT INTO student_has_course (student,course) VALUES ('3','122');
+
+INSERT INTO student_has_course (student,course) VALUES ('3','43');
+INSERT INTO student_has_course (student,course) VALUES ('3','123');
+INSERT INTO student_has_course (student,course) VALUES ('3','124');
+INSERT INTO student_has_course (student,course) VALUES ('3','128');
+INSERT INTO student_has_course (student,course) VALUES ('3','25');
+
+INSERT INTO student_has_course (student,course) VALUES ('3','125');
+INSERT INTO student_has_course (student,course) VALUES ('3','126');
+INSERT INTO student_has_course (student,course) VALUES ('3','127');
+INSERT INTO student_has_course (student,course) VALUES ('3','131');
+INSERT INTO student_has_course (student,course) VALUES ('3','129');
+
+
+
+
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('8','11','1',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('8','1','1',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('8','6','1',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('9','11','2',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('9','1','2',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('9','6','2',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('9','19','3',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('17','15','4',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('17','148','4',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('17','16','5',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('17','149','5',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('17','106','6',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('17','150','6',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('17','108','7',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('17','151','7',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('17','109','8',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('17','152','8',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('17','110','9',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('17','153','9',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('17','96','10',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('17','154','10',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('17','98','11',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('17','155','11',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('18','15','12',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('18','16','13',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('19','15','14',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('19','148','14',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('19','16','15',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('19','149','15',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('19','106','16',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('19','150','16',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('19','108','17',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('19','151','17',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('19','109','18',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('19','152','18',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('19','110','19',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('19','153','19',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('19','96','20',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('19','154','20',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('19','98','21',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('19','155','21',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('25','24','22',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('25','34','22',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('25','119','22',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('25','25','23',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('25','43','23',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('26','28','24',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('26','47','24',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('29','141','25',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('30','95','26',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('30','142','26',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('31','30','27',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('31','141','28',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('32','95','29',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('32','142','29',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('33','39','30',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('33','96','31',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('33','100','31',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('33','12','31',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('33','2','31',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('33','97','32',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('33','99','32',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('33','13','32',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('33','4','32',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('34','34','33',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('34','39','34',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('34','96','35',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('34','100','35',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('34','12','35',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('34','2','35',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('34','97','36',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('34','99','36',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('34','13','36',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('34','4','36',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('35','96','37',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('35','100','37',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('35','12','37',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('35','2','37',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('35','97','38',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('35','99','38',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('35','13','38',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('35','4','38',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('36','36','39',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('37','36','40',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('37','96','41',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('37','100','41',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('37','12','41',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('37','2','41',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('37','97','42',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('37','99','42',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('37','13','42',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('37','4','42',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('37','98','43',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('37','14','43',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('37','3','43',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('38','97','44',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('38','99','44',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('38','13','44',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('38','4','44',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('39','36','45',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('39','39','46',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('39','96','47',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('39','100','47',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('39','12','47',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('39','2','47',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('39','97','48',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('39','99','48',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('39','13','48',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('39','4','48',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('39','98','49',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('39','14','49',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('39','3','49',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('40','33','50',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('40','39','50',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('40','143','50',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('41','47','51',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('42','34','52',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('42','119','52',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('43','36','53',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('43','21','53',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('43','40','54',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('43','23','54',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('44','36','55',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('44','144','55',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('45','49','56',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('46','34','57',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('46','119','57',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('46','49','58',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('47','40','59',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('48','36','60',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('48','40','61',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('49','49','62',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('49','29','62',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('50','49','63',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('50','79','64',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('51','36','65',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('51','40','66',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('52','36','67',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('52','91','67',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('52','39','68',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('52','94','68',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('53','46','69',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('53','23','69',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('53','49','70',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('53','29','70',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('54','54','71',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('55','47','72',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('55','28','72',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('56','47','73',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('57','34','74',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('57','119','74',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('57','24','74',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('57','44','75',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('57','49','76',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('57','29','76',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('58','47','77',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('59','47','78',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('60','50','79',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('61','44','80',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('61','49','81',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('61','29','81',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('62','49','82',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('62','29','82',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('63','49','83',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('64','49','84',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('64','29','84',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('65','49','85',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('66','52','86',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('66','86','86',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('66','55','87',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('67','52','88',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('67','86','88',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('67','54','89',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('68','49','90',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('69','37','91',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('69','85','91',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('69','49','92',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('70','79','93',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('70','145','94',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('70','146','95',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('71','71','96',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('71','146','97',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('72','79','98',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('72','147','99',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('73','146','100',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('74','82','101',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('74','107','102',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('78','163','103',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('81','97','104',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('81','13','104',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('81','98','105',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('81','14','105',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('82','97','106',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('82','13','106',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('82','98','107',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('82','14','107',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('84','82','108',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('84','83','109',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('85','82','110',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('85','83','111',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('85','39','112',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('85','22','112',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('85','101','112',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('85','5','112',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('86','79','113',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('86','80','114',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('86','81','114',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('87','78','115',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('87','79','115',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('103','77','116',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('103','103','116',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('103','130','116',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('104','76','117',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('104','102','117',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('104','130','117',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('110','108','118',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('111','107','119',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('111','157','119',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('111','92','120',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('111','158','120',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('113','113','121',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('113','160','121',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('113','159','121',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('114','106','122',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('114','150','122',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('114','92','123',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('114','93','123',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('114','161','123',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('115','112','124',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('115','162','124',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('115','93','125',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('115','161','125',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('116','107','126',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('116','157','126',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('116','98','127',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('116','155','127',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('117','117','128',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('118','96','129',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('118','100','129',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('118','12','129',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('118','97','130',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('118','99','130',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('118','13','130',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('119','39','131',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('120','47','132',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('121','36','133',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('121','40','134',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('122','34','135',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('122','119','135',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('122','24','135',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('122','49','136',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('122','29','136',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('122','79','137',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('123','123','138',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('124','123','139',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('124','124','140',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('125','125','141',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('126','125','142',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('127','124','143',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('128','79','144',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('128','123','145',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('129','82','146',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('129','83','147',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('130','50','148',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('130','51','149',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('130','123','149',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('130','120','150',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('131','126','151',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('131','128','152',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('132','47','153',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('133','47','154',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('134','124','155',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('134','125','156',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('135','124','157',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('135','125','158',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('135','126','159',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('136','126','160',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('137','131','161',true);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('138','132','162',false);
+INSERT INTO Prerequisite_group (course,prerequisite,prerequisite_group,concurrent) VALUES ('139','146','163',false);
+
+
+
+
+
+
+INSERT INTO group_has_course (course_group,course) VALUES ('4','74');
+INSERT INTO group_has_course (course_group,course) VALUES ('4','78');
+INSERT INTO group_has_course (course_group,course) VALUES ('4','79');
+INSERT INTO group_has_course (course_group,course) VALUES ('4','80');
+INSERT INTO group_has_course (course_group,course) VALUES ('4','81');
+INSERT INTO group_has_course (course_group,course) VALUES ('4','82');
+INSERT INTO group_has_course (course_group,course) VALUES ('4','83');
+INSERT INTO group_has_course (course_group,course) VALUES ('4','84');
+INSERT INTO group_has_course (course_group,course) VALUES ('4','85');
+INSERT INTO group_has_course (course_group,course) VALUES ('4','86');
+INSERT INTO group_has_course (course_group,course) VALUES ('5','118');
+INSERT INTO group_has_course (course_group,course) VALUES ('5','119');
+INSERT INTO group_has_course (course_group,course) VALUES ('5','121');
+INSERT INTO group_has_course (course_group,course) VALUES ('5','122');
+INSERT INTO group_has_course (course_group,course) VALUES ('5','123');
+INSERT INTO group_has_course (course_group,course) VALUES ('5','124');
+INSERT INTO group_has_course (course_group,course) VALUES ('5','125');
+INSERT INTO group_has_course (course_group,course) VALUES ('5','126');
+INSERT INTO group_has_course (course_group,course) VALUES ('5','127');
+INSERT INTO group_has_course (course_group,course) VALUES ('5','128');
+INSERT INTO group_has_course (course_group,course) VALUES ('5','129');
+INSERT INTO group_has_course (course_group,course) VALUES ('5','131');
+INSERT INTO group_has_course (course_group,course) VALUES ('5','138');
+INSERT INTO group_has_course (course_group,course) VALUES ('6','35');
+INSERT INTO group_has_course (course_group,course) VALUES ('6','38');
+INSERT INTO group_has_course (course_group,course) VALUES ('6','39');
+INSERT INTO group_has_course (course_group,course) VALUES ('6','43');
+INSERT INTO group_has_course (course_group,course) VALUES ('6','46');
+INSERT INTO group_has_course (course_group,course) VALUES ('6','47');
+INSERT INTO group_has_course (course_group,course) VALUES ('6','48');
+INSERT INTO group_has_course (course_group,course) VALUES ('7','6');
+INSERT INTO group_has_course (course_group,course) VALUES ('7','8');
+INSERT INTO group_has_course (course_group,course) VALUES ('7','9');
+INSERT INTO group_has_course (course_group,course) VALUES ('7','16');
+INSERT INTO group_has_course (course_group,course) VALUES ('7','17');
+INSERT INTO group_has_course (course_group,course) VALUES ('7','18');
+INSERT INTO group_has_course (course_group,course) VALUES ('7','19');
+INSERT INTO group_has_course (course_group,course) VALUES ('7','88');
+INSERT INTO group_has_course (course_group,course) VALUES ('7','89');
+INSERT INTO group_has_course (course_group,course) VALUES ('7','110');
+INSERT INTO group_has_course (course_group,course) VALUES ('7','111');
+INSERT INTO group_has_course (course_group,course) VALUES ('7','113');
+INSERT INTO group_has_course (course_group,course) VALUES ('7','114');
+INSERT INTO group_has_course (course_group,course) VALUES ('7','115');
+INSERT INTO group_has_course (course_group,course) VALUES ('7','116');
+INSERT INTO group_has_course (course_group,course) VALUES ('7','117');
+INSERT INTO group_has_course (course_group,course) VALUES ('9','49');
+INSERT INTO group_has_course (course_group,course) VALUES ('9','59');
+INSERT INTO group_has_course (course_group,course) VALUES ('9','69');
+INSERT INTO group_has_course (course_group,course) VALUES ('9','120');
+INSERT INTO group_has_course (course_group,course) VALUES ('9','130');
+INSERT INTO group_has_course (course_group,course) VALUES ('9','137');
+INSERT INTO group_has_course (course_group,course) VALUES ('10','25');
+INSERT INTO group_has_course (course_group,course) VALUES ('10','26');
+INSERT INTO group_has_course (course_group,course) VALUES ('10','45');
+INSERT INTO group_has_course (course_group,course) VALUES ('10','58');
+INSERT INTO group_has_course (course_group,course) VALUES ('10','103');
+INSERT INTO group_has_course (course_group,course) VALUES ('10','104');
+INSERT INTO group_has_course (course_group,course) VALUES ('10','132');
+INSERT INTO group_has_course (course_group,course) VALUES ('10','133');
+INSERT INTO group_has_course (course_group,course) VALUES ('3','55');
+INSERT INTO group_has_course (course_group,course) VALUES ('3','56');
+INSERT INTO group_has_course (course_group,course) VALUES ('3','57');
+INSERT INTO group_has_course (course_group,course) VALUES ('3','58');
+INSERT INTO group_has_course (course_group,course) VALUES ('3','60');
+INSERT INTO group_has_course (course_group,course) VALUES ('3','61');
+INSERT INTO group_has_course (course_group,course) VALUES ('3','63');
+INSERT INTO group_has_course (course_group,course) VALUES ('3','64');
+INSERT INTO group_has_course (course_group,course) VALUES ('3','68');
+INSERT INTO group_has_course (course_group,course) VALUES ('3','87');
+INSERT INTO group_has_course (course_group,course) VALUES ('3','133');
+INSERT INTO group_has_course (course_group,course) VALUES ('3','134');
+INSERT INTO group_has_course (course_group,course) VALUES ('3','135');
+
