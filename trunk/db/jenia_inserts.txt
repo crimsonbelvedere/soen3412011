@@ -1,0 +1,42 @@
+ select * from course where id in
+   (
+      select course from Group_has_course where course_group in
+      (
+         select id from course_group where program in
+         (
+            select id from program where description='BEng in Software Engineering'
+         )
+      )
+   )    
+and id in 
+   (
+      select course from schedule where term=2
+   )
+and department in 
+(
+   select department.id from department where department.description='Computer Science and Software Engineering' and 
+   department.faculty  in
+   (
+      select id from faculty where faculty.description='Engineering and Computer Science'
+   )
+                                    	
+)
+
+insert into group_has_course values (5,1);
+insert into group_has_course values (5,2);
+insert into group_has_course values (4,2);
+insert into group_has_course values (6,4);
+insert into group_has_course values (7,1);
+insert into group_has_course values (1,6);
+insert into group_has_course values (7,4);
+insert into group_has_course values (1,2);
+insert into group_has_course values (7,7);
+insert into group_has_course values (1,8);
+
+update schedule set course=2, term=2 where id=2;
+
+update schedule set course=4, term=2 where id=3;
+
+update schedule set course=7, term=2 where id=4;
+
+update schedule set course=8, term=2 where id=5;

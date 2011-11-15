@@ -3,6 +3,7 @@
 class Course {
 	public $Name;
 	public $Description;
+	/**
 <<<<<<< .mine
 	
 	
@@ -10,6 +11,7 @@ class Course {
 	public $SectionArray = array();
 =======
 >>>>>>> .r32
+**/
 	public $NumberOfCredits;
 	public $LectureArray= array();
 	public $TutorialArray = array();
