@@ -12,7 +12,7 @@ $DEBUG=True;
 
 
 if($DEBUG){
-	$result=get_courses('Engineering and Computer Science','Computer Science and Software Engineering','BEng in Software Engineering',2);
+	$result=get_courses('Engineering and Computer Science','Computer Science and Software Engineering','BEng in Software Engineering',2 );
 	echo $result;
 	echo count($result);
 	foreach($result as $course){
