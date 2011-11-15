@@ -8,7 +8,7 @@ include('ajax_models.php');
  * Set to false if you dont want to debug.
  * 
  * */
-$DEBUG=True;
+$DEBUG=False;
 
 
 if($DEBUG){
