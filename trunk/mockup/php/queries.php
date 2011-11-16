@@ -13,12 +13,12 @@ $DEBUG=False;
 
 if($DEBUG){
 	$result=get_courses('Engineering and Computer Science','Computer Science and Software Engineering','BEng in Software Engineering',2 );
-	echo $result;
-	echo count($result);
+	$counter=0;
 	foreach($result as $course){
-		echo '<br />HIIIIIIII';
-		echo 'Course:<br />';
-		echo 'Description:'.$course->Description.'<br /><br /><br /><br /><br />';
+		echo 'Course:'.$counter.'<br />';
+		echo 'Description:'.$course->Description. '<br />';
+		echo 'Title:' . $course->Name. '<br /><br /><br /><br /><br />';
+		$counter+=1;
 	}
 }
 
