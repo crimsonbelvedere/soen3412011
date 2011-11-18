@@ -16,8 +16,7 @@ if($DEBUG){
 	$counter=0;
 	foreach($result as $course){
 		echo 'Course:'.$counter.'<br />';
-		echo 'Description:'.$course->Description. '<br />';
-		echo 'Title:' . $course->Name. '<br /><br /><br /><br /><br />';
+		echo $course->string();
 		$counter+=1;
 	}
 }
@@ -61,9 +60,7 @@ function get_courses($faculty_description,$department_description, $program_desc
 	
 	if ($query_set!=Null)	{
 		foreach($query_set as $course_row){
-			$course=new Course();
-			$course->Description=$course_row['description'];
-			$course->Name=$course_row['title'];
+			$course=new Course($course_row['id']);
 			$list[]=$course;
 		}
 	}

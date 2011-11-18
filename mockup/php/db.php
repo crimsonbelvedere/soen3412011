@@ -41,7 +41,10 @@ class db_adapter{
 	//			["John","Smith"]
 	//			["Maries","Tremblay"]
 	//         ]
-	
+	function query_map($query_string){
+		return mysql_query($query_string,$this->db_conn);
+		
+	}
 	function query($query_string){
 		$query_set= mysql_query($query_string,$this->db_conn);
 		$list=null;
