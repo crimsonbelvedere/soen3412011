@@ -60,7 +60,7 @@ function get_courses($faculty_description,$department_description, $program_desc
 	
 	if ($query_set!=Null)	{
 		foreach($query_set as $course_row){
-			$course=new Course($course_row['id']);
+			$course=new Course($course_row['id'],$semester);
 			$list[]=$course;
 		}
 	}
