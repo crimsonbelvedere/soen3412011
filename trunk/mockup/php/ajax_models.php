@@ -27,7 +27,7 @@ class Course {
 	function populate_lecture_arr(){
 		$db_adapter=new db_adapter();
 		$query="select * from schedule where course=".$this->pk()." and schedule_type in
-		(select id from schedule_type where description='lecture')";
+		(select id from schedule_type where description='Lecture')";
 		$query_set=$db_adapter->query($query);
 		foreach($query_set as $schedule){
 			$this->LectureArray[]=new Lecture($schedule['id']);
@@ -38,10 +38,10 @@ class Course {
 		
 	}
 	function string(){
-		echo 'Name:'.$this->Name.'<br />'.'Description:'.$this->Description;
+		echo 'Course: <br />Name:'.$this->Name.'<br />'.'Description:'.$this->Description;
 		if ($this->LectureArray!=Null){
 			foreach($this->LectureArray as $lecture){
-				$lecture->string();
+				echo $lecture->string().'<br />';
 			}
 			
 		}
@@ -57,20 +57,22 @@ class Lecture {
 		$db_adapter=new db_adapter();
 		//TODO: Populate the tutorial and the laboratory arrays.
 		$lab_query="select * from schedule where schedule_type in
-		(select id from schedule_type where description='lab') and
+		(select id from schedule_type where description='Lab') and
 		lecture=".$this->pk()."";
 		$tutorial_query="select * from schedule where schedule_type in
-		(select id from schedule_type where description='tutorial') and
+		(select id from schedule_type where description='Tutorial') and
 		lecture=".$this->pk()."";
 		$this->populate_yourself();
 		$x=$db_adapter->query($tutorial_query);
-		$this->TutorialArray=$this->populate_tut_arr($db_adapter->query($tutorial_query));
-		$this->LaboratoryArray=$this->populate_lab_arr($db_adapter->query($lab_query));
+		$y=$db_adapter->query($lab_query);
+		$this->TutorialArray=$this->populate_tut_arr($x);
+		$this->LaboratoryArray=$this->populate_lab_arr($y);
 	}
 	function populate_yourself(){
 		$query="select * from schedule where id=".$this->pk()."";
 		$db_adapter=new db_adapter();
-		$query_set=$db_adapter->query_map($query);
+		$query_set=$db_adapter->query($query);
+		$query_set=$query_set[0];
 		$this->Days=$query_set['days'];
 		$StartingTime=$query_set['begin'];
 		$EndTime=$query_set['end'];
@@ -113,7 +115,7 @@ class Lecture {
 	public $Classrom;
 	public $LectureID;
 	function string(){
-		$string= 'LABORATORY:<br />'.'Days:'.$this->Days.'<br />'.'Start:'.$this->StartingTime.'<br />'.
+		$string= '<br />Lecture: <br />'.'Days:'.$this->Days.'<br />'.'Start:'.$this->StartingTime.'<br />'.
 		'End:'.$this->EndTime.'<br />'.'Professor:'.$this->Professor.'<br />'.
 		'Class room'.$this->Classrom.'<br />'.'Laboratory:'.$this->LectureID.'<br />';
 		if($this->TutorialArray!=Null){
@@ -122,10 +124,11 @@ class Lecture {
 			}
 		}
 		if($this->LaboratoryArray!=Null){
-			foreach($this->LaboratoryArray as $lecture){
-				$string+=$lecture->string();
+			foreach($this->LaboratoryArray as $lab){
+				$string+=$lab->string();
 			}
 		}
+		return $string;
 	}
 }
 
@@ -133,11 +136,11 @@ class Lecture {
 class Tutorial {
 	function __constructor($table_row){
 		$this->Days=$table_row['days'];
-		$StartingTime=$table_row['begin'];
-		$EndTime=$table_row['end'];
-	    $Professor=$table_row['professor'];
-	    $Classrom=$table_row['location'];
-	    $TutorialID=$table_row['id'];
+		$this->StartingTime=$table_row['begin'];
+		$this->EndTime=$table_row['end'];
+	    $this->Professor=$table_row['professor'];
+	    $this->Classrom=$table_row['location'];
+	    $this->TutorialID=$table_row['id'];
 	}
 	public $Days;
 	public $StartingTime;
@@ -146,7 +149,7 @@ class Tutorial {
 	public $Classrom;
 	public $TutorialID;
 	function string(){
-		return 'Tutorail:<br />'.'Days:'.$this->Days.'<br />'.'Start:'.$this->StartingTime.'<br />'.
+		return 'TUTORIAL:<br />'.'Days:'.$this->Days.'<br />'.'Start:'.$this->StartingTime.'<br />'.
 		'End:'.$this->EndTime.'<br />'.'Professor:'.$this->Professor.'<br />'.
 		'Class room'.$this->Classrom.'<br />'.'Laboratory:'.$this->LaboratoryID.'<br />';
 	}
