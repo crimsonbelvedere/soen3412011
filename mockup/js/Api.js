@@ -1,7 +1,7 @@
 
 function Daystr(days) 
 { 
-	alert("gogogogo");
+	
 	var weekday = new Array();
 	for (var i=0;i<days.length;i++)
 	{
@@ -27,13 +27,15 @@ function CompareDay(days1, days2)
 {
 	var week1 = Daystr(days1);
 	var week2 = Daystr(days2);
-	for(var j=0; j<week1.size;j++)
+	for(var j=0; j<week1.length;j++)
 	{
-		if (week1[j]==week2[j])
-		{}
-		else
-		return false;
+		if ((week1[j]==1) && (week2[j]==1))
+		{
+			alert("Day conflict");
+			return false;
+		}
 	}
+	alert("No Day Conflict");
 	return true;
 }
 function CompareTime(Time1, Time2)
