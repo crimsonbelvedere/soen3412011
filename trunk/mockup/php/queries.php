@@ -41,19 +41,19 @@ function get_courses($faculty_description,$department_description, $program_desc
          )
       )
    )    
-and id in 
-   (
-      select course from schedule where term=".$semester."
-   )
-and department in 
-(
-   select department.id from department where department.description='".$department_description."' and 
-   department.faculty  in
-   (
-      select id from faculty where faculty.description='".$faculty_description."'
-   )
-                                    	
-)
+	and id in 
+	   (
+	      select course from schedule where term=".$semester."
+	   )
+	and department in 
+	(
+	   select department.id from department where department.description='".$department_description."' and 
+	   department.faculty  in
+	   (
+	      select id from faculty where faculty.description='".$faculty_description."'
+	   )
+	                                    	
+	)
 	
 	";
 	$query_set=$db_adapter->query($query);
