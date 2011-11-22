@@ -98,7 +98,7 @@ class Course {
 	 * 		Web Services and Applications (WSA) Option
 	 * 		Real-Time, Embedded, and Avionics Software (REA) Option
 	 * 
-	 * 	 *  CONTRAINT: the parent and leaf valus must match. ( as stated ealier, the values at index in both array form a tuple)
+	 * 	 *  CONTRAINT: As stated ealier, the values at index in both array form a tuple.
 	 *  	If at class_sort[index]==Engineering core, then class_type[index]==Core Course
 	 *  	This would VIOLATE the containt: 
 	 *  	class_sort[index]==Computer Games and class_type[index]==Elective
