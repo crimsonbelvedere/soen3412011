@@ -67,12 +67,14 @@ class Course {
 	public $LaboratoryArray = array();
 	
 	/*
-	 * These two next variables are special.
-	 * They represent a tree where the parent node are the course's {Pption, Elective, core course
+	 * The next two array go together.
+	 * At index, the values of both arrays form a tuple.
+	 * 
 	 */
 	
+	
 	/*
-	 * This is the parent node.
+	 * This is an array of strings
 	 * It can have ONE of these values
 	 * 
 	 * Option
@@ -82,7 +84,7 @@ class Course {
 	 */
 	public $class_type=array();
 	
-	/*	This variable is a string representing the leaf node.
+	/*	This variable is an array of strings.
 	 *  It can have ONE of the leaf values. Meaning, one of the values in the sub-lists; like 'Real Time,Embedded...'
 	 *    but not 'Option'.
 	 *    
@@ -96,7 +98,7 @@ class Course {
 	 * 		Web Services and Applications (WSA) Option
 	 * 		Real-Time, Embedded, and Avionics Software (REA) Option
 	 * 
-	 * 	 *  CONTRAINT: the parent and leaf valus must match.
+	 * 	 *  CONTRAINT: the parent and leaf valus must match. ( as stated ealier, the values at index in both array form a tuple)
 	 *  	If at class_sort[index]==Engineering core, then class_type[index]==Core Course
 	 *  	This would VIOLATE the containt: 
 	 *  	class_sort[index]==Computer Games and class_type[index]==Elective
