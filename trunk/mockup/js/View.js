@@ -18,60 +18,97 @@ function NotifyView(ElementID)
     		]
     	}
     		
-		var PossiblitySchedule = GetScheduledCourses();
+		//var PossiblitySchedule = GetScheduledCourses();
+		var ScheduleSequenceList = GetCourseScheduleList();
 		
-		/*var Events = {};
-		Events.title 	= PossiblitySchedule[0].Name+" Lecture";
-    	Events.start	= "2011-11-09 " + ScheduleArray[0].Lecture.StartingTime;
-    	Events.end		= "2011-11-09 " + ScheduleArray[0].Lecture.EndTime;
-    	Events.allDay 	= false;
-    	EventObjects.events.push(Events);
-    	
-	   	var Events = {};
-		Events.title 	= ScheduleArray[1].Name+" Lecture";
-    	Events.start	= "2011-11-11 " + ScheduleArray[1].Lecture.StartingTime;
-    	Events.end		= "2011-11-11 " + ScheduleArray[1].Lecture.EndTime;
-    	Events.allDay 	= false;
-    	EventObjects.events.push(Events);
-    	
-	    $('#calendar').fullCalendar( 'addEventSource', EventObjects );  */
-	   /*
-		alert("Number of permutation to generate data from:"+ ValidPermutation.length);
+		var d = new Date();
+		var DayNumber = d.getDay();
+		var DateNumber = d.getDate();
+		var MonthNumber = d.getMonth()+1;
+		var YearNumber = d.getFullYear();
+		var FirtMondayOfThisWeek;
 		
-		for (var i=0; i < ValidPermutation.length; i++) 
+		//DateNumber=19;
+		//DayNumber=6;
+		//alert(YearNumber+"-"+MonthNumber+"-"+DateNumber);
+		
+		if(DayNumber > 1)
 		{
-		
-			var Events = {};	
-			Events.title 	= ValidPermutation[i].Name+" Lecture";
-	    	Events.start	= "2011-11-08 " + ValidPermutation[i].Lecture.StartingTime;
-	    	Events.end		= "2011-11-08 " + ValidPermutation[i].Lecture.EndTime;
-	    	Events.allDay 	= false;
-			alert("Lect Time: "+Events.start+" "+Events.end);
-	    	EventObjects.events.push(Events);
-	    	
-	    	var Events = {};
-			Events.title 	= ValidPermutation[i].Name+" Tutorial";
-	    	Events.start	= "2011-11-09 " + ValidPermutation[i].Tutorial.StartingTime;
-	    	Events.end		= "2011-11-09 " + ValidPermutation[i].Tutorial.EndTime;
-	    	Events.allDay 	= false;
-	    	alert("Tut Time: "+Events.start+" "+Events.end);
-	    	EventObjects.events.push(Events);
-	    
-	    	var Events = {};
-			Events.title 	= ValidPermutation[i].Name+" Laboratory";
-	    	Events.start	= "2011-11-10 " + ValidPermutation[i].Laboratory.StartingTime;
-	    	Events.end		= "2011-11-10 " + ValidPermutation[i].Laboratory.EndTime;
-	    	Events.allDay 	= false;	
-	    	alert("Labo Time: "+Events.start+" "+Events.end);
-	    	EventObjects.events.push(Events);
-	    	
-		
+			FirtMondayOfThisWeek = DateNumber - DayNumber + 1;
 		}
-    	
-		$('#calendar').fullCalendar( 'addEventSource', EventObjects );  
-
-		*/
+		else if(DayNumber < 1)
+		{
+			FirtMondayOfThisWeek = DateNumber + DayNumber + 1;
+		}
+		else
+		{
+			FirtMondayOfThisWeek = DateNumber ;	
+		}
 		
+		$('#calendar').fullCalendar( 'removeEvents').fullCalendar('removeEventSources');  //Removes all event sources
+
+		//Alway show the first schedule.	
+		for (var i=0; i < ScheduleSequenceList[0].length; i++) 
+		{
+		 	
+			//Conver day string into day array
+			var DayArr = Daystr(ScheduleSequenceList[0][i].Lecture.Days);
+			for (var j=0; j < DayArr.length; j++) 
+			{
+				if(DayArr[j] == 1)
+				{
+					var DayOfTheWeek=FirtMondayOfThisWeek+j;
+					var EventLecture = {};			
+					
+					EventLecture.title 	= ScheduleSequenceList[0][i].Name+" Lecture";		     
+					EventLecture.start	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[0][i].Lecture.StartingTime;
+					EventLecture.end	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[0][i].Lecture.EndTime;
+					EventLecture.allDay 	= false;
+					EventObjects.events.push(EventLecture);
+				}		  
+			}
+			
+			var DayArr = Daystr(ScheduleSequenceList[0][i].Tutorial.Days);
+			for (var j=0; j < DayArr.length; j++) 
+			{
+				if(DayArr[j] == 1)
+				{
+					var DayOfTheWeek=FirtMondayOfThisWeek+j;					
+					var EventTutorial = {};
+					
+					EventTutorial.title = ScheduleSequenceList[0][i].Name+" Tutorial";		     
+					EventTutorial.start	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[0][i].Tutorial.StartingTime;
+					EventTutorial.end	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[0][i].Tutorial.EndTime;
+					EventTutorial.allDay 	= false;
+					EventObjects.events.push(EventTutorial);
+				}		  
+			}
+			
+			var DayArr = Daystr(ScheduleSequenceList[0][i].Laboratory.Days);
+			for (var j=0; j < DayArr.length; j++) 
+			{
+				if(DayArr[j] == 1)
+				{
+					var DayOfTheWeek=FirtMondayOfThisWeek+j;
+					var EventLaboratory = {};
+					
+					EventLaboratory.title 	= ScheduleSequenceList[0][i].Name+" Laboratory";		     
+					EventLaboratory.start	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[0][i].Laboratory.StartingTime;
+					EventLaboratory.end		= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[0][i].Laboratory.EndTime;
+					EventLaboratory.allDay 	= false;
+					EventObjects.events.push(EventLaboratory);
+				}
+			}
+			
+		}
+		
+		if(ScheduleSequenceList[0].length != 0)
+		{
+			$('#calendar').fullCalendar( 'addEventSource', EventObjects );  
+		}
+		
+		$('#calendar').fullCalendar('refetchEvents');
+				
 	}	
 	
 	/*Populate tabs with query courses*/

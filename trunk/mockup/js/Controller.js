@@ -103,77 +103,188 @@ function IsSectionTimeConfict(Section1,Section2)
 
 function SolveCompleteCourseSectionTable()
 {
-	var CompleteCourseSectionTable = GetCompleteCourseSectionTable();
+	
+	//alert(CompleteCourseSectionTable.join('\n'));
 	
 	//There is only one course so just  make all the possibility equal to the valid martrix	
-	alert("Number of courses in the complete course section table:"+CompleteCourseSectionTable.length);
-	//alert("Number of courses in the Valid matrix:"+GetValidPossibilityMatrix().length);
+	//alert("Number of courses section list :" + CompleteCourseSectionTable.length);
 	
-	//Compare the last added couse section list whit the rest of the matrix.
-	if(CompleteCourseSectionTable.length > 1)
+	var CompleteCourseSectionTable = GetCompleteCourseSectionTable();
+	var ScheduleSequenceList = GetCourseScheduleList();
+	
+	//Clear the list of schedule and repopulate it.
+	ClearCourseFromScheduleList();
+	
+	if(CompleteCourseSectionTable.length > 0)
 	{
-		/*for (var i=0; i < CompleteCourseSectionTable.length - 1; i++) 
+		//Add the first course.
+		var TemporaryScheduleSequence = [ ];
+		for (var i=0; i < CompleteCourseSectionTable[0].length; i++) 
 		{
-			alert("Number of section :"+CompleteCourseSectionTable[i].length);
+			var SectionCourseSequenceList= new Array();
+			
+			SectionCourseSequenceList.push(CompleteCourseSectionTable[0][i]);
+		 	//AddToCourseScheduleList(SectionCourseSequenceList); 
+		 	TemporaryScheduleSequence.push(SectionCourseSequenceList); 	
+		}
+		SetScheduleList(TemporaryScheduleSequence);
+		
+		//add the other course 2,3,4,5 to the first one.
+		for (var i = 1; i < CompleteCourseSectionTable.length; i++) 
+		{
+			var ScheduleSequenceList = GetCourseScheduleList();
+			var TemporaryScheduleSequence = [ ];			
+		
+			for (var l=0; l< ScheduleSequenceList.length; l++) 
+			{
+			  	//Number of section in the next added course
+				for (var j=0; j < CompleteCourseSectionTable[i].length; j++) 
+				{
+					//Create a temporary array to strore the new schedule
+					var SectionCourseSequenceList= new Array();
+					//store the already added section in the new array
+					//No verification of time conflict.
+					for (var k=0; k < ScheduleSequenceList[l].length; k++) 
+					{  
+						SectionCourseSequenceList.push(ScheduleSequenceList[l][k]);				
+					}
+					
+					//add the new course section
+					SectionCourseSequenceList.push(CompleteCourseSectionTable[i][j]);
+					
+					//Add to the temporary schedule
+					TemporaryScheduleSequence.push(SectionCourseSequenceList);
+				}
+			}
+			
+			//Remove colliding section courses
+			for (var p=0; p < TemporaryScheduleSequence.length; p++) 
+			{
+			  
+			  	for (var j=0; j < TemporaryScheduleSequence[i].length - 1; j++) 
+			  	{
+				
+					for (var k=j+1; k < TemporaryScheduleSequence[i].length; k++) 
+					{
+						//Compare course [j] and [k]
+						//IsSectionTimeConfict(TemporaryScheduleSequence[i][j],TemporaryScheduleSequence[i][k]);
+					}
+			 
+			 	}
+			  
+			}
+				
+			SetScheduleList(TemporaryScheduleSequence);
+		}
+		
+		//ClearCourseFromScheduleList();
+		
+	}
 	
-		 	for (var j=0; j < CompleteCourseSectionTable[i].length; j++) 
-		 	{
-		   		//alert("Name: "+CompleteCourseSectionTable[i][j].Name);			
-	   			//alert("Descp:"+CompleteCourseSectionTable[i][j].Description);	
-		   		//alert("Nb Cred "+CompleteCourseSectionTable[i][j].NumberOfCredits);
-	   			//alert("LectID "+CompleteCourseSectionTable[i][j].Lecture.LectureID);			
-	   			//alert("TutID "+CompleteCourseSectionTable[i][j].Tutorial.TutorialID);
-	   			//alert("LabID "+CompleteCourseSectionTable[i][j].Laboratory.LaboratoryID);
-	   			
-	   			for (var k=0; k < CompleteCourseSectionTable[CompleteCourseSectionTable.length - 1].length; k++) 
-		 		{
-		 			
-		   			alert("Compare "+CompleteCourseSectionTable[i][j].Name+" with "+CompleteCourseSectionTable[CompleteCourseSectionTable.length - 1][k].Name);
-		   			alert("Name: "+CompleteCourseSectionTable[CompleteCourseSectionTable.length - 1][k].Name);			
-		   			alert("Descp:"+CompleteCourseSectionTable[CompleteCourseSectionTable.length - 1][k].Description);	
-			   		alert("Nb Cred "+CompleteCourseSectionTable[CompleteCourseSectionTable.length - 1][k].NumberOfCredits);
-		   			alert("LectID "+CompleteCourseSectionTable[CompleteCourseSectionTable.length - 1][k].Lecture.LectureID);			
-		   			alert("TutID "+CompleteCourseSectionTable[CompleteCourseSectionTable.length - 1][k].Tutorial.TutorialID);
-		   			alert("LabID "+CompleteCourseSectionTable[CompleteCourseSectionTable.length - 1][k].Laboratory.LaboratoryID);
-		   			
-		   			//if there is a time conflict we don t put this combinasion in the 
-		   			//valid table
-		   			
-		   			//AddToCourseScheduleList(CompleteCourseSectionTable[CompleteCourseSectionTable.length - 1][k]);
-	   				//IsSectionTimeConfict(Section1,Section2)
-		 		
-		 		}
-		 	}
+	//If there is only 1 course to add.
+	/*if(CompleteCourseSectionTable.length == 1)
+	{
+		//alert("Number of section in course :"+CompleteCourseSectionTable[0].length);
+		//alert(CompleteCourseSectionTable[0].join('\n'));
+		
+		//Course located in index 0, create 1 section -> 1 schedule
+		for (var i=0; i < CompleteCourseSectionTable[0].length; i++) 
+		{
+			
+			var SectionCourseSequenceList= new Array();
+			SectionCourseSequenceList.push(CompleteCourseSectionTable[0][i]);
+		 	AddToCourseScheduleList(SectionCourseSequenceList); 
 		}
 	}
-	else
+	if(CompleteCourseSectionTable.length > 1)
 	{
-		alert("Number of sections :"+CompleteCourseSectionTable[0].length);
-
-	   	for (var j=0; j < CompleteCourseSectionTable[0].length; j++) 
-	 	{
-	   		alert("Name: "+CompleteCourseSectionTable[0][j].Name);			
-	   		alert("Descp:"+CompleteCourseSectionTable[0][j].Description);	
-	   		alert("Nb Cred "+CompleteCourseSectionTable[0][j].NumberOfCredits);
-	   		alert("LectID "+CompleteCourseSectionTable[0][j].Lecture.LectureID);			
-	   		alert("TutID "+CompleteCourseSectionTable[0][j].Tutorial.TutorialID);
-	   		alert("LabID "+CompleteCourseSectionTable[0][j].Laboratory.LaboratoryID);
+			var NewCourseIndex = CompleteCourseSectionTable.length -1; 
+	   		var ScheduleSequenceList = GetCourseScheduleList();
+	   		var TemporaryScheduleSequence = [ ];
 	   		
-	   		//Directly add the section in the valid storage
-	   		AddToCourseScheduleList(CompleteCourseSectionTable[0][j]);
-	 	}
-	}
-	
-	
-	/*if(FullPossiblityMatrix().length == 1)
-	{					
-		//ThisCoursePossibility.push(CourseSection);
-		//AddPossibilityToSchedule(ThisCoursePossibility);
-	}
-	else
-	{
-		//compare and store
+			alert("Number of section in course :"+CompleteCourseSectionTable[NewCourseIndex].length);
+			alert(CompleteCourseSectionTable[NewCourseIndex].join('\n'));
+			//get the valid schedule.
+				
+			//Number of section in the newly added course
+			for (var i=0; i < CompleteCourseSectionTable[NewCourseIndex].length; i++) 
+			{
+				
+				//Number of schedules int the list
+	   			for (var j=0; j < ScheduleSequenceList.length; j++) 
+	   			{
+	   				
+	   				//Create a temporary array to strore the new schedule
+					var SectionCourseSequenceList= new Array();
+		
+	   				//store the already added section in the new array
+					for (var k=0; k < ScheduleSequenceList[j].length; k++) 
+					{  
+						if(IsSectionTimeConfict(ScheduleSequenceList[j][k],CompleteCourseSectionTable[NewCourseIndex][i]) == false)
+						{
+							SectionCourseSequenceList.push(ScheduleSequenceList[j][k]);				
+						}
+						else
+						{
+							break;
+						}
+										
+					}
+					//no conflict so add the new section course
+					if(k == ScheduleSequenceList[j].length)
+					{
+						//add the new course section
+						SectionCourseSequenceList.push(CompleteCourseSectionTable[NewCourseIndex][i]);
+					
+						//Push the array into a new schedule.
+						TemporaryScheduleSequence.push(SectionCourseSequenceList);
+						
+					}
+	   	
+	   			
+					//store the already added section in the new array
+					//No verification of time conflict.
+					for (var k=0; k < ScheduleSequenceList[j].length; k++) 
+					{  
+						SectionCourseSequenceList.push(ScheduleSequenceList[j][k]);				
+					}
+					
+					//add the new course section
+					SectionCourseSequenceList.push(CompleteCourseSectionTable[NewCourseIndex][i]);
+					
+					TemporaryScheduleSequence.push(SectionCourseSequenceList);
+						
+					
+				}	
+				alert("New schedule created."); 
+			}
+			
+			//ClearCourseFromScheduleList();
+			//SetScheduleList(TemporaryScheduleSequence);
+			//Remove colliding section courses
+			for (var i=0; i < TemporaryScheduleSequence.length; i++) 
+			{
+			  
+			  	for (var j=0; j < TemporaryScheduleSequence[i].length - 1; j++) 
+			  	{
+				
+					for (var k=j+1; k < TemporaryScheduleSequence[i].length; k++) 
+					{
+						//Compare course [j] and [k]
+						//IsSectionTimeConfict(TemporaryScheduleSequence[i][j],TemporaryScheduleSequence[i][k]);
+					}
+			 
+			 	}
+			  
+			}
+				
+			SetScheduleList(TemporaryScheduleSequence);
 	}*/
+	
+	alert("All possible valid schedule are created."); 	
+			
+	
+	
 	
 }
 
@@ -181,11 +292,8 @@ function GenerateCourseSectionList(Course)
 {
 	alert("Generate all possible section from a course");
 	
-	var CourseSection = {};
-	var CourseSectionList = 
-	[
 	
-	];
+	var CourseSectionList = new Array();
 	
 	for (var j=0; j < Course.LectureArray.length; j++) 
 	{
@@ -193,6 +301,7 @@ function GenerateCourseSectionList(Course)
 		{
 			for (var l=0; l < Course.LaboratoryArray.length ; l++) 
 			{
+				var CourseSection = {};
 				CourseSection.Name				=	Course.Name;
 				CourseSection.Description		=	Course.Description;
 				CourseSection.NumberOfCredits	=	Course.NumberOfCredits;
@@ -201,13 +310,13 @@ function GenerateCourseSectionList(Course)
 				CourseSection.Tutorial		=	Course.TutorialArray[k];
 				CourseSection.Laboratory	=	Course.LaboratoryArray[l];		
 				
-				//alert("Lect "+CourseSection.Lecture.LectureID);
-				//alert("Lect Start Time"+CourseSection.Lecture.StartingTime);
-				//alert("Lect End Time"+CourseSection.Lecture.EndTime);
+				/*alert("Lect "+CourseSection.Lecture.LectureID);
+				alert("Lect Start Time"+CourseSection.Lecture.StartingTime);
+				alert("Lect End Time"+CourseSection.Lecture.EndTime);
 				
-				//alert("Tut "+CourseSection.Tutorial.TutorialID);
-				//alert("Lab "+CourseSection.Laboratory.LaboratoryID);
-				
+				alert("Tut "+CourseSection.Tutorial.TutorialID);
+				alert("Lab "+CourseSection.Laboratory.LaboratoryID);
+				*/
 				CourseSectionList.push(CourseSection);
 			}
 		}
@@ -383,6 +492,8 @@ $(document).ready(function(){
 	alert("Document is loaded"); 
 
 	 		
+
+
 	//Select Events
 	$("#SelectIDFaculty").change(function() 
 	{ 
@@ -525,7 +636,8 @@ $(document).ready(function(){
 						//Solve and filter matrix
 						SolveCompleteCourseSectionTable();
 						
-						//NotifyView("calendar");	
+						//change calendar data
+						NotifyView("calendar");	
 							
 						break;	
 					}
@@ -561,20 +673,29 @@ $(document).ready(function(){
 				
 				var CourseListCoreEngineering = GetCourseListCoreEngineering();
 				
-				for (var i=0; i < CourseListCoreEngineering.CourseArray.length ; i++) 
+				for (var i=0; i < CourseListCoreEngineering.length ; i++) 
 				{
-					//alert(CourseCoreEngineering.CourseArray[i].Name);
+					//alert(CourseListCoreEngineering[i].Name);
 					//alert($(this).parent().children('input').attr('value'));
 					
-					if(CourseListCoreEngineering.CourseArray[i].Name == $(this).parent().children('input').attr('value'))
+					if(CourseListCoreEngineering[i].Name == $(this).parent().children('input').attr('value'))
 					{
 						//alert("Remove course from selection");
 						
-						RemoveCourseFromCourseListSelection(CourseListCoreEngineering.CourseArray[i]);
+						RemoveCourseFromCourseListSelection(CourseListCoreEngineering[i]);
 												
 						//Update Selection View
 						NotifyView("ULIDSelection");	
-				
+						
+						//Remove generated section from this course.
+						RemoveFromCompleteCourseSectionTable(CourseListCoreEngineering[i]);
+						
+						//Solve and filter matrix
+						SolveCompleteCourseSectionTable();
+						
+						//change calendar data
+						NotifyView("calendar");	
+						
 						break;	
 					}
 					

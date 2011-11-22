@@ -1,7 +1,7 @@
 
 function Daystr(days) 
 { 
-	alert("gogogogo");
+	//alert("gogogogo");
 	var weekday = new Array();
 	for (var i=0;i<days.length;i++)
 	{
@@ -29,10 +29,10 @@ function CompareDay(days1, days2)
 	var week2 = Daystr(days2);
 	for(var j=0; j<week1.size;j++)
 	{
-		if (week1[j]== 1 && week2[j]==1)
-		{
-			return false;
-		}
+		if (week1[j]==week2[j])
+		{}
+		else
+		return false;
 	}
 	return true;
 }

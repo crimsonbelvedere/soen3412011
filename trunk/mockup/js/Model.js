@@ -251,10 +251,20 @@
 	
 	];
 
-	/*function GetValidPossibilityMatrix()
+	function GetCourseScheduleList()
 	{
-		return ValidPossibilityMatrix;
-	}*/
+		return CourseScheduleList;
+	}
+	
+	function ClearCourseFromScheduleList()
+	{
+		CourseScheduleList.splice(0,CourseScheduleList.length);				
+	}
+	
+	function SetScheduleList(NewScheduleList)
+	{
+		CourseScheduleList = NewScheduleList;	
+	}
 	
 	function AddToCourseScheduleList(ValidCourseSectionArrangment)
 	{
@@ -271,6 +281,22 @@
 		CompleteCourseSectionTable.push(SingleCourseSectionList);
 	}
 	
+	function RemoveFromCompleteCourseSectionTable(Course)
+	{
+		for (var i=0; i < CompleteCourseSectionTable.length; i++) 
+		{			
+			for (var j=0; j < CompleteCourseSectionTable[i].length; j++) 
+			{	
+				if(CompleteCourseSectionTable[i][j].Name == Course.Name)
+				{
+					//alert("Course found, remove it from the list");
+					CompleteCourseSectionTable.splice(i,1);			
+					break;	
+				}
+			}
+			
+		};
+	}
 	
 	//Course List Selection api
 	function GetCourseListSelection()
@@ -295,7 +321,7 @@
 				break;	
 			}
 			
-		};
+		}
 	}
 	
 	//Course List FieldEngineeing
