@@ -30,24 +30,54 @@
 		
 		<script src="js/fullcalendar.min.js"></script>
 		<!--<script src="js/custom.js"></script>-->
-
+		<script src="js/Api.js"></script>
+		
 		<script type="text/javascript">
 		//Create Tabs using JQuery
 		$(function() {
+			
+			
 			$( "#DivIDTabs" ).tabs();
-		
-		
+
+			//set the day of the calendar to monday
+			var d = new Date();
+			var DayNumber = d.getDay();
+			var DateNumber = d.getDate();
+			var MonthNumber = d.getMonth()+1;
+			var YearNumber = d.getFullYear();
+			var FirtMondayOfThisWeek;
+			
+			//DateNumber=19;
+			//DayNumber=6;
+			//alert(YearNumber+"-"+MonthNumber+"-"+DateNumber);
+			
+			if(DayNumber > 1)
+			{
+				FirtMondayOfThisWeek = DateNumber - DayNumber + 1;
+			}
+			else if(DayNumber < 1)
+			{
+				FirtMondayOfThisWeek = DateNumber + DayNumber + 1;
+			}
+			else
+			{
+				FirtMondayOfThisWeek = DateNumber ;	
+			}
+			
+			//alert(YearNumber+"-"+MonthNumber+"-"+FirtMondayOfThisWeek+" 12:15:00");
+			//alert(YearNumber+"-"+MonthNumber+"-"+FirtMondayOfThisWeek+" 13:00:00");
+			
 			//Create Calendar using JQuery
 			$('#calendar').fullCalendar({
 			theme: true,
 			header: {
 				left: '',
-				center: 'title',
-				right: 'prev,next'
+				center: '',
+				right: ''
 			},
 			buttonIcons:{
-				prev: 'circle-triangle-w',
-    			next: 'circle-triangle-e'
+				prev: '',
+    			next: ''
 			},
 			height: 1200,	
 			columnFormat: 'ddd',
@@ -62,13 +92,14 @@
 			eventSources: 
 			[
 	        // your event source
+	        //Must put the first 0 digit if the number is less than 10., 08:45:00
 	        	{
 		            events:
 		            [
 					    {
-					        title  : '         ENGR233\n\r         DR HOLO\n\r H-535',
-					        start  : '2011-11-11 12:15:00',
-					        end	   : '2011-11-11 13:00:00',
+					        title  : 'ENGR233\n\rDR HOLO\n\r H-535',			        
+					        start  : YearNumber+"-"+MonthNumber+"-"+FirtMondayOfThisWeek+" 09:15:00",
+					        end	   : YearNumber+"-"+MonthNumber+"-"+FirtMondayOfThisWeek+" 13:00:00",
 					        allDay : false // will make the time show
 					    }
 					],
@@ -77,7 +108,8 @@
 				}
 			]
 			});
-			
+				
+	
 			//Create SelectMenu using JQuery
 			$('.selectDrop').selectmenu();
 			
@@ -340,7 +372,13 @@
 		
 		<fieldset id="FieldSetIDSchedule" class="ui-corner-all">
 			<legend id="LegendIDSchedule" class="CssLegend">Schedule</legend>
-			<div id='calendar'></div>
+			
+			<ul id="ULIDSelection" class="checklist">
+				<li>
+					<div id='calendar'></div>
+				</li>	
+			</u>
+			
 		</fieldset>
 		
 		<!--<div id="DivIDConstrains">

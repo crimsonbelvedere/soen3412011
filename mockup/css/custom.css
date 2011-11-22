@@ -24,16 +24,19 @@ body {
 #SelectIDFaculty {
 	position:relative;
 	float: left;
+	width:200px;
 }
 
 #SelectIDDepartment {
 	position:relative;
 	float: left;
+	width:200px;
 }
 
 #SelectIDProgram {
 	position:relative;
 	float: left;
+	width:200px;
 }
 
 #FieldSetIDStudentInfo {
@@ -166,7 +169,7 @@ body {
 	position:relative;
 	float: left;
 	clear: right;
-    width: 1070px;
+    width: 760px;
 }
 
 #FieldSetIDConstraints {
