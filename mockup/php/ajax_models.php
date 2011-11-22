@@ -1,4 +1,10 @@
 <?php
+/**
+ *
+ * 
+ * @author jenia
+ *
+ */
 class Course {
 	private $pk;
 	function __construct($pk,$term){
@@ -10,9 +16,17 @@ class Course {
 		$this->Description=$query_set['description'];
 		$this->Name=$query_set['title'];
 		$this->populate_lecture_arr($term);
+		if($this->LectureArray!=Null){
+			$this->TutorialArray=$this->LectureArray[0]->tutorial_array();
+			$this->LaboratoryArray=$this->LectureArray[0]->lab_array();
+		}
 	}
 	public $Name;
 	public $Description;
+	public $NumberOfCredits;
+	public $LectureArray= array();
+	public $TutorialArray = array();
+	public $LaboratoryArray = array();
 	/**
 <<<<<<< .mine
 	
@@ -22,8 +36,7 @@ class Course {
 =======
 >>>>>>> .r32
 **/
-	public $NumberOfCredits;
-	public $LectureArray= array();
+
 	function populate_lecture_arr($term){
 		$db_adapter=new db_adapter();
 		$query="select * from schedule where course=".$this->pk()." and schedule_type in
@@ -45,6 +58,16 @@ class Course {
 				echo $lecture->string().'<br /><br />';
 			}
 			
+		}
+		if($this->TutorialArray!=Null){
+			foreach($this->TutorialArray as $tutorial){
+				 echo $tutorial->string();
+			}
+		}
+		if($this->LaboratoryArray!=Null){
+			foreach($this->LaboratoryArray as $lab){
+				echo $lab->string();
+			}
 		}
 		echo '<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />';
 	}
@@ -119,16 +142,7 @@ class Lecture {
 		$string= '<br />Lecture: <br />'.'Days:'.$this->Days.'<br />'.'Start:'.$this->StartingTime.'<br />'.
 		'End:'.$this->EndTime.'<br />'.'Professor:'.$this->Professor.'<br />'.
 		'Class room'.$this->Classrom.'<br />'.'Lecture_id:'.$this->LectureID.'<br />Term:'.$this->term.'<br />';
-		if($this->TutorialArray!=Null){
-			foreach($this->TutorialArray as $tutorial){
-				$string.=$tutorial->string();
-			}
-		}
-		if($this->LaboratoryArray!=Null){
-			foreach($this->LaboratoryArray as $lab){
-				$string.=$lab->string();
-			}
-		}
+		
 		return $string;
 	}
 	function lab_array(){
@@ -161,7 +175,7 @@ class Tutorial {
 	function string(){
 		return 'TUTORIAL:<br />'.'Days:'.$this->Days.'<br />'.'Start:'.$this->StartingTime.'<br />'.
 		'End:'.$this->EndTime.'<br />'.'Professor:'.$this->Professor.'<br />'.
-		'Class room'.$this->Classrom.'<br />'.'Tutorial wonderbar:'.$this->TutorialID.'<br />';
+		'Class room'.$this->Classrom.'<br />'.'Tutorial wonderbar:'.$this->TutorialID.'<br /><br />';
 	}
 }
 
@@ -185,7 +199,7 @@ class Laboratory {
 		
 		return 'LABORATORY:<br />'.'Days:'.$this->Days.'<br />'.'Start:'.$this->StartingTime.'<br />'.
 		'End:'.$this->EndTime.'<br />'.'Professor:'.$this->Professor.'<br />'.
-		'Class room'.$this->Classrom.'<br />'.'Laboratory grobazon:'.$this->LaboratoryID.'<br />';
+		'Class room'.$this->Classrom.'<br />'.'Laboratory:'.$this->LaboratoryID.'<br /><br />';
 	}
 }
 ?>

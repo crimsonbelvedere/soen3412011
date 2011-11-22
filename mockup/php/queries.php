@@ -15,7 +15,6 @@ if($DEBUG){
 	$result=get_courses('Engineering and Computer Science','Computer Science and Software Engineering','BEng in Software Engineering',2 );
 	$counter=0;
 	foreach($result as $course){
-		echo 'Course:'.$counter.'<br />';
 		echo $course->string();
 		$counter+=1;
 	}
