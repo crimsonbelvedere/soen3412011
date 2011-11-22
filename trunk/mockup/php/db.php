@@ -10,7 +10,7 @@ class db_adapter{
 		
 	}
 	function connect(){
-		$this->db_conn=mysql_connect('localhost','root','');
+		$this->db_conn=mysql_connect('localhost','root','amenaj');
 		mysql_select_db('soen341',$this->db_conn);
 		
 	}
