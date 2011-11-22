@@ -20,6 +20,38 @@ class Course {
 			$this->TutorialArray=$this->LectureArray[0]->tutorial_array();
 			$this->LaboratoryArray=$this->LectureArray[0]->lab_array();
 		}
+		$db_adapter=new db_adapter();
+		$query="select course_group from group_has_course where course=".$this->pk();
+		$query_set=$db_adapter->query($query);
+		if ($query_set!=Null){
+			foreach($query_set as $course_group){
+				if ($course_group['course_group']=='3'){
+					$this->class_type='Elective';
+					$this->class_sort='';
+				}else if($course_group['course_group']=='4'){
+					$this->class_type='Core Course';
+					$this->class_sort='Engineering Core';
+				}else if($course_group['course_group']=='5'){
+					$this->class_type='Core Course';
+					$this->class_sort='Software Engineering Core';
+				}else if($course_group['course_group']=='6'){
+					$this->class_type='Core Course';
+					$this->class_sort='Computer Science Group';
+				}else if($course_group['course_group']=='7'){
+					$this->class_type='Core Course';
+					$this->class_sort='Basic Science Courses';
+				}else if($course_group['course_group']=='8'){
+					$this->class_type='Option';
+					$this->class_sort='Computer Games (CG) Option';
+				}else if($course_group['course_group']=='9'){
+					$this->class_type='Option';
+					$this->class_sort='Web Services and Applications (WSA) Option';
+				}else if($course_group['course_group']=='10'){
+					$this->class_type='Option';
+					$this->class_sort='Real-Time, Embedded, and Avionics Software (REA) Option';
+				}
+			}
+		}
 	}
 	public $Name;
 	public $Description;
@@ -27,6 +59,8 @@ class Course {
 	public $LectureArray= array();
 	public $TutorialArray = array();
 	public $LaboratoryArray = array();
+	public $class_type;
+	public $class_sort;
 	/**
 <<<<<<< .mine
 	
@@ -53,6 +87,7 @@ class Course {
 	}
 	function string(){
 		echo 'Course: <br />Name:'.$this->Name.'<br />'.'Description:'.$this->Description;
+		echo '<br />'.$this->class_type.'<br />'.$this->class_sort.'<br />';
 		if ($this->LectureArray!=Null){
 			foreach($this->LectureArray as $lecture){
 				echo $lecture->string().'<br /><br />';
