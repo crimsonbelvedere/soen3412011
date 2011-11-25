@@ -431,6 +431,41 @@
 		}
 	}
 	
+	 
+	function SetLeftSliderMinute(LeftSliderMinute)
+	{
+		State.LeftSliderMinute = LeftSliderMinute;
+	}
+	function GetLeftSliderMinute()
+	{
+		return State.LeftSliderMinute;
+	}
+
+	 
+	function SetLeftSliderHour(LeftSliderHour)
+	{
+		State.LeftSliderHour = LeftSliderHour;
+	}
+	function GetLeftSliderHour()
+	{
+		return State.LeftSliderHour;
+	}
 	
+	function SetRigthSliderMinute(RigthSliderMinute)
+	{
+		State.RigthSliderMinute = RigthSliderMinute;
+	}
+	function GetRigthSliderMinute()
+	{
+		return State.RigthSliderMinute;
+	}	
 	
+	function SetRigthSliderHour(RigthSliderHour)
+	{
+		State.RigthSliderHour = RigthSliderHour;
+	}
+	function GetRigthSliderHour()
+	{
+		return State.RigthSliderHour;
+	}	
 		

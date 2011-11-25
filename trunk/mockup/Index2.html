@@ -60,10 +60,7 @@
     	});
 
 		//Create Slider using JQuery
-		var Sliderminutes0;
-        var Sliderhours0;
-        var Sliderminutes1;
-        var Sliderhours1; 
+
         $( "#slider-range" ).slider({
 			range: true,
             min: 525,
@@ -71,11 +68,11 @@
 			values: [ 600, 1200 ],
 			step: 15,
 			slide: function(event, ui) {
-			    Sliderminutes0 = parseInt(ui.values[0] % 60);
-                Sliderhours0 = parseInt(ui.values[0] / 60 % 24);
-                Sliderminutes1 = parseInt(ui.values[1] % 60);
-                Sliderhours1 = parseInt(ui.values[1] / 60 % 24);
-                $("#DivIDTime").text(SlidergetTime(Sliderminutes1, Sliderminutes0) + ' - ' + SlidergetTime(Sliderhours1, Sliderminutes1));
+			    SetLeftSliderMinute(parseInt(ui.values[0] % 60));
+                SetLeftSliderHour(parseInt(ui.values[0] / 60 % 24));
+                SetRigthSliderMinute(parseInt(ui.values[1] % 60));
+                SetRigthSliderHour(parseInt(ui.values[1] / 60 % 24));
+                $("#DivIDTime").text(SlidergetTime(GetLeftSliderHour(), GetLeftSliderMinute()) + ' - ' + SlidergetTime(GetRigthSliderHour(), GetRigthSliderMinute()));
             }
 		});
         //http://marcneuwirth.com/blog/2010/02/21/using-a-jquery-ui-slider-to-select-a-time-range/
@@ -105,7 +102,7 @@
 	        // your event source
 	        //Must put the first 0 digit if the number is less than 10., 08:45:00
 	        	{
-		            events:
+		            /*events:
 		            [
 					    {
 					        title  : 'ENGR233\n\rDR HOLO\n\r H-535',			        
@@ -116,6 +113,7 @@
 					],
 					color: 'white',     // an option!
             		textColor: 'red' // an option!
+            		*/
 				}
 			]
 			});
