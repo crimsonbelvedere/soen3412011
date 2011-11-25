@@ -10,7 +10,7 @@ body {
 	left:0px;
 	top:0px;
 	height:80px;
-	width:570px;
+	width:880px;
 	float: left;
 	clear: left;
 	margin-top: 10px;
@@ -42,7 +42,7 @@ body {
 	top:0px;
 	height:80px;
 	/*width:760px;*/
-	float: left;
+	float: right;
 /*	clear: left;*/
 	margin-top: 10px;
 	margin-right: 10px;
@@ -252,9 +252,9 @@ button.fg-button { width:auto; overflow:visible; }
 
 .DropdownProgram {
 	position:relative;
-    margin-left: 6px;
+    margin-left: 24px;
 	float: left;
-    width: 180px;
+    width: 260px;
 }
 
 .margin10 {
