@@ -6,18 +6,18 @@ function IsTimeConflict(D1,S1,E1,D2,S2,E2)
 	{
 		if(	(CompareTime(S1,E1) == -1 && CompareTime(S1,S2) == -1 && CompareTime(S2,E2) == -1 )  || (CompareTime(E2,E2) == -1 && CompareTime(E2,S1) == -1 && CompareTime(S1,E1) == -1))	
 		{
-			alert("There is no time confict bewteen:"+D1+" "+S1+" "+E1+" "+D2+" "+S2+" "+E2);
+			//alert("There is no time confict bewteen:"+D1+" "+S1+" "+E1+" "+D2+" "+S2+" "+E2);
 			return false;
 		}
 		else
 		{
-			alert("There is a time confict bewteen:"+D1+" "+S1+" "+E1+" "+D2+" "+S2+" "+E2);
+			//alert("There is a time confict bewteen:"+D1+" "+S1+" "+E1+" "+D2+" "+S2+" "+E2);
 			return true;
 		}
 	}
 	else
 	{
-		alert("There is no time confict bewteen Days "+D1+" "+D2);
+		//alert("There is no time confict bewteen Days "+D1+" "+D2);
 		return false;	
 	}
 }
@@ -32,7 +32,7 @@ function IsSectionTimeConfict(Section1,Section2)
 	}	
 	else
 	{
-		//Compare lectures
+		//Compare lectures to something else
  		if(IsTimeConflict(Section1.Lecture.Days,Section1.Lecture.StartingTime,Section1.Lecture.EndTime,Section2.Lecture.Days,Section2.Lecture.StartingTime,Section2.Lecture.EndTime))	
 		{
 			return true;
@@ -172,6 +172,8 @@ function SolveCompleteCourseSectionTable()
 			}
 			
 			//Remove colliding section courses
+			//backup the temporary schedule
+			var IndexToRemove= new Array();
 			for (var p=0; p < TemporaryScheduleSequence.length; p++) 
 			{
 			  
@@ -184,19 +186,37 @@ function SolveCompleteCourseSectionTable()
 						//if there is a time conflict remove the schedule from selection.
 						if(IsSectionTimeConfict(TemporaryScheduleSequence[p][j],TemporaryScheduleSequence[p][k]) == true)
 						{
-							alert("Remove schedule from temporary list.");
-							TemporaryScheduleSequence.splice(p,1);
+							//alert("Remove schedule from temporary list.");
+							//TemporaryScheduleSequence.splice(p,1);
+							IndexToRemove.push(p);												
 						}
 						else
 						{
-							alert("No problem between between schedules");	
+							//alert("No problem between between schedules");	
 						}
 					}
 			 
 			 	}
 			  
 			}
-				
+			
+			for (var p=0; p < IndexToRemove.length; p++) 
+			{
+				delete TemporaryScheduleSequence[IndexToRemove[p]];
+			}
+			
+			var MaximumScheduleSize = TemporaryScheduleSequence.length;
+			for (var p=0; p < MaximumScheduleSize; p++) 
+			{
+				if(TemporaryScheduleSequence[p] === undefined)
+				{
+					TemporaryScheduleSequence.splice(p,1);
+				}
+			}
+			
+			//clean up the array
+			TemporaryScheduleSequence = TemporaryScheduleSequence.filter(function(){return true});	
+			
 			SetScheduleList(TemporaryScheduleSequence);
 		}
 		
@@ -595,7 +615,8 @@ $(document).ready(function()
 	$("#ButtonIDAdd").click(function() 
 	{ 
 		alert($("#SelectIDSelectDay").val());
-		alert(SlidergetTime(Sliderhours0, Sliderminutes0));
+		alert(SlidergetTime(GetLeftSliderHour(), GetLeftSliderMinute()));
+		alert(SlidergetTime(GetRigthSliderHour(), GetRigthSliderMinute()));
 		//+ ' - ' + getTime(Sliderhours1, Sliderminutes1));
 	});
 	
