@@ -8,7 +8,7 @@ function NotifyView(ElementID)
 	//if(ElementID == )
 	if(ElementID == "calendar")
 	{
-		alert("Updating the calendar");		
+		//alert("Updating the calendar");		
 
     	var EventObjects = 
     	{
@@ -17,7 +17,8 @@ function NotifyView(ElementID)
     		
     		]
     	}
-    		
+    	
+    	var ScheduleNumber = GetScheduleNumber();	
 		//var PossiblitySchedule = GetScheduledCourses();
 		var ScheduleSequenceList = GetCourseScheduleList();
 		
@@ -44,15 +45,18 @@ function NotifyView(ElementID)
 		{
 			FirtMondayOfThisWeek = DateNumber ;	
 		}
+	
+		//alert(YearNumber+"-"+MonthNumber+"-"+FirtMondayOfThisWeek+" 12:15:00");
+		//alert(YearNumber+"-"+MonthNumber+"-"+FirtMondayOfThisWeek+" 13:00:00");
 		
 		$('#calendar').fullCalendar( 'removeEvents').fullCalendar('removeEventSources');  //Removes all event sources
 
 		//Alway show the first schedule.	
-		for (var i=0; i < ScheduleSequenceList[0].length; i++) 
+		for (var i=0; i < ScheduleSequenceList[ScheduleNumber].length; i++) 
 		{
 		 	
 			//Conver day string into day array
-			var DayArr = Daystr(ScheduleSequenceList[0][i].Lecture.Days);
+			var DayArr = Daystr(ScheduleSequenceList[ScheduleNumber][i].Lecture.Days);
 			for (var j=0; j < DayArr.length; j++) 
 			{
 				if(DayArr[j] == 1)
@@ -60,15 +64,15 @@ function NotifyView(ElementID)
 					var DayOfTheWeek=FirtMondayOfThisWeek+j;
 					var EventLecture = {};			
 					
-					EventLecture.title 	= ScheduleSequenceList[0][i].Name+" Lecture";		     
-					EventLecture.start	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[0][i].Lecture.StartingTime;
-					EventLecture.end	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[0][i].Lecture.EndTime;
+					EventLecture.title 	= ScheduleSequenceList[ScheduleNumber][i].Name+" Lecture";		     
+					EventLecture.start	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[ScheduleNumber][i].Lecture.StartingTime;
+					EventLecture.end	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[ScheduleNumber][i].Lecture.EndTime;
 					EventLecture.allDay 	= false;
 					EventObjects.events.push(EventLecture);
 				}		  
 			}
 			
-			var DayArr = Daystr(ScheduleSequenceList[0][i].Tutorial.Days);
+			var DayArr = Daystr(ScheduleSequenceList[ScheduleNumber][i].Tutorial.Days);
 			for (var j=0; j < DayArr.length; j++) 
 			{
 				if(DayArr[j] == 1)
@@ -76,15 +80,15 @@ function NotifyView(ElementID)
 					var DayOfTheWeek=FirtMondayOfThisWeek+j;					
 					var EventTutorial = {};
 					
-					EventTutorial.title = ScheduleSequenceList[0][i].Name+" Tutorial";		     
-					EventTutorial.start	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[0][i].Tutorial.StartingTime;
-					EventTutorial.end	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[0][i].Tutorial.EndTime;
+					EventTutorial.title = ScheduleSequenceList[ScheduleNumber][i].Name+" Tutorial";		     
+					EventTutorial.start	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[ScheduleNumber][i].Tutorial.StartingTime;
+					EventTutorial.end	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[ScheduleNumber][i].Tutorial.EndTime;
 					EventTutorial.allDay 	= false;
 					EventObjects.events.push(EventTutorial);
 				}		  
 			}
 			
-			var DayArr = Daystr(ScheduleSequenceList[0][i].Laboratory.Days);
+			var DayArr = Daystr(ScheduleSequenceList[ScheduleNumber][i].Laboratory.Days);
 			for (var j=0; j < DayArr.length; j++) 
 			{
 				if(DayArr[j] == 1)
@@ -92,9 +96,9 @@ function NotifyView(ElementID)
 					var DayOfTheWeek=FirtMondayOfThisWeek+j;
 					var EventLaboratory = {};
 					
-					EventLaboratory.title 	= ScheduleSequenceList[0][i].Name+" Laboratory";		     
-					EventLaboratory.start	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[0][i].Laboratory.StartingTime;
-					EventLaboratory.end		= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[0][i].Laboratory.EndTime;
+					EventLaboratory.title 	= ScheduleSequenceList[ScheduleNumber][i].Name+" Laboratory";		     
+					EventLaboratory.start	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[ScheduleNumber][i].Laboratory.StartingTime;
+					EventLaboratory.end		= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[ScheduleNumber][i].Laboratory.EndTime;
 					EventLaboratory.allDay 	= false;
 					EventObjects.events.push(EventLaboratory);
 				}
@@ -102,13 +106,20 @@ function NotifyView(ElementID)
 			
 		}
 		
-		if(ScheduleSequenceList[0].length != 0)
+		if(ScheduleSequenceList[ScheduleNumber].length != 0)
 		{
 			$('#calendar').fullCalendar( 'addEventSource', EventObjects );  
 		}
 		
 		$('#calendar').fullCalendar('refetchEvents');
-				
+			
+			
+		//Change the number of maximum schedule.
+		$('#DivIDTitle').empty();	
+		var LastScheduleNumber = ScheduleSequenceList.length - "1";
+		var ScheduleTitle = "Schedule "+ScheduleNumber+"/"+LastScheduleNumber;
+		$('#DivIDTitle').append(ScheduleTitle);
+	
 	}	
 	
 	/*Populate tabs with query courses*/

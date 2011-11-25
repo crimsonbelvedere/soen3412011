@@ -404,4 +404,33 @@
 		return State.Semester;
 	}
 	
+	//State.ScheduleNumber 
+	function SetScheduleNumber(ScheduleNumber)
+	{
+		State.ScheduleNumber=ScheduleNumber;
+	}
+	
+	function GetScheduleNumber()
+	{
+		return State.ScheduleNumber;
+	}
+	
+	function NextSchedule()
+	{
+		if(State.ScheduleNumber < CourseScheduleList.length - 1 )
+		{
+			State.ScheduleNumber ++ ;
+		}
+		
+	}
+	function PreviousSchedule()
+	{
+		if(State.ScheduleNumber > 0 )
+		{
+			State.ScheduleNumber -- ;
+		}
+	}
+	
+	
+	
 		

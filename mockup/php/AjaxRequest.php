@@ -3,15 +3,6 @@
 class Course {
 	public $Name;
 	public $Description;
-	/**
-<<<<<<< .mine
-	
-	
-	//public $PrequisiteArray = array(); //array of string course name
-	public $SectionArray = array();
-=======
->>>>>>> .r32
-**/
 	public $NumberOfCredits;
 	public $LectureArray= array();
 	public $TutorialArray = array();
@@ -78,6 +69,7 @@ $Course2 = new Course;
 $Lecture0= new Lecture;
 $Lecture1= new Lecture;
 $Lecture2= new Lecture;
+$Lecture3= new Lecture;
 
 $Tutorial0= new Tutorial;
 $Tutorial1= new Tutorial;
@@ -176,20 +168,19 @@ $Laboratory2->LaboratoryID="Lb2";
 	array_push($Course0->LaboratoryArray,$Laboratory1);
 	array_push($CourseList,$Course0);
 	
-	array_push($Course1->LectureArray,$Lecture0);
-	array_push($Course1->TutorialArray,$Tutorial0);
-	array_push($Course1->LaboratoryArray,$Laboratory0);
+
 	array_push($Course1->LectureArray,$Lecture1);
 	array_push($Course1->TutorialArray,$Tutorial1);
 	array_push($Course1->LaboratoryArray,$Laboratory1);
+	array_push($Course1->LectureArray,$Lecture2);
+	array_push($Course1->TutorialArray,$Tutorial2);
+	array_push($Course1->LaboratoryArray,$Laboratory2);
 	array_push($CourseList,$Course1);
-	
-	array_push($Course2->LectureArray,$Lecture0);
-	array_push($Course2->TutorialArray,$Tutorial0);
-	array_push($Course2->LaboratoryArray,$Laboratory0);
-	array_push($Course2->LectureArray,$Lecture1);
-	array_push($Course2->TutorialArray,$Tutorial1);
-	array_push($Course2->LaboratoryArray,$Laboratory1);
+
+
+	array_push($Course2->LectureArray,$Lecture2);
+	array_push($Course2->TutorialArray,$Tutorial2);
+	array_push($Course2->LaboratoryArray,$Laboratory2);
 	array_push($CourseList,$Course2);
 	
 	//array_push($Course0->PrequisiteArray

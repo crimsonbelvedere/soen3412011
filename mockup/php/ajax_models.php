@@ -104,15 +104,7 @@ class Course {
 	 *  	class_sort[index]==Computer Games and class_type[index]==Elective
 	 */
 	public $class_sort=array();
-	/**
-<<<<<<< .mine
-	
-	
-	//public $PrequisiteArray = array(); //array of string course name
-	public $SectionArray = array();
-=======
->>>>>>> .r32
-**/
+
 
 	function populate_lecture_arr($term){
 		$db_adapter=new db_adapter();

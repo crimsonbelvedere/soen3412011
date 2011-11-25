@@ -2,18 +2,23 @@ function IsTimeConflict(D1,S1,E1,D2,S2,E2)
 {
 	//Convert string in usable format
 	//Find out if it is the Same Day
-	if(CompareDay(D1,D2))
+	if(CompareDay(D1,D2) == true)
 	{
 		if(	(CompareTime(S1,E1) == -1 && CompareTime(S1,S2) == -1 && CompareTime(S2,E2) == -1 )  || (CompareTime(E2,E2) == -1 && CompareTime(E2,S1) == -1 && CompareTime(S1,E1) == -1))	
 		{
-			alert("There is no time confict bewteen:"+S1+" "+E1+" "+S2+" "+E2);
+			alert("There is no time confict bewteen:"+D1+" "+S1+" "+E1+" "+D2+" "+S2+" "+E2);
 			return false;
 		}
 		else
 		{
-			alert("There is a time confict bewteen:"+S1+" "+E1+" "+S2+" "+E2);
+			alert("There is a time confict bewteen:"+D1+" "+S1+" "+E1+" "+D2+" "+S2+" "+E2);
 			return true;
 		}
+	}
+	else
+	{
+		alert("There is no time confict bewteen Days "+D1+" "+D2);
+		return false;	
 	}
 }
 
@@ -28,7 +33,7 @@ function IsSectionTimeConfict(Section1,Section2)
 	else
 	{
 		//Compare lectures
- 		if(IsTimeConflict(Section1.Lecture.Days,Section1.Lecture.StartingTime,Section1.Lecture.EndingTime,Section2.Lecture.Days,Section2.Lecture.StartingTime,Section2.Lecture.EndingTime))	
+ 		if(IsTimeConflict(Section1.Lecture.Days,Section1.Lecture.StartingTime,Section1.Lecture.EndTime,Section2.Lecture.Days,Section2.Lecture.StartingTime,Section2.Lecture.EndTime))	
 		{
 			return true;
 		}
@@ -36,7 +41,7 @@ function IsSectionTimeConfict(Section1,Section2)
 		if(Section2.Tutorial !== undefined)
 		{
 			//Compare Lecture , turorial 		
-			if(IsTimeConflict(Section1.Lecture.Days, Section1.Lecture.StartingTime,Section1.Lecture.EndingTime,Section2.Tutorial.Days,Section2.Tutorial.StartingTime,Section2.Tutorial.EndingTime))	
+			if(IsTimeConflict(Section1.Lecture.Days, Section1.Lecture.StartingTime,Section1.Lecture.EndTime,Section2.Tutorial.Days,Section2.Tutorial.StartingTime,Section2.Tutorial.EndTime))	
 			{
 				return true;
 			}
@@ -45,7 +50,7 @@ function IsSectionTimeConfict(Section1,Section2)
 		if(Section2.Laboratory !== undefined)
 		{
 			//Compare Lecture , Laboratory		
-			if(IsTimeConflict(Section1.Lecture.Days, Section1.Lecture.StartingTime,Section1.Lecture.EndingTime,Section2.Laboratory.Days, Section2.Laboratory.StartingTime,Section2.Laboratory.EndingTime))	
+			if(IsTimeConflict(Section1.Lecture.Days, Section1.Lecture.StartingTime,Section1.Lecture.EndTime,Section2.Laboratory.Days, Section2.Laboratory.StartingTime,Section2.Laboratory.EndTime))	
 			{
 				return true;
 			}
@@ -54,7 +59,7 @@ function IsSectionTimeConfict(Section1,Section2)
 		if(Section1.Tutorial !== undefined)
 		{
 			//Compare Tutorial , Lecture
-			if(IsTimeConflict(Section1.Tutorial.Days, Section1.Tutorial.StartingTime,Section1.Tutorial.EndingTime,Section2.Lecture.Days,Section2.Lecture.StartingTime,Section2.Lecture.EndingTime))	
+			if(IsTimeConflict(Section1.Tutorial.Days, Section1.Tutorial.StartingTime,Section1.Tutorial.EndTime,Section2.Lecture.Days,Section2.Lecture.StartingTime,Section2.Lecture.EndTime))	
 			{
 				return true;
 			}
@@ -63,7 +68,16 @@ function IsSectionTimeConfict(Section1,Section2)
 		if(Section1.Tutorial !== undefined && Section2.Tutorial !== undefined)
 		{
 			//Compare tutorial , tutorial
-			if(IsTimeConflict(Section1.Tutorial.Days, Section1.Tutorial.StartingTime,Section1.Tutorial.EndingTime,Section2.Tutorial.Days,Section2.Tutorial.StartingTime,Section2.Tutorial.EndingTime))	
+			if(IsTimeConflict(Section1.Tutorial.Days, Section1.Tutorial.StartingTime,Section1.Tutorial.EndTime,Section2.Tutorial.Days,Section2.Tutorial.StartingTime,Section2.Tutorial.EndTime))	
+			{
+				return true;
+			}
+		}
+		
+		if(Section1.Tutorial !== undefined && Section2.Laboratory !== undefined)
+		{
+			//Compare tutorial , tutorial
+			if(IsTimeConflict(Section1.Tutorial.Days, Section1.Tutorial.StartingTime,Section1.Tutorial.EndTime,Section2.Tutorial.Days,Section2.Laboratory.StartingTime,Section2.Laboratory.EndTime))	
 			{
 				return true;
 			}
@@ -72,7 +86,7 @@ function IsSectionTimeConfict(Section1,Section2)
 		if(Section1.Laboratory !== undefined)
 		{
 			//Compare Lab, Lecture
-			if(IsTimeConflict(Section1.Laboratory.Days ,Section1.Laboratory.StartingTime,Section1.Laboratory.EndingTime,Section2.Lecture.Days,Section2.Lecture.StartingTime,Section2.Lecture.EndingTime))	
+			if(IsTimeConflict(Section1.Laboratory.Days ,Section1.Laboratory.StartingTime,Section1.Laboratory.EndTime,Section2.Lecture.Days,Section2.Lecture.StartingTime,Section2.Lecture.EndTime))	
 			{
 				return true;
 			}
@@ -81,7 +95,7 @@ function IsSectionTimeConfict(Section1,Section2)
 		if(Section1.Laboratory !== undefined && Section2.Tutorial !== undefined)
 		{
 			//Compare Lab, Tutorial
-			if(IsTimeConflict(Section1.Laboratory.Days, Section1.Laboratory.StartingTime,Section1.Laboratory.EndingTime,Section2.Tutorial.Days,Section2.Tutorial.StartingTime,Section2.Tutorial.EndingTime))	
+			if(IsTimeConflict(Section1.Laboratory.Days, Section1.Laboratory.StartingTime,Section1.Laboratory.EndTime,Section2.Tutorial.Days,Section2.Tutorial.StartingTime,Section2.Tutorial.EndTime))	
 			{
 				return true;
 			}
@@ -90,7 +104,7 @@ function IsSectionTimeConfict(Section1,Section2)
 		if(Section1.Laboratory !== undefined && Section2.Laboratory !== undefined)
 		{
 			//Compare Lab, Lab
-			if(IsTimeConflict(Section1.Laboratory.Days, Section1.Laboratory.StartingTime,Section1.Laboratory.EndingTime,Section2.Laboratory.Days,Section2.Laboratory.StartingTime,Section2.Laboratory.EndingTime))	
+			if(IsTimeConflict(Section1.Laboratory.Days, Section1.Laboratory.StartingTime,Section1.Laboratory.EndTime,Section2.Laboratory.Days,Section2.Laboratory.StartingTime,Section2.Laboratory.EndTime))	
 			{
 				return true;
 			}
@@ -161,13 +175,22 @@ function SolveCompleteCourseSectionTable()
 			for (var p=0; p < TemporaryScheduleSequence.length; p++) 
 			{
 			  
-			  	for (var j=0; j < TemporaryScheduleSequence[i].length - 1; j++) 
+			  	for (var j=0; j < TemporaryScheduleSequence[p].length - 1; j++) 
 			  	{
 				
-					for (var k=j+1; k < TemporaryScheduleSequence[i].length; k++) 
+					for (var k=j+1; k < TemporaryScheduleSequence[p].length; k++) 
 					{
 						//Compare course [j] and [k]
-						//IsSectionTimeConfict(TemporaryScheduleSequence[i][j],TemporaryScheduleSequence[i][k]);
+						//if there is a time conflict remove the schedule from selection.
+						if(IsSectionTimeConfict(TemporaryScheduleSequence[p][j],TemporaryScheduleSequence[p][k]) == true)
+						{
+							alert("Remove schedule from temporary list.");
+							TemporaryScheduleSequence.splice(p,1);
+						}
+						else
+						{
+							alert("No problem between between schedules");	
+						}
 					}
 			 
 			 	}
@@ -179,113 +202,9 @@ function SolveCompleteCourseSectionTable()
 		
 		//ClearCourseFromScheduleList();
 		
-	}
-	
-	//If there is only 1 course to add.
-	/*if(CompleteCourseSectionTable.length == 1)
-	{
-		//alert("Number of section in course :"+CompleteCourseSectionTable[0].length);
-		//alert(CompleteCourseSectionTable[0].join('\n'));
-		
-		//Course located in index 0, create 1 section -> 1 schedule
-		for (var i=0; i < CompleteCourseSectionTable[0].length; i++) 
-		{
-			
-			var SectionCourseSequenceList= new Array();
-			SectionCourseSequenceList.push(CompleteCourseSectionTable[0][i]);
-		 	AddToCourseScheduleList(SectionCourseSequenceList); 
-		}
-	}
-	if(CompleteCourseSectionTable.length > 1)
-	{
-			var NewCourseIndex = CompleteCourseSectionTable.length -1; 
-	   		var ScheduleSequenceList = GetCourseScheduleList();
-	   		var TemporaryScheduleSequence = [ ];
-	   		
-			alert("Number of section in course :"+CompleteCourseSectionTable[NewCourseIndex].length);
-			alert(CompleteCourseSectionTable[NewCourseIndex].join('\n'));
-			//get the valid schedule.
-				
-			//Number of section in the newly added course
-			for (var i=0; i < CompleteCourseSectionTable[NewCourseIndex].length; i++) 
-			{
-				
-				//Number of schedules int the list
-	   			for (var j=0; j < ScheduleSequenceList.length; j++) 
-	   			{
-	   				
-	   				//Create a temporary array to strore the new schedule
-					var SectionCourseSequenceList= new Array();
-		
-	   				//store the already added section in the new array
-					for (var k=0; k < ScheduleSequenceList[j].length; k++) 
-					{  
-						if(IsSectionTimeConfict(ScheduleSequenceList[j][k],CompleteCourseSectionTable[NewCourseIndex][i]) == false)
-						{
-							SectionCourseSequenceList.push(ScheduleSequenceList[j][k]);				
-						}
-						else
-						{
-							break;
-						}
-										
-					}
-					//no conflict so add the new section course
-					if(k == ScheduleSequenceList[j].length)
-					{
-						//add the new course section
-						SectionCourseSequenceList.push(CompleteCourseSectionTable[NewCourseIndex][i]);
-					
-						//Push the array into a new schedule.
-						TemporaryScheduleSequence.push(SectionCourseSequenceList);
-						
-					}
-	   	
-	   			
-					//store the already added section in the new array
-					//No verification of time conflict.
-					for (var k=0; k < ScheduleSequenceList[j].length; k++) 
-					{  
-						SectionCourseSequenceList.push(ScheduleSequenceList[j][k]);				
-					}
-					
-					//add the new course section
-					SectionCourseSequenceList.push(CompleteCourseSectionTable[NewCourseIndex][i]);
-					
-					TemporaryScheduleSequence.push(SectionCourseSequenceList);
-						
-					
-				}	
-				alert("New schedule created."); 
-			}
-			
-			//ClearCourseFromScheduleList();
-			//SetScheduleList(TemporaryScheduleSequence);
-			//Remove colliding section courses
-			for (var i=0; i < TemporaryScheduleSequence.length; i++) 
-			{
-			  
-			  	for (var j=0; j < TemporaryScheduleSequence[i].length - 1; j++) 
-			  	{
-				
-					for (var k=j+1; k < TemporaryScheduleSequence[i].length; k++) 
-					{
-						//Compare course [j] and [k]
-						//IsSectionTimeConfict(TemporaryScheduleSequence[i][j],TemporaryScheduleSequence[i][k]);
-					}
-			 
-			 	}
-			  
-			}
-				
-			SetScheduleList(TemporaryScheduleSequence);
-	}*/
-	
 	alert("All possible valid schedule are created."); 	
 			
-	
-	
-	
+	}
 }
 
 function GenerateCourseSectionList(Course)
@@ -325,64 +244,6 @@ function GenerateCourseSectionList(Course)
 	return CourseSectionList;
 }
 
-/*
-function CreateSectionFromCourses(Course)
-{
-	
-	alert("Generate permutaions");
-	
-	//acreate all the different combinasion
-	//a Section contais a lecture a turorial and a lab
-	//var CourseSection = new Array() ;
-	var CourseSection = {};
-	var ThisCoursePossibility = new Array();
-	
-	alert("Max Lect "+Course.LectureArray.length );
-	alert("Max Tut "+Course.TutorialArray.length);
-	alert("Max Lab "+Course.LaboratoryArray.length);
-	
-	alert("Maximum Section " + (Course.LectureArray.length * Course.TutorialArray.length * Course.LaboratoryArray.length));  
-	for (var j=0; j < Course.LectureArray.length; j++) 
-	{
-		for (var k=0; k < Course.TutorialArray.length ; k++) 
-		{
-			for (var l=0; l < Course.LaboratoryArray.length ; l++) 
-			{
-				CourseSection.Name				=	Course.Name;
-				CourseSection.Description		=	Course.Description;
-				CourseSection.NumberOfCredits	=	Course.NumberOfCredits;
-				
-				CourseSection.Lecture		=	Course.LectureArray[j];
-				CourseSection.Tutorial		=	Course.TutorialArray[k];
-				CourseSection.Laboratory	=	Course.LaboratoryArray[l];		
-				
-				//alert("Lect "+CourseSection.Lecture.LectureID);
-				//alert("Lect Start Time"+CourseSection.Lecture.StartingTime);
-				//alert("Lect End Time"+CourseSection.Lecture.EndTime);
-				
-				//alert("Tut "+CourseSection.Tutorial.TutorialID);
-				//alert("Lab "+CourseSection.Laboratory.LaboratoryID);
-				
-				if(GetCourseSelection().length == 1)
-				{					
-					ThisCoursePossibility.push(CourseSection);
-					AddPossibilityToSchedule(ThisCoursePossibility);
-				}
-				else
-				{
-					//compare and store
-				}
-			}
-		}
-		
-	}
-	
-	NotifyView("calendar");	
-}
-
-*/
-
-
 function RetreiveCourses()
 {
 	if(GetFaculty() === undefined ||  GetFaculty() == "None" ||  GetProgram() === undefined || GetProgram() == "None" ||  GetDepartment() === undefined || GetDepartment() == "None" || GetSemester() === undefined )
@@ -415,6 +276,7 @@ function AjaxRetreiveCourses(CourseCategory)
 	//do your stuff with the JSON data
 		alert("JSON request succeeded");
 		
+		
 		if(CourseCategory == "FieldEngineering")
 		{
 			SetCourseListFieldEngineering(CourseArray);
@@ -439,6 +301,7 @@ function AjaxRetreiveCourses(CourseCategory)
 		alert("Name: " + CourseArray[0].Name);   	
 		alert("Description: " + CourseArray[0].Description);   	
 		alert("Number of Credits: " + CourseArray[0].NumberOfCredits);   	
+		
 		
 		/*
 		alert("LectureID: " + Schedule.CourseArray[0].LectureArray[0].LectureID);	 			
@@ -473,11 +336,10 @@ function AjaxRetreiveCourses(CourseCategory)
 	
 	dataType: "json"
 			
-			});     
+	});     
  
-		}
 		
-		
+}		
 		
 		
 //MVC PATTERN
@@ -486,7 +348,8 @@ function AjaxRetreiveCourses(CourseCategory)
 //3) Notify the view that the model has changed
 //4) The update itself using the model (READ)
 //Handle events
-$(document).ready(function(){
+$(document).ready(function()
+{
 	
 	//Ready Function document is loaded()
 	alert("Document is loaded"); 
@@ -636,6 +499,8 @@ $(document).ready(function(){
 						//Solve and filter matrix
 						SolveCompleteCourseSectionTable();
 						
+						SetScheduleNumber(0);
+						
 						//change calendar data
 						NotifyView("calendar");	
 							
@@ -693,6 +558,8 @@ $(document).ready(function(){
 						//Solve and filter matrix
 						SolveCompleteCourseSectionTable();
 						
+						SetScheduleNumber(0);
+						
 						//change calendar data
 						NotifyView("calendar");	
 						
@@ -705,6 +572,37 @@ $(document).ready(function(){
 		}
 	});
 	
-
+	
+	$("#ButtonIDBack").click(function() 
+	{ 
+		PreviousSchedule();
+		
+		//change calendar data
+		NotifyView("calendar");	
+	});
+	
+	
+	$("#ButtonIDForward").click(function() 
+	{ 
+		NextSchedule();
+	
+		//change calendar data	
+		NotifyView("calendar");	
+	});
+	
+	
+	
+	$("#ButtonIDAdd").click(function() 
+	{ 
+		alert($("#SelectIDSelectDay").val());
+		alert(SlidergetTime(Sliderhours0, Sliderminutes0));
+		//+ ' - ' + getTime(Sliderhours1, Sliderminutes1));
+	});
+	
+	
+	$("#ButtonIDClearAll").click(function() 
+	{ 
+			
+	});
 });
 		

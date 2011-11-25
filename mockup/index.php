@@ -64,7 +64,7 @@
 	THIS IS AN EXAMPLE OF HOW TO USE THE db_adapter class
 		-->
 		
-	<!--<?php 
+	<?php 
 	
 	include('php/db.php');
 	//create a new db_adapter
@@ -77,7 +77,7 @@
 		foreach($student as $key=>$value)
 		echo "Value:".$value."</br> key:".$key."<br/>";
 	}
-	?>--!>
+	?>
 		<div id="content">
 		<!--<a href="php/queries.php"> queries</a>DEBUG-->
 		<div id="demo">
