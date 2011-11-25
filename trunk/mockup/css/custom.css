@@ -24,7 +24,7 @@ body {
 	position:relative;
 	left:0px;
 	top:0px;
-	height:80px;
+	height:160px;
 	width:250px;
 	color: white;
 	float: right;
@@ -60,13 +60,13 @@ body {
 	float: right;
 	clear: right;
 }
-
+/*
 #DfnIDUserName{
 	position:relative;
 	float: left;
 	clear: left;
 	color: white;
-}
+}*/
 
 #DfnIDPassword{
 	position:relative;
@@ -136,7 +136,7 @@ body {
 	margin-left: 10px;
 }
 
-#DivIDCalendar {
+#calendar {
 	position:relative;
     float: left;
 	clear: right;
@@ -154,12 +154,24 @@ body {
     width: 800px;
 }
 
+
 #DivIDConstraints {
-	float: left;
-    margin: 20px, 0px, 0px, 40px;
-    padding: 0px 10px 10px;
+	position:relative;
+	float: right;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 0px;	
+	padding-bottom: 0px; 
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+	
+    /*margin: 20px, 0px, 0px, 40px;*/
+    /*padding: 0px 10px 10px;*/
     width: 200px;
 }
+
 
 #FieldSetIDConstraints {
 	position:relative;

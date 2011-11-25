@@ -35,36 +35,10 @@
 		<script type="text/javascript">
 		//Create Tabs using JQuery
 		$(function() {
-			$( "#DivIDTabs" ).tabs();
+			
+		$( "#DivIDTabs" ).tabs();
 
-			//set the day of the calendar to monday
-			var d = new Date();
-			var DayNumber = d.getDay();
-			var DateNumber = d.getDate();
-			var MonthNumber = d.getMonth()+1;
-			var YearNumber = d.getFullYear();
-			var FirtMondayOfThisWeek;
-			
-			//DateNumber=19;
-			//DayNumber=6;
-			//alert(YearNumber+"-"+MonthNumber+"-"+DateNumber);
-			
-			if(DayNumber > 1)
-			{
-				FirtMondayOfThisWeek = DateNumber - DayNumber + 1;
-			}
-			else if(DayNumber < 1)
-			{
-				FirtMondayOfThisWeek = DateNumber + DayNumber + 1;
-			}
-			else
-			{
-				FirtMondayOfThisWeek = DateNumber ;	
-			}
-			
-			//alert(YearNumber+"-"+MonthNumber+"-"+FirtMondayOfThisWeek+" 12:15:00");
-			//alert(YearNumber+"-"+MonthNumber+"-"+FirtMondayOfThisWeek+" 13:00:00");
-			
+		
         //Create navigation buttons using jQuery
         $(function() {
     		$( "#ButtonIDBack" )
@@ -86,6 +60,10 @@
     	});
 
 		//Create Slider using JQuery
+		var Sliderminutes0;
+        var Sliderhours0;
+        var Sliderminutes1;
+        var Sliderhours1; 
         $( "#slider-range" ).slider({
 			range: true,
             min: 525,
@@ -93,34 +71,26 @@
 			values: [ 600, 1200 ],
 			step: 15,
 			slide: function(event, ui) {
-			    var minutes0 = parseInt(ui.values[0] % 60);
-                var hours0 = parseInt(ui.values[0] / 60 % 24);
-                var minutes1 = parseInt(ui.values[1] % 60);
-                var hours1 = parseInt(ui.values[1] / 60 % 24);
-                $("#DivIDTime").text(getTime(hours0, minutes0) + ' - ' + getTime(hours1, minutes1));
+			    Sliderminutes0 = parseInt(ui.values[0] % 60);
+                Sliderhours0 = parseInt(ui.values[0] / 60 % 24);
+                Sliderminutes1 = parseInt(ui.values[1] % 60);
+                Sliderhours1 = parseInt(ui.values[1] / 60 % 24);
+                $("#DivIDTime").text(SlidergetTime(Sliderminutes1, Sliderminutes0) + ' - ' + SlidergetTime(Sliderhours1, Sliderminutes1));
             }
 		});
-        http://marcneuwirth.com/blog/2010/02/21/using-a-jquery-ui-slider-to-select-a-time-range/
-        function getTime(hours, minutes) {
-          var time = null;
-          minutes = minutes + "";
-
-          if (minutes.length == 1) {
-            minutes = "0" + minutes;
-          }
-          return hours + ":" + minutes;
-        }
-
-
+        //http://marcneuwirth.com/blog/2010/02/21/using-a-jquery-ui-slider-to-select-a-time-range/
+       
+       		var FirtMondayOfThisWeek = FindFirstMondayOfTheWeek();	
+       		
 			//Create Calendar using JQuery
-			$('#DivIDCalendar').fullCalendar({
+			$('#calendar').fullCalendar({
 			theme: true,
 			header: {
 				left: '',
 				center: '',
 				right: ''
 			},
-			contentHeight: 400,
+			contentHeight: 1200,
 			columnFormat: 'ddd',
 			titleFormat: '',
 			allDaySlot: false,
@@ -149,6 +119,10 @@
 				}
 			]
 			});
+
+			$('#calendar').fullCalendar( 'removeEvents').fullCalendar('removeEventSources');  //Removes all event sources
+
+			SetScheduleNumber(0);
 			
 			//Create SelectMenu using JQuery
 			$('.selectDrop').selectmenu();
@@ -208,9 +182,10 @@
 					</option>						
 				</select>
 			
-			</fieldset>
-			
+			</fieldset>			
 		</div>
+		
+		
 		<div id="DivIDTerm">
 			<fieldset id="FieldSetIDTerm" class="ui-corner-all gray-border">
     			<legend id="LegendIDTerm" class="CssLegend">Select term</legend>
@@ -222,19 +197,16 @@
     			</div>
 			</fieldset>
 		</div>
+		
 		<div id="DivIDStudentInfo">
 			<fieldset id="FieldSetIDStudentInfo" class="ui-corner-all gray-border">
-				<legend id="LegendIDStudentInfo" class="CssLegend">Student information</legend>
-					<!--<dfn id="DfnIDStudentID">ID:</dfn>
-					<br></br>-->
+				<legend id="LegendIDStudentInfo" class="CssLegend">Student information</legend>				
 					<dfn id="DfnIDStudentName">Name:</dfn>
 					<br></br>										
 					<dfn id="DfnIDStudentProgram">Program:</dfn>
 					<br></br>
 					<dfn id="DfnIDStudentOption">Option:</dfn>
 					<br></br>
-<!--					<dfn id="DfnIDStudentNbCredits">Number of credits:</dfn>
-					<br></br>-->
 			</fieldset>
 		</div>
 		
@@ -372,24 +344,24 @@
 	
 		<div id="DivIDSelection">
 			<fieldset id="FieldSetIDSelectedCourses"  class="ui-corner-all">
-			<legend id="LegendIDSelection" class="CssLegend">Selected courses</legend>
-			<ul id="ULIDSelection" class="checklist">
-				
-			<br style="clear:both"></br>
-			<br style="clear:both"></br>
-			<br style="clear:both"></br>
-		
-				<!-- ADD SELECTED COURSES HERE-->				
-				<!--<li  class = "deselected" title="Parallel programming description">
-					<input value="COMP 428" type="checkbox" id="IDCOMP428">
-					<label for="IDCOMP428">
-						<dfn>COMP 428</dfn>
-					</label>
-					<a class="checkbox-select" href="#"></a>
-				</li>-->
-				
-				
-			</ul>			
+				<legend id="LegendIDSelection" class="CssLegend">Selected courses</legend>
+				<ul id="ULIDSelection" class="checklist">
+					
+				<br style="clear:both"></br>
+				<br style="clear:both"></br>
+				<br style="clear:both"></br>
+			
+					<!-- ADD SELECTED COURSES HERE-->				
+					<!--<li  class = "deselected" title="Parallel programming description">
+						<input value="COMP 428" type="checkbox" id="IDCOMP428">
+						<label for="IDCOMP428">
+							<dfn>COMP 428</dfn>
+						</label>
+						<a class="checkbox-select" href="#"></a>
+					</li>-->
+					
+					
+				</ul>			
 			</fieldset>
 		</div>	
 		
@@ -417,46 +389,44 @@
 
 		<fieldset id="FieldSetIDSchedule" class="ui-corner-all">
   			<legend id="LegendIDSchedule" class="CssLegend">Schedule</legend>
-			<!--<ul id="ULIDSelection" class="checklist">
-				<li>
-					<div id='calendar'></div>
-				</li>	
-			</u>-->
 
-            <div>
-    			<div id="DivIDNavigation">
+    		<div id="DivIDNavigation">
     				<button id="ButtonIDBack">Back</button>
     				<button id="ButtonIDForward">Forward</button>
-    			</div>
-              <div id="DivIDTitle" align="center">Schedule 1/10</div>
-            </div>
+    		</div>
+            
+            <div id="DivIDTitle" align="center">Schedule</div>
+            
+            <br></br>
+            
+        	<div id="calendar"></div>
 
-        	<div id="DivIDCalendar"></div>
-
+           
             <div id="DivIDConstraints" class="ui-corner-all">
 
-              <fieldset id="FieldSetIDConstraints" class="ui-corner-all gray-border center">
-                <legend id="LegendIDConstraints" class="CssLegend">Constraints</legend>
+            	<fieldset id="FieldSetIDConstraints" class="ui-corner-all gray-border center">
+              		<legend id="LegendIDConstraints" class="CssLegend">Constraints</legend>
 
-                <div align="center">
-                <select id="SelectIDSelectDay" class="selectDrop margin10">
-                  <option value="monday">Monday</option>
-                  <option value="tuesday">Tuesday</option>
-                  <option value="wednesday">Wednesday</option>
-                  <option value="thursday">Thursday</option>
-                  <option value="friday">Friday</option>
-                </select>
-                </div>
+                	<div align="center">
+                		<select id="SelectIDSelectDay" class="selectDrop margin10">
+                  			<option value="monday">Monday</option>
+                  			<option value="tuesday">Tuesday</option>
+                  			<option value="wednesday">Wednesday</option>
+                  			<option value="thursday">Thursday</option>
+                  			<option value="friday">Friday</option>
+                		</select>
+                	</div>
 
-              	<div id="DivIDTime" align="center">10:00 - 20:00</div>
+              		<div id="DivIDTime" align="center">10:00 - 20:00</div>
 
-                <div id="slider-range" class="margin10"></div>
-                <button class="fg-button ui-state-default ui-corner-all" id="ButtonIDAdd">Add</button>
-                <button class="fg-button ui-state-default ui-corner-all" id="ButtonIDClearAll">Clear all</button>
-              </fieldset>
-            </div>
-
+	                <div id="slider-range" class="margin10"></div>
+    	            <button class="fg-button ui-state-default ui-corner-all" id="ButtonIDAdd">Add</button>
+        	        <button class="fg-button ui-state-default ui-corner-all" id="ButtonIDClearAll">Clear all</button>          
+             
+              </fieldset> 
+            </div>            
 		</fieldset>
+		
         </div>
 	</body>
 </html>

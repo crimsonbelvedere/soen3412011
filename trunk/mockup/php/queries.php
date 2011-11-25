@@ -12,12 +12,19 @@ $DEBUG=True;
 
 
 if($DEBUG){
+		
+	//$arr = array ('item1'=>"I love jquery4u",'item2'=>"You love jQuery4u",'item3'=>"We love jQuery4u");
+	//echo json_encode($arr);
+	
+	//print "Testing db call";
 	$result=get_courses('Engineering and Computer Science','Computer Science and Software Engineering','BEng in Software Engineering',2 );
-	$counter=0;
+	/*$counter=0;
 	foreach($result as $course){
 		echo $course->string();
 		$counter+=1;
-	}
+	}*/
+	echo json_encode($result);
+	
 }
 
 /**
@@ -61,6 +68,8 @@ function get_courses($faculty_description,$department_description, $program_desc
 		foreach($query_set as $course_row){
 			$course=new Course($course_row['id'],$semester);
 			$list[]=$course;
+			//print_r($couse);
+
 		}
 	}
 	return $list;
