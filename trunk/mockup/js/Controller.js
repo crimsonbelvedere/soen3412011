@@ -284,7 +284,7 @@ function AjaxRetreiveCourses(CourseCategory)
 		
   	$.ajax({
 	type: "GET",
-	url: "/Website/soen3412011/trunk/mockup/php/AjaxRequest.php",
+	url: "/Website/soen3412011/trunk/mockup/php/queries.php",
 	async: false,
 	data: { Faculty: GetFaculty(), Department: GetDepartment(), Program: GetProgram(), Semester: GetSemester(), Category: CourseCategory},
 
