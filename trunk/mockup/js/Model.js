@@ -244,6 +244,26 @@
 	[
 	
 	];
+	
+	var ConstraintsList = 
+	[
+	
+	];
+	
+	function GetConstraintsList()
+	{
+		return ConstraintsList;
+	}
+	
+	function ClearConstraintsList()
+	{
+		ConstraintsList.splice(0,ConstraintsList.length);				
+	}
+	
+	function AddToConstraintsList(ConstraintsObject)
+	{
+		ConstraintsList.push(ConstraintsObject);
+	}
 		
 	//  matrix that contains array of course combiantion	
 	var  CompleteCourseSectionTable = 

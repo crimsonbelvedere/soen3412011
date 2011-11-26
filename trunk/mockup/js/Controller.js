@@ -22,6 +22,63 @@ function IsTimeConflict(D1,S1,E1,D2,S2,E2)
 	}
 }
 
+function IsConstraintsTimeConflict(Section1)
+{
+	//retreive the time conflict array
+	var TimeConflictList= GetConstraintsList();
+	
+	if(Section1.Lecture === undefined)
+	{
+		return true;
+	}
+	else
+	{
+		for (var i=0; i < TimeConflictList.length; i++) 
+		{
+		
+			if(IsTimeConflict(Section1.Lecture.Days,Section1.Lecture.StartingTime,Section1.Lecture.EndTime,TimeConflictList[i].Days,TimeConflictList[i].StartingTime,TimeConflictList[i].EndingTime))
+			{
+				return true;
+			}  
+		}
+
+	}
+	
+	if(Section1.Tutorial === undefined)
+	{
+		return true;
+	}
+	else
+	{
+		for (var i=0; i < TimeConflictList.length; i++) 
+		{
+		
+			if(IsTimeConflict(Section1.Tutorial.Days,Section1.Tutorial.StartingTime,Section1.Tutorial.EndTime,TimeConflictList[i].Days,TimeConflictList[i].StartingTime,TimeConflictList[i].EndingTime))
+			{
+				return true;
+			}  
+		}
+	}
+	
+	
+	if(Section1.Laboratory === undefined)
+	{
+		return true;
+	}
+	else
+	{
+		for (var i=0; i < TimeConflictList.length; i++) 
+		{
+		
+			if(IsTimeConflict(Section1.Laboratory.Days,Section1.Laboratory.StartingTime,Section1.Laboratory.EndTime,TimeConflictList[i].Days,TimeConflictList[i].StartingTime,TimeConflictList[i].EndingTime))
+			{
+				return true;
+			}  
+		}
+	}
+	
+}
+
 function IsSectionTimeConfict(Section1,Section2)
 {
 	//a Section can contain a lecture and optionnaly a lab and a tutorial
@@ -138,10 +195,12 @@ function SolveCompleteCourseSectionTable()
 			var SectionCourseSequenceList= new Array();
 			
 			SectionCourseSequenceList.push(CompleteCourseSectionTable[0][i]);
-		 	//AddToCourseScheduleList(SectionCourseSequenceList); 
+
 		 	TemporaryScheduleSequence.push(SectionCourseSequenceList); 	
+		 			 
 		}
-		SetScheduleList(TemporaryScheduleSequence);
+		SetScheduleList(TemporaryScheduleSequence);	
+		
 		
 		//add the other course 2,3,4,5 to the first one.
 		for (var i = 1; i < CompleteCourseSectionTable.length; i++) 
@@ -157,7 +216,7 @@ function SolveCompleteCourseSectionTable()
 					//Create a temporary array to strore the new schedule
 					var SectionCourseSequenceList= new Array();
 					//store the already added section in the new array
-					//No verification of time conflict.
+
 					for (var k=0; k < ScheduleSequenceList[l].length; k++) 
 					{  
 						SectionCourseSequenceList.push(ScheduleSequenceList[l][k]);				
@@ -169,14 +228,17 @@ function SolveCompleteCourseSectionTable()
 					//Add to the temporary schedule
 					TemporaryScheduleSequence.push(SectionCourseSequenceList);
 				}
-			}
-			
-			//Remove colliding section courses
-			//backup the temporary schedule
-			var IndexToRemove= new Array();
-			for (var p=0; p < TemporaryScheduleSequence.length; p++) 
-			{
-			  
+			}						
+		}
+		
+		//Remove colliding section courses
+		//backup the temporary schedule
+		var IndexToRemove= new Array();
+		for (var p=0; p < TemporaryScheduleSequence.length; p++) 
+		{
+		  
+		  	if(TemporaryScheduleSequence[p].length > 1)
+		  	{
 			  	for (var j=0; j < TemporaryScheduleSequence[p].length - 1; j++) 
 			  	{
 				
@@ -184,11 +246,14 @@ function SolveCompleteCourseSectionTable()
 					{
 						//Compare course [j] and [k]
 						//if there is a time conflict remove the schedule from selection.
-						if(IsSectionTimeConfict(TemporaryScheduleSequence[p][j],TemporaryScheduleSequence[p][k]) == true)
+						if(IsSectionTimeConfict(TemporaryScheduleSequence[p][j],TemporaryScheduleSequence[p][k]) == true || IsConstraintsTimeConflict(TemporaryScheduleSequence[p][j]) == true || IsConstraintsTimeConflict(TemporaryScheduleSequence[p][k]) == true )
 						{
 							//alert("Remove schedule from temporary list.");
-							//TemporaryScheduleSequence.splice(p,1);
-							IndexToRemove.push(p);												
+							IndexToRemove.push(p);		
+												
+							//break the two loops this schedule is void.
+							k=TemporaryScheduleSequence[p].length;
+							j=TemporaryScheduleSequence[p].length - 1;					
 						}
 						else
 						{
@@ -197,29 +262,44 @@ function SolveCompleteCourseSectionTable()
 					}
 			 
 			 	}
-			  
-			}
-			
-			for (var p=0; p < IndexToRemove.length; p++) 
-			{
-				delete TemporaryScheduleSequence[IndexToRemove[p]];
-			}
-			
-			var MaximumScheduleSize = TemporaryScheduleSequence.length;
-			for (var p=0; p < MaximumScheduleSize; p++) 
-			{
-				if(TemporaryScheduleSequence[p] === undefined)
+		 	}
+		 	else
+		 	{
+	 			//Compare course [j] and [k]
+				//if there is a time conflict remove the schedule from selection.
+				if(IsConstraintsTimeConflict(TemporaryScheduleSequence[p][0]) == true)
 				{
-					TemporaryScheduleSequence.splice(p,1);
+					//alert("Remove schedule from temporary list.");
+					IndexToRemove.push(p);												
 				}
-			}
-			
-			//clean up the array
-			TemporaryScheduleSequence = TemporaryScheduleSequence.filter(function(){return true});	
-			
-			SetScheduleList(TemporaryScheduleSequence);
+				else
+				{
+					//alert("No problem between between schedules");	
+				}
+
+		 	}
+		  
 		}
 		
+		for (var p=0; p < IndexToRemove.length; p++) 
+		{
+			delete TemporaryScheduleSequence[IndexToRemove[p]];
+		}
+		
+		var MaximumScheduleSize = TemporaryScheduleSequence.length;
+		for (var p=0; p < MaximumScheduleSize; p++) 
+		{
+			if(TemporaryScheduleSequence[p] === undefined)
+			{
+				TemporaryScheduleSequence.splice(p,1);
+			}
+		}
+		
+		//clean up the array
+		TemporaryScheduleSequence = TemporaryScheduleSequence.filter(function(){return true});	
+		
+		SetScheduleList(TemporaryScheduleSequence);
+	
 		//ClearCourseFromScheduleList();
 		
 	alert("All possible valid schedule are created."); 	
@@ -284,7 +364,7 @@ function AjaxRetreiveCourses(CourseCategory)
 		
   	$.ajax({
 	type: "GET",
-	url: "/Website/soen3412011/trunk/mockup/php/queries.php",
+	url: "/Website/soen3412011/trunk/mockup/php/AjaxRequest.php",
 	async: false,
 	data: { Faculty: GetFaculty(), Department: GetDepartment(), Program: GetProgram(), Semester: GetSemester(), Category: CourseCategory},
 
@@ -615,15 +695,54 @@ $(document).ready(function()
 	$("#ButtonIDAdd").click(function() 
 	{ 
 		alert($("#SelectIDSelectDay").val());
-		alert(SlidergetTime(GetLeftSliderHour(), GetLeftSliderMinute()));
-		alert(SlidergetTime(GetRigthSliderHour(), GetRigthSliderMinute()));
-		//+ ' - ' + getTime(Sliderhours1, Sliderminutes1));
+		alert(SlidergetTime(GetLeftSliderHour(), GetLeftSliderMinute())+":"+"00");
+		alert(SlidergetTime(GetRigthSliderHour(), GetRigthSliderMinute())+":"+"00");
+		
+		//Create a filter object and add it to the complete schedule
+		var ConstraintsItem = { };
+		ConstraintsItem.Name = "CONSTRAINTS";
+		ConstraintsItem.Days = $("#SelectIDSelectDay").val(); 
+		ConstraintsItem.StartingTime = SlidergetTime(GetLeftSliderHour(), GetLeftSliderMinute())+":"+"00";
+		ConstraintsItem.EndingTime = SlidergetTime(GetRigthSliderHour(), GetRigthSliderMinute())+":"+"00";
+		
+		var CurrentConstraints = GetConstraintsList();
+		
+		for (var i=0; i < CurrentConstraints.length; i++) 
+		{
+			if(IsTimeConflict(CurrentConstraints[i].Days,CurrentConstraints[i].StartingTime,CurrentConstraints[i].EndingTime,ConstraintsItem.Days,ConstraintsItem.StartingTime,ConstraintsItem.EndingTime))
+			{
+				break;	
+			}	
+				  
+		}
+		
+		if(i == CurrentConstraints.length)
+		{
+			
+			AddToConstraintsList(ConstraintsItem);
+			
+			//Solve and filter matrix
+			SolveCompleteCourseSectionTable();
+			
+			SetScheduleNumber(0);
+			
+			//change calendar data
+			NotifyView("constraints");
+		}	
 	});
 	
 	
 	$("#ButtonIDClearAll").click(function() 
 	{ 
-			
+		ClearConstraintsList();
+		
+		//Solve and filter matrix
+		SolveCompleteCourseSectionTable();
+		
+		SetScheduleNumber(0);
+		
+		//change calendar data
+		NotifyView("constraints");
 	});
 });
 		

@@ -68,15 +68,34 @@
 			values: [ 600, 1200 ],
 			step: 15,
 			slide: function(event, ui) {
+			    
 			    SetLeftSliderMinute(parseInt(ui.values[0] % 60));
-                SetLeftSliderHour(parseInt(ui.values[0] / 60 % 24));
-                SetRigthSliderMinute(parseInt(ui.values[1] % 60));
-                SetRigthSliderHour(parseInt(ui.values[1] / 60 % 24));
+			    var LeftSliderHour = parseInt(ui.values[0] / 60 % 24);		
+			    if(LeftSliderHour < 10)
+			    {
+			    	LeftSliderHour="0"+LeftSliderHour;
+			   	}		   
+                SetLeftSliderHour(LeftSliderHour);
+                
+                SetRigthSliderMinute(parseInt(ui.values[1] % 60));                
+                var RigthSliderHour = parseInt(ui.values[1] / 60 % 24);		
+			    if(RigthSliderHour < 10)
+			    {
+			    	RigthSliderHour="0"+RigthSliderHour;
+			   	}	
+                SetRigthSliderHour(RigthSliderHour);
+                             
                 $("#DivIDTime").text(SlidergetTime(GetLeftSliderHour(), GetLeftSliderMinute()) + ' - ' + SlidergetTime(GetRigthSliderHour(), GetRigthSliderMinute()));
             }
 		});
         //http://marcneuwirth.com/blog/2010/02/21/using-a-jquery-ui-slider-to-select-a-time-range/
-       
+		SetLeftSliderMinute(parseInt(600 % 60));
+        SetLeftSliderHour(parseInt(600 / 60 % 24));
+        SetRigthSliderMinute(parseInt(1200 % 60));
+        SetRigthSliderHour(parseInt(1200 / 60 % 24));
+        $("#DivIDTime").text(SlidergetTime(GetLeftSliderHour(), GetLeftSliderMinute()) + ' - ' + SlidergetTime(GetRigthSliderHour(), GetRigthSliderMinute()));
+
+		
        		var FirtMondayOfThisWeek = FindFirstMondayOfTheWeek();	
        		
 			//Create Calendar using JQuery
@@ -94,7 +113,7 @@
 			defaultView: 'agendaWeek',
 			slotMinutes: 15,
 			minTime:'8:45',
-			maxTime: '22:00',
+			maxTime: '22:30',
 			weekends: false,
 			editable: true,
 			eventSources: 
@@ -102,18 +121,17 @@
 	        // your event source
 	        //Must put the first 0 digit if the number is less than 10., 08:45:00
 	        	{
-		            /*events:
+		            events:
 		            [
 					    {
 					        title  : 'ENGR233\n\rDR HOLO\n\r H-535',			        
-					        start  : YearNumber+"-"+MonthNumber+"-"+FirtMondayOfThisWeek+" 09:15:00",
-					        end	   : YearNumber+"-"+MonthNumber+"-"+FirtMondayOfThisWeek+" 13:00:00",
+					        start  : "2011"+"-"+"11"+"-"+FirtMondayOfThisWeek+" 08:45:00",
+					        end	   : "2011"+"-"+"11"+"-"+FirtMondayOfThisWeek+" 22:30:00",
 					        allDay : false // will make the time show
 					    }
 					],
 					color: 'white',     // an option!
             		textColor: 'red' // an option!
-            		*/
 				}
 			]
 			});
@@ -384,7 +402,7 @@
 		</div>-->
 
 		<fieldset id="FieldSetIDSchedule" class="ui-corner-all">
-  			<legend id="LegendIDSchedule" class="CssLegend">Schedule</legend>
+  			<legend id="LegendIDSchedule" class="CssLegend">Schedule 0/0</legend>
 
     		<div id="DivIDNavigation">
     				<button id="ButtonIDBack">Back</button>
@@ -404,11 +422,11 @@
 
                 	<div align="center">
                 		<select id="SelectIDSelectDay" class="selectDrop margin10">
-                  			<option value="monday">Monday</option>
-                  			<option value="tuesday">Tuesday</option>
-                  			<option value="wednesday">Wednesday</option>
-                  			<option value="thursday">Thursday</option>
-                  			<option value="friday">Friday</option>
+                  			<option value="M----">Monday</option>
+                  			<option value="-T---">Tuesday</option>
+                  			<option value="--W--">Wednesday</option>
+                  			<option value="---T-">Thursday</option>
+                  			<option value="----F">Friday</option>
                 		</select>
                 	</div>
 
