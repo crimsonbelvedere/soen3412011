@@ -15,6 +15,7 @@ class Course {
 		$query_set=$query_set[0];
 		$this->Description=$query_set['description'];
 		$this->Name=$query_set['title'];
+		$this->Number=$query_set['number'];
 		$this->populate_lecture_arr($term);
 		if($this->LectureArray!=Null){
 			$this->TutorialArray=$this->LectureArray[0]->tutorial_array();
@@ -23,7 +24,7 @@ class Course {
 		$db_adapter=new db_adapter();
 		$query="select course_group from group_has_course where course=".$this->pk();
 		$query_set=$db_adapter->query($query);
-		
+
 		/**
 		 * TODO: make sure to change this hard coded values.
 		 * Namely, course_group (this) table is a tree where the leaves nodes are the course_group table-row.
@@ -60,6 +61,7 @@ class Course {
 		}
 	}
 	public $Name;
+	public $Number;
 	public $Description;
 	public $NumberOfCredits;
 	public $LectureArray= array();
@@ -98,9 +100,9 @@ class Course {
 	 * 		Web Services and Applications (WSA) Option
 	 * 		Real-Time, Embedded, and Avionics Software (REA) Option
 	 * 
-	 * 	 *  CONTRAINT: As stated ealier, the values at index in both array form a tuple.
+	 * 	 *  CONSTRAINT: As stated ealier, the values at index in both array form a tuple.
 	 *  	If at class_sort[index]==Engineering core, then class_type[index]==Core Course
-	 *  	This would VIOLATE the containt: 
+	 *  	This would VIOLATE the constraint:
 	 *  	class_sort[index]==Computer Games and class_type[index]==Elective
 	 */
 	public $class_sort=array();
@@ -109,19 +111,22 @@ class Course {
 	function populate_lecture_arr($term){
 		$db_adapter=new db_adapter();
 		$query="select * from schedule where course=".$this->pk()." and schedule_type in
-		(select id from schedule_type where description='Lecture') and 
+		(select id from schedule_type where description='Lecture') and
 		term=".$term;
 		$query_set=$db_adapter->query($query);
-		foreach($query_set as $schedule){
-			$this->LectureArray[]=new Lecture($schedule['id'],$term);
-		}
+        if ($db_adapter->query($query)){
+			foreach($query_set as $schedule){
+				$this->LectureArray[]=new Lecture($schedule['id'],$term);
+			}
+        }
 	}
+
 	function pk(){
 		return $this->pk;
-		
 	}
+
 	function string(){
-		echo 'Course: <br />Name:'.$this->Name.'<br />'.'Description:'.$this->Description;
+		echo '<strong><em>COURSE</em></strong><br />Number: '.$this->Number.'<br />'.'Name: '.$this->Name.'<br />'.'Description: '.$this->Description;
 		$counter=0;
 		echo count($this->class_sort);
 		foreach($this->class_type as $class_type){
@@ -133,7 +138,6 @@ class Course {
 			foreach($this->LectureArray as $lecture){
 				echo $lecture->string().'<br /><br />';
 			}
-			
 		}
 		if($this->TutorialArray!=Null){
 			foreach($this->TutorialArray as $tutorial){
@@ -145,10 +149,10 @@ class Course {
 				echo $lab->string();
 			}
 		}
-		echo '<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />';
+        echo "<hr>";
 	}
 }
-// A lecture is a type of schedule table. 
+// A lecture is a type of schedule table.
 class Lecture {
 	private $pk;
 	private $course;
@@ -181,7 +185,6 @@ class Lecture {
 	    $this->Classrom=$query_set['location'];
 	    $this->LectureID=$query_set['id'];
 	    $this->course=$query_set['course'];
-	    
 	}
 	
 	function populate_tut_arr(){
@@ -215,9 +218,9 @@ class Lecture {
 		//echo '<br />inside string lecture.<br />Tutorial array:'.count($this->TutorialArray).'<br />Lab array:'.count($this->LaboratoryArray). '<br />';
 		//echo count($this->TutorialArray);
 		//echo count($this->LaboratoryArray);
-		$string= '<br />Lecture: <br />'.'Days:'.$this->Days.'<br />'.'Start:'.$this->StartingTime.'<br />'.
-		'End:'.$this->EndTime.'<br />'.'Professor:'.$this->Professor.'<br />'.
-		'Class room'.$this->Classrom.'<br />'.'Lecture_id:'.$this->LectureID.'<br />Term:'.$this->term.'<br />';
+		$string= '<br /><strong>Lecture</strong><br />'.'Days: '.$this->Days.'<br />'.'Start: '.$this->StartingTime.'<br />'.
+		'End: '.$this->EndTime.'<br />'.'Professor: '.$this->Professor.'<br />'.
+		'Class room: '.$this->Classrom.'<br />'.'Lecture_id: '.$this->LectureID.'<br />Term: '.$this->term.'<br />';
 		
 		return $string;
 	}
@@ -249,9 +252,9 @@ class Tutorial {
 	public $Classrom;
 	public $TutorialID;
 	function string(){
-		return 'TUTORIAL:<br />'.'Days:'.$this->Days.'<br />'.'Start:'.$this->StartingTime.'<br />'.
-		'End:'.$this->EndTime.'<br />'.'Professor:'.$this->Professor.'<br />'.
-		'Class room'.$this->Classrom.'<br />'.'Tutorial wonderbar:'.$this->TutorialID.'<br /><br />';
+		return '<strong>Tutorial</strong><br />'.'Days: '.$this->Days.'<br />'.'Start: '.$this->StartingTime.'<br />'.
+		'End: '.$this->EndTime.'<br />'.'Professor: '.$this->Professor.'<br />'.
+		'Class room: '.$this->Classrom.'<br />'.'Tutorial wonderbar: '.$this->TutorialID.'<br /><br />';
 	}
 }
 
@@ -273,9 +276,9 @@ class Laboratory {
 	
 	function string(){
 		
-		return 'LABORATORY:<br />'.'Days:'.$this->Days.'<br />'.'Start:'.$this->StartingTime.'<br />'.
-		'End:'.$this->EndTime.'<br />'.'Professor:'.$this->Professor.'<br />'.
-		'Class room'.$this->Classrom.'<br />'.'Laboratory:'.$this->LaboratoryID.'<br /><br />';
+		return '<strong>Laboratory</strong><br />'.'Days: '.$this->Days.'<br />'.'Start: '.$this->StartingTime.'<br />'.
+		'End: '.$this->EndTime.'<br />'.'Professor: '.$this->Professor.'<br />'.
+		'Class room: '.$this->Classrom.'<br />'.'Laboratory: '.$this->LaboratoryID.'<br /><br />';
 	}
 }
 ?>
