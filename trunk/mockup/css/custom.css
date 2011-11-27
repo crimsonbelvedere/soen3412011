@@ -5,6 +5,16 @@ body {
 	font-size:12px;
 }
 
+#DivIDTopbanner {
+    height: 90px;
+    background-image:url('../img/topbanner.jpg');
+    background-repeat: no-repeat;
+    background-attachment:fixed;
+    background-position:center top;
+    background-color: black;
+    margin: 0;
+}
+
 #FieldSetIDSelectFieldSets {
 	position:relative;
 	left:0px;
@@ -17,7 +27,7 @@ body {
 	margin-right: 10px;
 	margin-bottom: 10px;
 	margin-left: 10px;
-	
+
 }
 
 #FieldSetIDStudentInfo {
@@ -70,7 +80,7 @@ body {
 
 #DfnIDPassword{
 	position:relative;
-	
+
 	float: left;
 	clear: left;
 	color: white;
@@ -78,7 +88,7 @@ body {
 
 #InputIDUserName{
 	position:relative;
-	
+
 	width:160px;
 	float: right;
 	clear: right;
@@ -127,7 +137,7 @@ body {
 
 #FieldSetIDSchedule {
 	position:relative;
-	top:0px;	
+	top:0px;
 	/*float: right;
 	clear: right;*/
 	margin-top: 10px;
@@ -161,12 +171,12 @@ body {
     margin-bottom: 0px;
     margin-left: 0px;
     margin-right: 0px;
-    margin-top: 0px;	
-	padding-bottom: 0px; 
+    margin-top: 0px;
+	padding-bottom: 0px;
 	padding-left: 0px;
 	padding-right: 0px;
 	padding-top: 0px;
-	
+
     /*margin: 20px, 0px, 0px, 40px;*/
     /*padding: 0px 10px 10px;*/
     width: 200px;
@@ -215,7 +225,7 @@ button.fg-button { width:auto; overflow:visible; }
 .fg-button-icon-left .ui-icon { right: auto; left: .2em; margin-left: 0; }
 .fg-button-icon-right .ui-icon { left: auto; right: .2em; margin-left: 0; }
 
-.fg-button-icon-solo { display:block; width:8px; text-indent: -9999px; }	
+.fg-button-icon-solo { display:block; width:8px; text-indent: -9999px; }
 .fg-buttonset { float:left; }
 .fg-buttonset .fg-button { float: left; }
 .fg-buttonset-single .fg-button,
@@ -284,12 +294,12 @@ button.fg-button { width:auto; overflow:visible; }
     color: white;
 
 	float: left;
-	
+
 	margin-top: 10px;
 	margin-right: 10px;
 	margin-bottom: 10px;
 	margin-left: 10px;
-	
+
 	width: 105px;
 	height: 24px;
 	position: relative;
@@ -300,12 +310,12 @@ button.fg-button { width:auto; overflow:visible; }
     color: #333333;
 
 	float: left;
-	
+
 	margin-top: 10px;
 	margin-right: 10px;
 	margin-bottom: 10px;
 	margin-left: 10px;
-	
+
 	background: url(../img/chkboxbg.png) no-repeat 0 0;
 	width: 105px;
 	height: 24px;
@@ -315,7 +325,7 @@ button.fg-button { width:auto; overflow:visible; }
 
 
 .checklist li a.checkbox-select {
-	
+
 	display: block;
 	float: right;
 	position: absolute;
@@ -329,7 +339,7 @@ button.fg-button { width:auto; overflow:visible; }
 }
 
 .checklist li a.checkbox-deselect {
-	
+
 	display: block;
 	float: right;
 	position: absolute;
@@ -347,12 +357,12 @@ button.fg-button { width:auto; overflow:visible; }
 	color: green;
 
 	float: left;
-	
+
 	margin-top: 10px;
 	margin-right: 10px;
 	margin-bottom: 10px;
 	margin-left: 10px;
-	
+
 	background: url(../img/chkboxbg.png) no-repeat 0 0;
 	width: 105px;
 	height: 24px;
@@ -523,7 +533,7 @@ button.fg-button { width:auto; overflow:visible; }
 .fg-button-icon-left .ui-icon { right: auto; left: .2em; margin-left: 0; }
 .fg-button-icon-right .ui-icon { left: auto; right: .2em; margin-left: 0; }
 
-.fg-button-icon-solo { display:block; width:8px; text-indent: -9999px; }	
+.fg-button-icon-solo { display:block; width:8px; text-indent: -9999px; }
 .fg-buttonset { float:left; }
 .fg-buttonset .fg-button { float: left; }
 .fg-buttonset-single .fg-button,
