@@ -88,9 +88,11 @@ CREATE  TABLE IF NOT EXISTS `soen341`.`Schedule` (
   `end` TIME NOT NULL ,
   `days` VARCHAR(40) NOT NULL ,
   `schedule_type` INT NOT NULL ,
+  `lecture` INT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_Section_Course1` (`course` ASC) ,
   INDEX `fk_Schedule_ScheduleType1` (`schedule_type` ASC) ,
+  INDEX `fk_Schedule_Schedule1` (`lecture` ASC) ,
   CONSTRAINT `fk_Section_Course1`
     FOREIGN KEY (`course` )
     REFERENCES `soen341`.`Course` (`id` )
@@ -99,6 +101,11 @@ CREATE  TABLE IF NOT EXISTS `soen341`.`Schedule` (
   CONSTRAINT `fk_Schedule_ScheduleType1`
     FOREIGN KEY (`schedule_type` )
     REFERENCES `soen341`.`Schedule_type` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Schedule_Schedule1`
+    FOREIGN KEY (`lecture` )
+    REFERENCES `soen341`.`Schedule` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -110,14 +117,14 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `soen341`.`Prerequisite_group` ;
 
 CREATE  TABLE IF NOT EXISTS `soen341`.`Prerequisite_group` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
   `course` INT NOT NULL ,
   `prerequisite` INT NOT NULL ,
   `prerequisite_group` INT NOT NULL ,
   `concurrent` TINYINT(1)  NOT NULL ,
-  PRIMARY KEY (`id`) ,
+  `id` INT NOT NULL AUTO_INCREMENT ,
   INDEX `fk_Course_has_Prerequisites_Course1` (`course` ASC) ,
   INDEX `fk_Course_has_Prerequisites_Course2` (`prerequisite` ASC) ,
+  PRIMARY KEY (`id`) ,
   CONSTRAINT `fk_Course_has_Prerequisites_Course1`
     FOREIGN KEY (`course` )
     REFERENCES `soen341`.`Course` (`id` )
@@ -146,6 +153,30 @@ CREATE  TABLE IF NOT EXISTS `soen341`.`Student` (
   `program_option` VARCHAR(150) NOT NULL ,
   `program` VARCHAR(150) NOT NULL ,
   PRIMARY KEY (`id`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `soen341`.`Adjacency_list`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `soen341`.`Adjacency_list` ;
+
+CREATE  TABLE IF NOT EXISTS `soen341`.`Adjacency_list` (
+  `course` INT NOT NULL ,
+  `adjacent_course` INT NOT NULL ,
+  INDEX `fk_AdjacencyList_Course1` (`course` ASC) ,
+  INDEX `fk_AdjacencyList_Course2` (`adjacent_course` ASC) ,
+  PRIMARY KEY (`course`, `adjacent_course`) ,
+  CONSTRAINT `fk_AdjacencyList_Course1`
+    FOREIGN KEY (`course` )
+    REFERENCES `soen341`.`Course` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_AdjacencyList_Course2`
+    FOREIGN KEY (`adjacent_course` )
+    REFERENCES `soen341`.`Course` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -242,8 +273,7 @@ SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
-USE soen341;
-
+use soen341;
 INSERT INTO faculty (description) VALUES ('Engineering and Computer Science');
 
 INSERT INTO department(description,faculty) VALUES ('Computer Science and Software Engineering','1');
@@ -680,6 +710,23 @@ INSERT INTO course (id, title, number, description, department) VALUES ('138','C
 meet at regular intervals. Team members will give a presentation of their contribution to the project.','1');
 INSERT INTO course (id, title, number, description, department) VALUES ('139','Topics in Software Engineering','SOEN 498','This course may be offered in a given year upon the authorization of the Department. The content may vary from offering to
 offering and will be chosen to complement the available elective courses.','1');
+
+
+
+insert into group_has_course values(6,1);
+insert into group_has_course values (5,1);
+insert into group_has_course values (5,2);
+insert into group_has_course values (4,2);
+insert into group_has_course values (6,4);
+insert into group_has_course values (7,1);
+insert into group_has_course values (1,6);
+insert into group_has_course values (7,4);
+insert into group_has_course values (1,2);
+insert into group_has_course values (7,7);
+insert into group_has_course values (1,8);
+
+
+
 
 INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('4','USHINSKY, SOPHIA','6','LOY HB-130','14:45','16:00','-T-J---','1');
 INSERT INTO schedule (term,professor,course,location,begin,end,days,schedule_type) VALUES ('2','GRANT, JAMES','8','LOY SP-S110','11:45','13:00','-T-J---','1');
@@ -1607,7 +1654,6 @@ INSERT INTO group_has_course (course_group,course) VALUES ('6','46');
 INSERT INTO group_has_course (course_group,course) VALUES ('6','47');
 INSERT INTO group_has_course (course_group,course) VALUES ('6','48');
 INSERT INTO group_has_course (course_group,course) VALUES ('7','6');
-INSERT INTO group_has_course (course_group,course) VALUES ('7','7');
 INSERT INTO group_has_course (course_group,course) VALUES ('7','8');
 INSERT INTO group_has_course (course_group,course) VALUES ('7','9');
 INSERT INTO group_has_course (course_group,course) VALUES ('7','16');
@@ -1623,12 +1669,6 @@ INSERT INTO group_has_course (course_group,course) VALUES ('7','114');
 INSERT INTO group_has_course (course_group,course) VALUES ('7','115');
 INSERT INTO group_has_course (course_group,course) VALUES ('7','116');
 INSERT INTO group_has_course (course_group,course) VALUES ('7','117');
-INSERT INTO group_has_course (course_group,course) VALUES ('8','45');
-INSERT INTO group_has_course (course_group,course) VALUES ('8','53');
-INSERT INTO group_has_course (course_group,course) VALUES ('8','54');
-INSERT INTO group_has_course (course_group,course) VALUES ('8','62');
-INSERT INTO group_has_course (course_group,course) VALUES ('8','66');
-INSERT INTO group_has_course (course_group,course) VALUES ('8','67');
 INSERT INTO group_has_course (course_group,course) VALUES ('9','49');
 INSERT INTO group_has_course (course_group,course) VALUES ('9','59');
 INSERT INTO group_has_course (course_group,course) VALUES ('9','69');
