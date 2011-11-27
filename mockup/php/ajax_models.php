@@ -15,8 +15,9 @@ class Course {
 		$query_set=$query_set[0];
 		$this->Description=$query_set['description'];
 		$this->Name=$query_set['title'];
-		$this->Number=$query_set['number'];
-		$this->populate_lecture_arr($term);
+		if($term!=null){
+			$this->populate_lecture_arr($term);
+		}
 		if($this->LectureArray!=Null){
 			$this->TutorialArray=$this->LectureArray[0]->tutorial_array();
 			$this->LaboratoryArray=$this->LectureArray[0]->lab_array();
@@ -24,7 +25,7 @@ class Course {
 		$db_adapter=new db_adapter();
 		$query="select course_group from group_has_course where course=".$this->pk();
 		$query_set=$db_adapter->query($query);
-
+		
 		/**
 		 * TODO: make sure to change this hard coded values.
 		 * Namely, course_group (this) table is a tree where the leaves nodes are the course_group table-row.
@@ -61,7 +62,6 @@ class Course {
 		}
 	}
 	public $Name;
-	public $Number;
 	public $Description;
 	public $NumberOfCredits;
 	public $LectureArray= array();
@@ -100,33 +100,38 @@ class Course {
 	 * 		Web Services and Applications (WSA) Option
 	 * 		Real-Time, Embedded, and Avionics Software (REA) Option
 	 * 
-	 * 	 *  CONSTRAINT: As stated ealier, the values at index in both array form a tuple.
+	 * 	 *  CONTRAINT: As stated ealier, the values at index in both array form a tuple.
 	 *  	If at class_sort[index]==Engineering core, then class_type[index]==Core Course
-	 *  	This would VIOLATE the constraint:
+	 *  	This would VIOLATE the containt: 
 	 *  	class_sort[index]==Computer Games and class_type[index]==Elective
 	 */
 	public $class_sort=array();
-
+	/**
+<<<<<<< .mine
+	
+	
+	//public $PrequisiteArray = array(); //array of string course name
+	public $SectionArray = array();
+=======
+>>>>>>> .r32
+**/
 
 	function populate_lecture_arr($term){
 		$db_adapter=new db_adapter();
 		$query="select * from schedule where course=".$this->pk()." and schedule_type in
-		(select id from schedule_type where description='Lecture') and
+		(select id from schedule_type where description='Lecture') and 
 		term=".$term;
 		$query_set=$db_adapter->query($query);
-        if ($db_adapter->query($query)){
-			foreach($query_set as $schedule){
-				$this->LectureArray[]=new Lecture($schedule['id'],$term);
-			}
-        }
+		foreach($query_set as $schedule){
+			$this->LectureArray[]=new Lecture($schedule['id'],$term);
+		}
 	}
-
 	function pk(){
 		return $this->pk;
+		
 	}
-
 	function string(){
-		echo '<strong><em>COURSE</em></strong><br />Number: '.$this->Number.'<br />'.'Name: '.$this->Name.'<br />'.'Description: '.$this->Description;
+		echo 'Course: <br />Name:'.$this->Name.'<br />'.'Description:'.$this->Description;
 		$counter=0;
 		echo count($this->class_sort);
 		foreach($this->class_type as $class_type){
@@ -138,6 +143,7 @@ class Course {
 			foreach($this->LectureArray as $lecture){
 				echo $lecture->string().'<br /><br />';
 			}
+			
 		}
 		if($this->TutorialArray!=Null){
 			foreach($this->TutorialArray as $tutorial){
@@ -149,10 +155,10 @@ class Course {
 				echo $lab->string();
 			}
 		}
-        echo "<hr>";
+		echo '<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />';
 	}
 }
-// A lecture is a type of schedule table.
+// A lecture is a type of schedule table. 
 class Lecture {
 	private $pk;
 	private $course;
@@ -185,6 +191,7 @@ class Lecture {
 	    $this->Classrom=$query_set['location'];
 	    $this->LectureID=$query_set['id'];
 	    $this->course=$query_set['course'];
+	    
 	}
 	
 	function populate_tut_arr(){
@@ -218,9 +225,9 @@ class Lecture {
 		//echo '<br />inside string lecture.<br />Tutorial array:'.count($this->TutorialArray).'<br />Lab array:'.count($this->LaboratoryArray). '<br />';
 		//echo count($this->TutorialArray);
 		//echo count($this->LaboratoryArray);
-		$string= '<br /><strong>Lecture</strong><br />'.'Days: '.$this->Days.'<br />'.'Start: '.$this->StartingTime.'<br />'.
-		'End: '.$this->EndTime.'<br />'.'Professor: '.$this->Professor.'<br />'.
-		'Class room: '.$this->Classrom.'<br />'.'Lecture_id: '.$this->LectureID.'<br />Term: '.$this->term.'<br />';
+		$string= '<br />Lecture: <br />'.'Days:'.$this->Days.'<br />'.'Start:'.$this->StartingTime.'<br />'.
+		'End:'.$this->EndTime.'<br />'.'Professor:'.$this->Professor.'<br />'.
+		'Class room'.$this->Classrom.'<br />'.'Lecture_id:'.$this->LectureID.'<br />Term:'.$this->term.'<br />';
 		
 		return $string;
 	}
@@ -252,9 +259,9 @@ class Tutorial {
 	public $Classrom;
 	public $TutorialID;
 	function string(){
-		return '<strong>Tutorial</strong><br />'.'Days: '.$this->Days.'<br />'.'Start: '.$this->StartingTime.'<br />'.
-		'End: '.$this->EndTime.'<br />'.'Professor: '.$this->Professor.'<br />'.
-		'Class room: '.$this->Classrom.'<br />'.'Tutorial wonderbar: '.$this->TutorialID.'<br /><br />';
+		return 'TUTORIAL:<br />'.'Days:'.$this->Days.'<br />'.'Start:'.$this->StartingTime.'<br />'.
+		'End:'.$this->EndTime.'<br />'.'Professor:'.$this->Professor.'<br />'.
+		'Class room'.$this->Classrom.'<br />'.'Tutorial wonderbar:'.$this->TutorialID.'<br /><br />';
 	}
 }
 
@@ -276,9 +283,58 @@ class Laboratory {
 	
 	function string(){
 		
-		return '<strong>Laboratory</strong><br />'.'Days: '.$this->Days.'<br />'.'Start: '.$this->StartingTime.'<br />'.
-		'End: '.$this->EndTime.'<br />'.'Professor: '.$this->Professor.'<br />'.
-		'Class room: '.$this->Classrom.'<br />'.'Laboratory: '.$this->LaboratoryID.'<br /><br />';
+		return 'LABORATORY:<br />'.'Days:'.$this->Days.'<br />'.'Start:'.$this->StartingTime.'<br />'.
+		'End:'.$this->EndTime.'<br />'.'Professor:'.$this->Professor.'<br />'.
+		'Class room'.$this->Classrom.'<br />'.'Laboratory:'.$this->LaboratoryID.'<br /><br />';
 	}
+}
+class student{
+	public $pk;
+	public $first_name;
+	public $last_name;
+	public $password;
+	public $status;
+	public $program_option;
+	public $program;
+	public $taken_courses=array();
+	function program_option_description(){
+		$query='select description from course_group where id='.$this->program_option;
+		$db_adapter=new db_adapter();
+		
+		$query_set=$db_adapter->query($query);
+		if($query_set!=null){
+			return $query_set[0]['description'];
+		}
+	}
+	function __construct($id){
+		$query_string='select * from student where id='.$id;
+		$db_adapter=new db_adapter();
+		$query_set=$db_adapter->query($query_string);
+		$query_set=$query_set[0];
+		$this->pk=$query_set['id'];
+		$this->first_name=$query_set['first_name'];
+		$this->last_name=$query_set['last_name'];
+		$this->password=$query_set['password'];
+		$this->program_option=$query_set['program_option'];
+		$this->program=$query_set['program'];
+		$this->status=$query_set['status'];
+		$this->populate_courses_taken();
+	}
+	function populate_courses_taken(){
+		$query_string='SELECT course
+						FROM student_has_course AS sc
+						WHERE sc.student ='.$this->pk;
+		$db_adapter=new db_adapter();
+		$query_set=$db_adapter->query($query_string);
+		if(count($query_set)>0){
+			foreach ($query_set as $course_row){
+				$this->taken_courses[]=new Course($course_row['course'],null);
+			}
+		}
+	}
+	function courses_taken(){
+		return $this->taken_courses;
+	}
+	
 }
 ?>
