@@ -261,10 +261,8 @@ button.fg-button { width:auto; overflow:visible; }
 }
 
 .DropdownProgram {
-	position:relative;
     margin-left: 24px;
-	float: left;
-    width: 260px;
+ 	width: 260px;
 }
 
 .margin10 {

@@ -9,6 +9,11 @@
 		*/
 	};
 	
+	var AllCourseList = 
+	[ 
+	
+	];
+	
 	var CourseListCoreEngineering = 
 	[
 		/* 
@@ -307,7 +312,7 @@
 		{			
 			for (var j=0; j < CompleteCourseSectionTable[i].length; j++) 
 			{	
-				if(CompleteCourseSectionTable[i][j].Name == Course.Name)
+				if(CompleteCourseSectionTable[i][j].Number == Course.Number)
 				{
 					//alert("Course found, remove it from the list");
 					CompleteCourseSectionTable.splice(i,1);			
@@ -334,7 +339,7 @@
 	{
 		for (var i=0; i < CourseListSelection.length; i++) 
 		{			
-			if(CourseListSelection[i].Name == Course.Name)
+			if(CourseListSelection[i].Number == Course.Number)
 			{
 				//alert("Course found, remove it from the list");
 				CourseListSelection.splice(i,1);			
@@ -343,6 +348,17 @@
 			
 		}
 	}
+	
+	//Course List
+	function SetAllCourseList(Courses)
+	{
+		AllCourseList = Courses;
+	}
+	function GetAllCourseList()
+	{
+		return AllCourseList;
+	}
+	
 	
 	//Course List FieldEngineeing
 	function SetCourseListFieldEngineering(Courses)
