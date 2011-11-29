@@ -53,53 +53,63 @@ function NotifyView(ElementID)
 			
 			for (var i=0; i < ScheduleSequenceList[ScheduleNumber].length; i++) 
 			{
-			 	
-				//Conver day string into day array
-				var DayArr = Daystr(ScheduleSequenceList[ScheduleNumber][i].Lecture.Days);
-				for (var j=0; j < DayArr.length; j++) 
+			 	//Conver day string into day array
+				if(ScheduleSequenceList[ScheduleNumber][i].Lecture !== undefined)
 				{
-					if(DayArr[j] == 1)
+					//Conver day string into day array
+					var DayArr = Daystr(ScheduleSequenceList[ScheduleNumber][i].Lecture.Days);
+					for (var j=0; j < DayArr.length; j++) 
 					{
-						var DayOfTheWeek=FirtMondayOfThisWeek+j;
-						var EventLecture = {};			
-						
-						EventLecture.title 	= ScheduleSequenceList[ScheduleNumber][i].Name+" Lecture";		     
-						EventLecture.start	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[ScheduleNumber][i].Lecture.StartingTime;
-						EventLecture.end	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[ScheduleNumber][i].Lecture.EndTime;
-						EventLecture.allDay 	= false;
-						EventObjects.events.push(EventLecture);
-					}		  
+						if(DayArr[j] == 1)
+						{
+							var DayOfTheWeek=FirtMondayOfThisWeek+j;
+							var EventLecture = {};			
+							
+							EventLecture.title 	= ScheduleSequenceList[ScheduleNumber][i].Number+" LECTURE\n\r"+ScheduleSequenceList[ScheduleNumber][i].Lecture.Professor+"\n\r"+ScheduleSequenceList[ScheduleNumber][i].Lecture.Classrom;		     
+							EventLecture.start	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[ScheduleNumber][i].Lecture.StartingTime;
+							EventLecture.end	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[ScheduleNumber][i].Lecture.EndTime;
+							EventLecture.allDay 	= false;
+							EventObjects.events.push(EventLecture);
+						}		  
+					}
 				}
 				
-				var DayArr = Daystr(ScheduleSequenceList[ScheduleNumber][i].Tutorial.Days);
-				for (var j=0; j < DayArr.length; j++) 
+				if(ScheduleSequenceList[ScheduleNumber][i].Tutorial !== undefined)
 				{
-					if(DayArr[j] == 1)
+					
+					var DayArr = Daystr(ScheduleSequenceList[ScheduleNumber][i].Tutorial.Days);
+					for (var j=0; j < DayArr.length; j++) 
 					{
-						var DayOfTheWeek=FirtMondayOfThisWeek+j;					
-						var EventTutorial = {};
-						
-						EventTutorial.title = ScheduleSequenceList[ScheduleNumber][i].Name+" Tutorial";		     
-						EventTutorial.start	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[ScheduleNumber][i].Tutorial.StartingTime;
-						EventTutorial.end	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[ScheduleNumber][i].Tutorial.EndTime;
-						EventTutorial.allDay 	= false;
-						EventObjects.events.push(EventTutorial);
-					}		  
+						if(DayArr[j] == 1)
+						{
+							var DayOfTheWeek=FirtMondayOfThisWeek+j;					
+							var EventTutorial = {};
+							
+								EventTutorial.title = ScheduleSequenceList[ScheduleNumber][i].Number+" TUTORIAL\n\r"+"\n\r"+ScheduleSequenceList[ScheduleNumber][i].Tutorial.Classrom;		     
+							EventTutorial.start	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[ScheduleNumber][i].Tutorial.StartingTime;
+							EventTutorial.end	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[ScheduleNumber][i].Tutorial.EndTime;
+							EventTutorial.allDay 	= false;
+							EventObjects.events.push(EventTutorial);
+						}		  
+					}
 				}
 				
-				var DayArr = Daystr(ScheduleSequenceList[ScheduleNumber][i].Laboratory.Days);
-				for (var j=0; j < DayArr.length; j++) 
+				if(ScheduleSequenceList[ScheduleNumber][i].Laboratory !== undefined)
 				{
-					if(DayArr[j] == 1)
+					var DayArr = Daystr(ScheduleSequenceList[ScheduleNumber][i].Laboratory.Days);
+					for (var j=0; j < DayArr.length; j++) 
 					{
-						var DayOfTheWeek=FirtMondayOfThisWeek+j;
-						var EventLaboratory = {};
-						
-						EventLaboratory.title 	= ScheduleSequenceList[ScheduleNumber][i].Name+" Laboratory";		     
-						EventLaboratory.start	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[ScheduleNumber][i].Laboratory.StartingTime;
-						EventLaboratory.end		= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[ScheduleNumber][i].Laboratory.EndTime;
-						EventLaboratory.allDay 	= false;
-						EventObjects.events.push(EventLaboratory);
+						if(DayArr[j] == 1)
+						{
+							var DayOfTheWeek=FirtMondayOfThisWeek+j;
+							var EventLaboratory = {};
+							
+							EventLaboratory.title 	= ScheduleSequenceList[ScheduleNumber][i].Number+" LABORATORY\n\r"+"\n\r"+ScheduleSequenceList[ScheduleNumber][i].Laboratory.Classrom;		     
+							EventLaboratory.start	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[ScheduleNumber][i].Laboratory.StartingTime;
+							EventLaboratory.end		= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[ScheduleNumber][i].Laboratory.EndTime;
+							EventLaboratory.allDay 	= false;
+							EventObjects.events.push(EventLaboratory);
+						}
 					}
 				}
 				
@@ -221,52 +231,63 @@ function NotifyView(ElementID)
 			{
 			 	
 				//Conver day string into day array
-				var DayArr = Daystr(ScheduleSequenceList[ScheduleNumber][i].Lecture.Days);
-				for (var j=0; j < DayArr.length; j++) 
+				if(ScheduleSequenceList[ScheduleNumber][i].Lecture !== undefined)
 				{
-					if(DayArr[j] == 1)
+					var DayArr = Daystr(ScheduleSequenceList[ScheduleNumber][i].Lecture.Days);
+					for (var j=0; j < DayArr.length; j++) 
 					{
-						var DayOfTheWeek=FirtMondayOfThisWeek+j;
-						var EventLecture = {};			
-						
-						EventLecture.title 	= ScheduleSequenceList[ScheduleNumber][i].Name+" Lecture";		     
-						EventLecture.start	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[ScheduleNumber][i].Lecture.StartingTime;
-						EventLecture.end	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[ScheduleNumber][i].Lecture.EndTime;
-						EventLecture.allDay 	= false;
-						EventObjects.events.push(EventLecture);
-					}		  
-				}
-				
-				var DayArr = Daystr(ScheduleSequenceList[ScheduleNumber][i].Tutorial.Days);
-				for (var j=0; j < DayArr.length; j++) 
-				{
-					if(DayArr[j] == 1)
-					{
-						var DayOfTheWeek=FirtMondayOfThisWeek+j;					
-						var EventTutorial = {};
-						
-						EventTutorial.title = ScheduleSequenceList[ScheduleNumber][i].Name+" Tutorial";		     
-						EventTutorial.start	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[ScheduleNumber][i].Tutorial.StartingTime;
-						EventTutorial.end	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[ScheduleNumber][i].Tutorial.EndTime;
-						EventTutorial.allDay 	= false;
-						EventObjects.events.push(EventTutorial);
-					}		  
-				}
-				
-				var DayArr = Daystr(ScheduleSequenceList[ScheduleNumber][i].Laboratory.Days);
-				for (var j=0; j < DayArr.length; j++) 
-				{
-					if(DayArr[j] == 1)
-					{
-						var DayOfTheWeek=FirtMondayOfThisWeek+j;
-						var EventLaboratory = {};
-						
-						EventLaboratory.title 	= ScheduleSequenceList[ScheduleNumber][i].Name+" Laboratory";		     
-						EventLaboratory.start	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[ScheduleNumber][i].Laboratory.StartingTime;
-						EventLaboratory.end		= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[ScheduleNumber][i].Laboratory.EndTime;
-						EventLaboratory.allDay 	= false;
-						EventObjects.events.push(EventLaboratory);
+						if(DayArr[j] == 1)
+						{
+							var DayOfTheWeek=FirtMondayOfThisWeek+j;
+							var EventLecture = {};			
+							
+							EventLecture.title 	= ScheduleSequenceList[ScheduleNumber][i].Number+" LECTURE\n\r"+ScheduleSequenceList[ScheduleNumber][i].Lecture.Professor+"\n\r"+ScheduleSequenceList[ScheduleNumber][i].Lecture.Classrom;		     
+							EventLecture.start	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[ScheduleNumber][i].Lecture.StartingTime;
+							EventLecture.end	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[ScheduleNumber][i].Lecture.EndTime;
+							EventLecture.allDay 	= false;
+							EventObjects.events.push(EventLecture);
+						}		  
 					}
+				}
+				
+				if(ScheduleSequenceList[ScheduleNumber][i].Tutorial !== undefined)
+				{
+					var DayArr = Daystr(ScheduleSequenceList[ScheduleNumber][i].Tutorial.Days);
+					for (var j=0; j < DayArr.length; j++) 
+					{
+						if(DayArr[j] == 1)
+						{
+							var DayOfTheWeek=FirtMondayOfThisWeek+j;					
+							var EventTutorial = {};
+							
+							EventTutorial.title = ScheduleSequenceList[ScheduleNumber][i].Number+" TUTORIAL\n\r"+"\n\r"+ScheduleSequenceList[ScheduleNumber][i].Tutorial.Classrom;		     
+							EventTutorial.start	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[ScheduleNumber][i].Tutorial.StartingTime;
+							EventTutorial.end	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[ScheduleNumber][i].Tutorial.EndTime;
+							EventTutorial.allDay 	= false;
+							EventObjects.events.push(EventTutorial);
+						}		  
+					}
+				}
+					
+				if(ScheduleSequenceList[ScheduleNumber][i].Laboratory !== undefined)
+				{
+						
+					var DayArr = Daystr(ScheduleSequenceList[ScheduleNumber][i].Laboratory.Days);
+					for (var j=0; j < DayArr.length; j++) 
+					{
+						if(DayArr[j] == 1)
+						{
+							var DayOfTheWeek=FirtMondayOfThisWeek+j;
+							var EventLaboratory = {};
+							
+							EventLaboratory.title 	= ScheduleSequenceList[ScheduleNumber][i].Number+" LABORATORY\n\r"+"\n\r"+ScheduleSequenceList[ScheduleNumber][i].Laboratory.Classrom;		     
+							EventLaboratory.start	= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[ScheduleNumber][i].Laboratory.StartingTime;
+							EventLaboratory.end		= YearNumber+"-"+MonthNumber+"-"+DayOfTheWeek+" "+ScheduleSequenceList[ScheduleNumber][i].Laboratory.EndTime;
+							EventLaboratory.allDay 	= false;
+							EventObjects.events.push(EventLaboratory);
+						}
+					}
+					
 				}
 				
 			}
@@ -347,9 +368,9 @@ function NotifyView(ElementID)
 			HtmlCode = ""; 
 		
 			HtmlCode +='<li class="LiIDCourseSelected" title="' + LocalCourseSelection[i].Description + 'next line \n' + 'next line \n">';
-			HtmlCode +='<input value="' + LocalCourseSelection[i].Name + '" type="checkbox" id="ID' + LocalCourseSelection[i].Name + '">';
-			HtmlCode +='<label for="ID' + LocalCourseSelection[i].Name + '">';
-			HtmlCode +='<dfn>' + LocalCourseSelection[i].Name + '</dfn>';
+			HtmlCode +='<input value="' + LocalCourseSelection[i].Number + '" type="checkbox" id="ID' + LocalCourseSelection[i].Number + '">';
+			HtmlCode +='<label for="ID' + LocalCourseSelection[i].Number + '">';
+			HtmlCode +='<dfn>' + LocalCourseSelection[i].Number + '</dfn>';
 			HtmlCode +='</label>';
 			HtmlCode +='<a class="" href="#DivIDTabs"></a>';
 			HtmlCode +='</li>';
@@ -383,9 +404,9 @@ function NotifyView(ElementID)
 			HtmlCode = ""; 
 		
 			HtmlCode +='<li class="deselected" title="' + LocalCourseCoreEngineering[i].Description + '">';
-			HtmlCode +='<input value="' +LocalCourseCoreEngineering[i].Name + '" type="checkbox" id="ID' + LocalCourseCoreEngineering[i].Name + '">';
-			HtmlCode +='<label for="ID' + LocalCourseCoreEngineering[i].Name + '">';
-			HtmlCode +='<dfn>' + LocalCourseCoreEngineering[i].Name + '</dfn>';
+			HtmlCode +='<input value="' +LocalCourseCoreEngineering[i].Number + '" type="checkbox" id="ID' + LocalCourseCoreEngineering[i].Number + '">';
+			HtmlCode +='<label for="ID' + LocalCourseCoreEngineering[i].Number + '">';
+			HtmlCode +='<dfn>' + LocalCourseCoreEngineering[i].Number + '</dfn>';
 			HtmlCode +='</label>';
 			HtmlCode +='<a class="checkbox-select" href="#DivIDTabs"></a>';
 			HtmlCode +='</li>';
@@ -397,93 +418,96 @@ function NotifyView(ElementID)
 		};
 			
 	}
-	/*
+	
 	if(ElementID == "ULIDFieldEngineering")
 	{
-		alert("#"+ElementID);	
+		$("#"+ElementID).empty();
+		$("ULIDSelection").empty();
 		
-			 
-		for (var i=0; i < GetCourseFieldEngineering().CourseArray.length ; i++) 
+		var LocalCourseFieldEngineering = GetCourseListFieldEngineering();
+				
+		//Populate the CoreEngineering Tab				
+		for (var i=0; i < LocalCourseFieldEngineering.length ; i++) 
 		{
 		
+			
 			HtmlCode = ""; 
 		
-			HtmlCode +='<li class="deselected" title="System Hardware description">';
-			HtmlCode +='<input value="SOEN 258" type="checkbox" id="IDSOEN258">';
-			HtmlCode +='<label for="IDSOEN258">';
-			HtmlCode +='<dfn>SOEN 258</dfn>';
+			HtmlCode +='<li class="deselected" title="' + LocalCourseFieldEngineering[i].Description + '">';
+			HtmlCode +='<input value="' +LocalCourseFieldEngineering[i].Number + '" type="checkbox" id="ID' + LocalCourseFieldEngineering[i].Number + '">';
+			HtmlCode +='<label for="ID' + LocalCourseFieldEngineering[i].Number + '">';
+			HtmlCode +='<dfn>' + LocalCourseFieldEngineering[i].Number + '</dfn>';
 			HtmlCode +='</label>';
-			HtmlCode +='<a class="checkbox-select" href="#"></a>';
+			HtmlCode +='<a class="checkbox-select" href="#DivIDTabs"></a>';
 			HtmlCode +='</li>';
 			//alert(HtmlCode);
 		
 			//Append Course	
 			$(HtmlCode).appendTo("#"+ElementID);
+			  
 		};
-		
-		//$("#"+ElementID).html(HtmlCode); 
-			 
-				
 	}
 	
 	if(ElementID == "ULIDOption")
 	{
-		alert("#"+ElementID);	
+		$("#"+ElementID).empty();
+		$("ULIDSelection").empty();
 		
-	
-			
-		for (var i=0; i < GetCourseOption().CourseArray.length  ; i++) 
+		var LocalCourseFieldOption = GetCourseListOption();
+				
+		//Populate the CoreEngineering Tab				
+		for (var i=0; i < LocalCourseFieldOption.length ; i++) 
 		{
-					
+		
+			
 			HtmlCode = ""; 
 		
-			HtmlCode +='<li class="deselected" title="System Hardware description">';
-			HtmlCode +='<input value="SOEN 258" type="checkbox" id="IDSOEN258">';
-			HtmlCode +='<label for="IDSOEN258">';
-			HtmlCode +='<dfn>SOEN 258</dfn>';
+			HtmlCode +='<li class="deselected" title="' + LocalCourseFieldOption[i].Description + '">';
+			HtmlCode +='<input value="' +LocalCourseFieldOption[i].Number + '" type="checkbox" id="ID' + LocalCourseFieldOption[i].Number + '">';
+			HtmlCode +='<label for="ID' + LocalCourseFieldOption[i].Number + '">';
+			HtmlCode +='<dfn>' + LocalCourseFieldOption[i].Number + '</dfn>';
 			HtmlCode +='</label>';
-			HtmlCode +='<a class="checkbox-select" href="#"></a>';
+			HtmlCode +='<a class="checkbox-select" href="#DivIDTabs"></a>';
 			HtmlCode +='</li>';
 			//alert(HtmlCode);
 		
 			//Append Course	
 			$(HtmlCode).appendTo("#"+ElementID);
+			  
 		};
-		
-		//$("#"+ElementID).html(HtmlCode); 
 			 
 		
 	}
 	
 	if(ElementID == "ULIDElective")
 	{
-		alert("#"+ElementID);	
+		$("#"+ElementID).empty();
+		$("ULIDSelection").empty();
 		
-		
-			
-		for (var i=0; i < GetCourseElectives().CourseArray.length ; i++) 
+		var LocalCourseElectives = GetCourseListElectives();
+				
+		//Populate the CoreEngineering Tab				
+		for (var i=0; i < LocalCourseElectives.length ; i++) 
 		{
 		
+			
 			HtmlCode = ""; 
 		
-			HtmlCode +='<li class="deselected" title="System Hardware description">';
-			HtmlCode +='<input value="SOEN 258" type="checkbox" id="IDSOEN258">';
-			HtmlCode +='<label for="IDSOEN258">';
-			HtmlCode +='<dfn>SOEN 258</dfn>';
+			HtmlCode +='<li class="deselected" title="' + LocalCourseElectives[i].Description + '">';
+			HtmlCode +='<input value="' +LocalCourseElectives[i].Number + '" type="checkbox" id="ID' + LocalCourseElectives[i].Number + '">';
+			HtmlCode +='<label for="ID' + LocalCourseElectives[i].Number + '">';
+			HtmlCode +='<dfn>' + LocalCourseElectives[i].Number + '</dfn>';
 			HtmlCode +='</label>';
-			HtmlCode +='<a class="checkbox-select" href="#"></a>';
+			HtmlCode +='<a class="checkbox-select" href="#DivIDTabs"></a>';
 			HtmlCode +='</li>';
 			//alert(HtmlCode);
 		
 			//Append Course	
 			$(HtmlCode).appendTo("#"+ElementID);
-		};	
-		
-		//$("#"+ElementID).html(HtmlCode); 
+			  
+		};
 		
 	}
-	
-	*/
 	
 	//Buttons Update
 	if(ElementID == "ButtonIDFall")

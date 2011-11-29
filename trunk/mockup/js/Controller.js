@@ -4,7 +4,7 @@ function IsTimeConflict(D1,S1,E1,D2,S2,E2)
 	//Find out if it is the Same Day
 	if(CompareDay(D1,D2) == true)
 	{
-		if(	(CompareTime(S1,E1) == -1 && CompareTime(S1,S2) == -1 && CompareTime(S2,E2) == -1 )  || (CompareTime(E2,E2) == -1 && CompareTime(E2,S1) == -1 && CompareTime(S1,E1) == -1))	
+		if( ( CompareTime(S1,E1) == -1 && CompareTime(S2,E2) == -1 ) && ( ( CompareTime(S2,S1) == -1 && CompareTime(E2,S1) == -1 )  || ( CompareTime(S2,E1) == 1 && CompareTime(E2,E1) == 1 ) ) )	
 		{
 			//alert("There is no time confict bewteen:"+D1+" "+S1+" "+E1+" "+D2+" "+S2+" "+E2);
 			return false;
@@ -44,11 +44,7 @@ function IsConstraintsTimeConflict(Section1)
 
 	}
 	
-	if(Section1.Tutorial === undefined)
-	{
-		return true;
-	}
-	else
+	if(Section1.Tutorial !== undefined)
 	{
 		for (var i=0; i < TimeConflictList.length; i++) 
 		{
@@ -61,12 +57,9 @@ function IsConstraintsTimeConflict(Section1)
 	}
 	
 	
-	if(Section1.Laboratory === undefined)
+	if(Section1.Laboratory !== undefined)
 	{
-		return true;
-	}
-	else
-	{
+	
 		for (var i=0; i < TimeConflictList.length; i++) 
 		{
 		
@@ -76,7 +69,7 @@ function IsConstraintsTimeConflict(Section1)
 			}  
 		}
 	}
-	
+	return false;
 }
 
 function IsSectionTimeConfict(Section1,Section2)
@@ -172,21 +165,165 @@ function IsSectionTimeConfict(Section1,Section2)
 	return false;
 }
 
+function FilterCompleteCourseSectionTable(TemporaryScheduleSequence)
+{
+	//Remove colliding section courses
+	//backup the temporary schedule
+	var IndexToRemove= new Array();
+	for (var p=0; p < TemporaryScheduleSequence.length; p++) 
+	{
+	  
+	  	if(TemporaryScheduleSequence[p].length > 1)
+	  	{
+		  	for (var j=0; j < TemporaryScheduleSequence[p].length - 1; j++) 
+		  	{
+			
+				for (var k=j+1; k < TemporaryScheduleSequence[p].length; k++) 
+				{
+					//Compare course [j] and [k]
+					//if there is a time conflict remove the schedule from selection.
+					if(IsSectionTimeConfict(TemporaryScheduleSequence[p][j],TemporaryScheduleSequence[p][k]) == true || IsConstraintsTimeConflict(TemporaryScheduleSequence[p][j]) == true || IsConstraintsTimeConflict(TemporaryScheduleSequence[p][k]) == true )
+					{
+						//alert("Remove schedule from temporary list.");
+						IndexToRemove.push(p);		
+											
+						//break the two loops this schedule is void.
+						k=TemporaryScheduleSequence[p].length;
+						j=TemporaryScheduleSequence[p].length - 1;					
+					}
+					
+					
+				}
+		 
+		 	}
+	 	}
+	 	else
+	 	{
+ 			//Compare course [j] and [k]
+			//if there is a time conflict remove the schedule from selection.
+			if(IsConstraintsTimeConflict(TemporaryScheduleSequence[p][0]) == true )
+			{
+				//alert("Remove schedule from temporary list.");
+				IndexToRemove.push(p);												
+			}
+			
+
+	 	}
+	  
+	}
+	// tag incompleted schedule.
+	for (var p=0; p < TemporaryScheduleSequence.length; p++) 
+	{
+		if(TemporaryScheduleSequence[p].length != CompleteCourseSectionTable.length)
+		{
+			IndexToRemove.push(p);	
+		}
+	}
+
+	for (var p=0; p < IndexToRemove.length; p++) 
+	{
+		delete TemporaryScheduleSequence[IndexToRemove[p]];
+	}
+	
+	var MaximumScheduleSize = TemporaryScheduleSequence.length;
+	for (var p=0; p < MaximumScheduleSize; p++) 
+	{
+		if(TemporaryScheduleSequence[p] === undefined)
+		{
+			TemporaryScheduleSequence.splice(p,1);
+		}
+	}
+	
+	//clean up the array
+	TemporaryScheduleSequence = TemporaryScheduleSequence.filter(function(){return true});	
+	
+	return TemporaryScheduleSequence;		
+	
+}
+
+
+function AddSection(SingleSchedule,CourseIndex,FullSchedule)
+{
+	var CompleteCourseSectionTable = GetCompleteCourseSectionTable();
+	
+	if(CompleteCourseSectionTable.length > 0)
+	{
+		for (var i=0; i < CompleteCourseSectionTable[CourseIndex].length; i++) 
+		{
+			var CopySchedule = SingleSchedule.slice();
+			
+			if(CourseIndex < CompleteCourseSectionTable.length - 1)
+			{
+				SingleSchedule.push(CompleteCourseSectionTable[CourseIndex][i]);		
+				AddSection(SingleSchedule,CourseIndex+1,FullSchedule);
+			}
+			else
+			{
+				
+				SingleSchedule.push(CompleteCourseSectionTable[CourseIndex][i]);
+				FullSchedule.push(SingleSchedule);
+			}
+			
+			SingleSchedule = CopySchedule.slice();
+		}
+	}	
+	return FullSchedule;
+}
+
+
 function SolveCompleteCourseSectionTable()
 {
+	
+	var FullSchedule = new Array();
+	var SingleSchedule = new Array();
+	
+	var CompleteCourseSectionTable = GetCompleteCourseSectionTable();
+
+	for (var i=0; i < CompleteCourseSectionTable.length; i++) 
+	{
+		alert("Maximum number of section:"+CompleteCourseSectionTable[i].length);
+	}	
+	//Recursive function to generate all schedules.
+	AddSection(SingleSchedule,0,FullSchedule); 
+	
+	FullSchedule = FilterCompleteCourseSectionTable(FullSchedule);
+	
+	SetScheduleList(FullSchedule);	
+	
+	
 	
 	//alert(CompleteCourseSectionTable.join('\n'));
 	
 	//There is only one course so just  make all the possibility equal to the valid martrix	
 	//alert("Number of courses section list :" + CompleteCourseSectionTable.length);
 	
-	var CompleteCourseSectionTable = GetCompleteCourseSectionTable();
+	/*var CompleteCourseSectionTable = GetCompleteCourseSectionTable();
 	var ScheduleSequenceList = GetCourseScheduleList();
 	
 	//Clear the list of schedule and repopulate it.
 	ClearCourseFromScheduleList();
 	
 	if(CompleteCourseSectionTable.length > 0)
+	{
+		var TemporaryScheduleSequence = [ ];
+		
+		for (var i=0; i < CompleteCourseSectionTable.length; i++) 
+		{		
+			
+			for (var j=0; j < CompleteCourseSectionTable[i].length; j++)
+			{	 			
+				var ScheduleSequenceList = GetCourseScheduleList();
+				for (var k=0; k < ScheduleSequenceList.length; k++)
+				{	 			
+				
+				}
+				SectionCourseSequenceList.push(CompleteCourseSectionTable[i][j]);
+				TemporaryScheduleSequence.push(SectionCourseSequenceList); 						
+			}
+			
+		}
+	}*/
+	/*if(CompleteCourseSectionTable.length > 0)
 	{
 		//Add the first course.
 		var TemporaryScheduleSequence = [ ];
@@ -200,14 +337,15 @@ function SolveCompleteCourseSectionTable()
 		 			 
 		}
 		SetScheduleList(TemporaryScheduleSequence);	
-		
+		*/
 		
 		//add the other course 2,3,4,5 to the first one.
-		for (var i = 1; i < CompleteCourseSectionTable.length; i++) 
+		//var TemporaryScheduleSequence = [ ];		
+		
+		/*for (var i = 1; i < CompleteCourseSectionTable.length; i++) 
 		{
 			var ScheduleSequenceList = GetCourseScheduleList();
-			var TemporaryScheduleSequence = [ ];			
-		
+				
 			for (var l=0; l< ScheduleSequenceList.length; l++) 
 			{
 			  	//Number of section in the next added course
@@ -228,9 +366,18 @@ function SolveCompleteCourseSectionTable()
 					//Add to the temporary schedule
 					TemporaryScheduleSequence.push(SectionCourseSequenceList);
 				}
-			}						
+			}	
+			
+			TemporaryScheduleSequence = FilterCompleteCourseSectionTable(TemporaryScheduleSequence);
+			
+			SetScheduleList(TemporaryScheduleSequence);		
 		}
 		
+		TemporaryScheduleSequence = FilterCompleteCourseSectionTable(TemporaryScheduleSequence);
+		
+		SetScheduleList(TemporaryScheduleSequence);
+		*/
+		/*
 		//Remove colliding section courses
 		//backup the temporary schedule
 		var IndexToRemove= new Array();
@@ -255,10 +402,8 @@ function SolveCompleteCourseSectionTable()
 							k=TemporaryScheduleSequence[p].length;
 							j=TemporaryScheduleSequence[p].length - 1;					
 						}
-						else
-						{
-							//alert("No problem between between schedules");	
-						}
+						
+						
 					}
 			 
 			 	}
@@ -267,20 +412,25 @@ function SolveCompleteCourseSectionTable()
 		 	{
 	 			//Compare course [j] and [k]
 				//if there is a time conflict remove the schedule from selection.
-				if(IsConstraintsTimeConflict(TemporaryScheduleSequence[p][0]) == true)
+				if(IsConstraintsTimeConflict(TemporaryScheduleSequence[p][0]) == true )
 				{
 					//alert("Remove schedule from temporary list.");
 					IndexToRemove.push(p);												
 				}
-				else
-				{
-					//alert("No problem between between schedules");	
-				}
+				
 
 		 	}
 		  
 		}
-		
+		// tag incompleted schedule.
+		for (var p=0; p < TemporaryScheduleSequence.length; p++) 
+		{
+ 			if(TemporaryScheduleSequence[p].length != CompleteCourseSectionTable.length)
+			{
+				IndexToRemove.push(p);	
+			}
+		}
+
 		for (var p=0; p < IndexToRemove.length; p++) 
 		{
 			delete TemporaryScheduleSequence[IndexToRemove[p]];
@@ -297,87 +447,218 @@ function SolveCompleteCourseSectionTable()
 		
 		//clean up the array
 		TemporaryScheduleSequence = TemporaryScheduleSequence.filter(function(){return true});	
-		
+			
 		SetScheduleList(TemporaryScheduleSequence);
 	
 		//ClearCourseFromScheduleList();
 		
-	alert("All possible valid schedule are created."); 	
-			
-	}
+	//alert("All possible valid schedule are created."); 	
+		
+	}*/
 }
 
 function GenerateCourseSectionList(Course)
 {
-	alert("Generate all possible section from a course");
-	
+	//alert("Generate all possible section from a course");	
 	
 	var CourseSectionList = new Array();
 	
 	for (var j=0; j < Course.LectureArray.length; j++) 
 	{
-		for (var k=0; k < Course.TutorialArray.length ; k++) 
+		if(Course.TutorialArray.length > 0)
 		{
-			for (var l=0; l < Course.LaboratoryArray.length ; l++) 
+			for (var k=0; k < Course.TutorialArray.length ; k++) 
 			{
-				var CourseSection = {};
-				CourseSection.Name				=	Course.Name;
-				CourseSection.Description		=	Course.Description;
-				CourseSection.NumberOfCredits	=	Course.NumberOfCredits;
 				
-				CourseSection.Lecture		=	Course.LectureArray[j];
-				CourseSection.Tutorial		=	Course.TutorialArray[k];
-				CourseSection.Laboratory	=	Course.LaboratoryArray[l];		
-				
-				/*alert("Lect "+CourseSection.Lecture.LectureID);
-				alert("Lect Start Time"+CourseSection.Lecture.StartingTime);
-				alert("Lect End Time"+CourseSection.Lecture.EndTime);
-				
-				alert("Tut "+CourseSection.Tutorial.TutorialID);
-				alert("Lab "+CourseSection.Laboratory.LaboratoryID);
-				*/
-				CourseSectionList.push(CourseSection);
+				if(Course.LaboratoryArray.length > 0)
+				{
+					for (var l=0; l < Course.LaboratoryArray.length ; l++) 
+					{
+						var CourseSection = {};
+						CourseSection.Number				=	Course.Number;
+						CourseSection.Description		=	Course.Description;
+						CourseSection.NumberOfCredits	=	Course.NumberOfCredits;
+						
+						CourseSection.Lecture		=	Course.LectureArray[j];
+						CourseSection.Tutorial		=	Course.TutorialArray[k];
+						CourseSection.Laboratory	=	Course.LaboratoryArray[l];		
+										
+						CourseSectionList.push(CourseSection);
+					}
+				}
+				else
+				{
+					var CourseSection = {};
+					CourseSection.Number				=	Course.Number;
+					CourseSection.Description		=	Course.Description;
+					CourseSection.NumberOfCredits	=	Course.NumberOfCredits;
+					
+					CourseSection.Lecture		=	Course.LectureArray[j];
+					CourseSection.Tutorial		=	Course.TutorialArray[k];
+					CourseSectionList.push(CourseSection);
+					
+				}
 			}
+		}
+		else
+		{
+			var CourseSection = {};
+			CourseSection.Number				=	Course.Number;
+			CourseSection.Description		=	Course.Description;
+			CourseSection.NumberOfCredits	=	Course.NumberOfCredits;
+			
+			CourseSection.Lecture		=	Course.LectureArray[j];	
+			CourseSectionList.push(CourseSection);
 		}
 		
 	}
 	return CourseSectionList;
+	
+	
+/*	var CourseSectionList = new Array();
+	
+	for (var j=0; j < Course.LectureArray.length; j++) 
+	{
+		if(Course.LectureArray[j].TutorialArray.length > 0)
+		{
+			for (var k=0; k < Course.LectureArray[j].TutorialArray.length ; k++) 
+			{				
+				if(Course.LectureArray[j].LaboratoryArray.length > 0)
+				{
+					for (var l=0; l < Course.LectureArray[j].LaboratoryArray.length ; l++) 
+					{
+						var CourseSection = {};
+						CourseSection.Number			=	Course.Number;
+						CourseSection.Description		=	Course.Description;
+						CourseSection.NumberOfCredits	=	Course.NumberOfCredits;
+						
+						CourseSection.Lecture		=	Course.LectureArray[j];
+						CourseSection.Tutorial		=	Course.LectureArray[j].TutorialArray[k];
+						CourseSection.Laboratory	=	Course.LectureArray[j].LaboratoryArray[l];		
+										
+						CourseSectionList.push(CourseSection);
+					}
+				}
+				else
+				{
+					var CourseSection = {};
+					CourseSection.Number				=	Course.Number;
+					CourseSection.Description		=	Course.Description;
+					CourseSection.NumberOfCredits	=	Course.NumberOfCredits;
+					
+					CourseSection.Lecture		=	Course.LectureArray[j];
+					CourseSection.Tutorial		=	Course.TutorialArray[k].TutorialArray[k];
+					
+					CourseSectionList.push(CourseSection);				
+				}
+			
+			}
+		}
+		else
+		{
+			var CourseSection = {};
+			CourseSection.Number				=	Course.Number;
+			CourseSection.Description		=	Course.Description;
+			CourseSection.NumberOfCredits	=	Course.NumberOfCredits;
+			
+			CourseSection.Lecture		=	Course.LectureArray[j];	
+			CourseSectionList.push(CourseSection);
+		}
+		
+	}
+	
+	return CourseSectionList;
+*/
 }
 
 function RetreiveCourses()
 {
-	if(GetFaculty() === undefined ||  GetFaculty() == "None" ||  GetProgram() === undefined || GetProgram() == "None" ||  GetDepartment() === undefined || GetDepartment() == "None" || GetSemester() === undefined )
+	if(GetFaculty() === undefined ||  GetFaculty() == "None" ||  GetProgram() === undefined || GetProgram() == "None" ||  GetDepartment() === undefined || GetDepartment() == "None" )
 	{	
 	//	alert("Invalid selection");
 	}
 	else
 	{
-		AjaxRetreiveCourses("CoreEngineering");
-		//AjaxRetreiveCourses("FieldEngineering");
-		//AjaxRetreiveCourses("Option");
-		//AjaxRetreiveCourses("Elective");
+		AjaxRetreiveCourses(GetFaculty(), GetDepartment(), GetProgram(), "both", "all");
+		
+		var AllCourses = GetAllCourseList();
+		
+		var FieldEngineeringCourses =  new Array();
+		var CoreEngineeringCourses =  new Array();
+		var OptionCourses =  new Array();
+		var ElectivesCourses =  new Array();
+		
+		for (var i=0; i < AllCourses.length; i++) 
+		{
+			if(AllCourses[i].class_type == "Core Course" )
+			{
+				if(AllCourses[i].class_sort == "Engineering Core")
+				{
+					CoreEngineeringCourses.push(AllCourses[i]);
+				}
+				else if(AllCourses[i].class_sort == "Software Engineering Core")
+				{
+					FieldEngineeringCourses.push(AllCourses[i]);
+				}
+				else if(AllCourses[i].class_sort == "Computer Science Group")
+				{
+					//maybe we should create a section for it.
+					FieldEngineeringCourses.push(AllCourses[i]);
+				}				
+				else if(AllCourses[i].class_sort == "Basic Science Courses")
+				{
+					//maybe we should create a section for it.
+					ElectivesCourses.push(AllCourses[i]);
+				}
+			}
+			else if (AllCourses[i].class_type == "Option" )
+			{
+				OptionCourses.push(AllCourses[i]);
+			}
+			else if (AllCourses[i].class_type == "Elective" )
+			{
+				ElectivesCourses.push(AllCourses[i]);
+			}
+				
+		}
+		
+		SetCourseListFieldEngineering(FieldEngineeringCourses);
+		NotifyView("ULIDFieldEngineering");	
+			
+		SetCourseListCoreEngineering(CoreEngineeringCourses);
+		NotifyView("ULIDCoreEngineering");	
+		
+		SetCourseListOption(OptionCourses);
+		NotifyView("ULIDOption");	
+		
+		SetCourseListElectives(ElectivesCourses);
+		NotifyView("ULIDElective");		
 	}	
 }
 
-function AjaxRetreiveCourses(CourseCategory)
+function AjaxRetreiveCourses(Faculty, Department, Program, Semester ,CourseCategory)
 {
 		
   	$.ajax({
 	type: "GET",
 	url: "/Website/soen3412011/trunk/mockup/php/queries.php",
 	async: false,
-	data: { Faculty: GetFaculty(), Department: GetDepartment(), Program: GetProgram(), Semester: GetSemester(), Category: CourseCategory},
+	data: { Faculty: Faculty, Department: Department , Program: Program , Semester: Semester , Category: CourseCategory},
 
 	beforeSend:function(x) {
 		//alert("Before Sending Ajax request");
+		
 	},
 	
 	success:function(CourseArray){
 	//do your stuff with the JSON data
-		alert("JSON request succeeded");
+		//alert("JSON request succeeded");
 		
-		
-		if(CourseCategory == "FieldEngineering")
+		if(CourseCategory == "all")
+		{
+			SetAllCourseList(CourseArray);
+		}
+		/*if(CourseCategory == "FieldEngineering")
 		{
 			SetCourseListFieldEngineering(CourseArray);
 			NotifyView("ULID"+CourseCategory);	
@@ -396,12 +677,14 @@ function AjaxRetreiveCourses(CourseCategory)
 		{
 			SetCourseListElectives(CourseArray);
 			NotifyView("ULID"+CourseCategory);	
-		}
+		}*/
 		
-		alert("Name: " + CourseArray[0].Name);   	
+		/*alert("Name: " + CourseArray[0].Name);   	
+		alert("Number: " + CourseArray[0].Number);   	
 		alert("Description: " + CourseArray[0].Description);   	
 		alert("Number of Credits: " + CourseArray[0].NumberOfCredits);   	
-		
+		alert("classtype: " + CourseArray[0].class_type);
+		alert("class_sort: " + CourseArray[0].class_sort);*/
 		
 		/*
 		alert("LectureID: " + Schedule.CourseArray[0].LectureArray[0].LectureID);	 			
@@ -506,7 +789,7 @@ $(document).ready(function()
 			//alert(GetSemester()); 
 			NotifyView(this.id);
 		
-			RetreiveCourses();
+			//RetreiveCourses();
 		}
 	});
 
@@ -519,7 +802,7 @@ $(document).ready(function()
 		
 			NotifyView(this.id);
 		
-			RetreiveCourses();
+			//RetreiveCourses();
 		}
 	});
 	
@@ -582,7 +865,7 @@ $(document).ready(function()
 					//alert(CourseCoreEngineering.CourseArray[i].Name);
 					//alert($(this).parent().children('input').attr('value'));
 					
-					if(CourseListCoreEngineering[i].Name == $(this).parent().children('input').attr('value'))
+					if(CourseListCoreEngineering[i].Number == $(this).parent().children('input').attr('value'))
 					{
 						//alert("Add course to selection");
 						AddCourseToCourseListSelection(CourseListCoreEngineering[i]);							
@@ -610,6 +893,134 @@ $(document).ready(function()
 				}
 												
 			}
+			
+			else if(	$(this).parent().parent().attr('id') == "ULIDFieldEngineering")
+			{	
+				//alert("Add course to selection");	
+				
+				//add the course in the selection tab
+				//retreive course list in the according tab
+				//search for the course object				
+				var CourseListFieldEngineering = GetCourseListFieldEngineering();
+				
+				for (var i=0; i < CourseListFieldEngineering.length ; i++) 
+				{
+					//alert(CourseCoreEngineering.CourseArray[i].Name);
+					//alert($(this).parent().children('input').attr('value'));
+					
+					if(CourseListFieldEngineering[i].Number == $(this).parent().children('input').attr('value'))
+					{
+						//alert("Add course to selection");
+						AddCourseToCourseListSelection(CourseListFieldEngineering[i]);							
+						
+						//Update Selection View
+						NotifyView("ULIDSelection");	
+						
+						//Update the calendaSection/Create all possible section with a a course
+						var SingleCourseSectionList = GenerateCourseSectionList(CourseListFieldEngineering[i]);
+					
+						//Add course section list to the storage table.	
+						AddToCompleteCourseSectionTable(SingleCourseSectionList);
+						
+						//Solve and filter matrix
+						SolveCompleteCourseSectionTable();
+						
+						SetScheduleNumber(0);
+						
+						//change calendar data
+						NotifyView("calendar");	
+							
+						break;	
+					}
+					
+				}
+												
+			}
+			else if($(this).parent().parent().attr('id') == "ULIDOption")
+			{	
+				//alert("Add course to selection");	
+				
+				//add the course in the selection tab
+				//retreive course list in the according tab
+				//search for the course object				
+				var CourseListOption = GetCourseListOption();
+				
+				for (var i=0; i < CourseListOption.length ; i++) 
+				{
+					//alert(CourseCoreEngineering.CourseArray[i].Name);
+					//alert($(this).parent().children('input').attr('value'));
+					
+					if(CourseListOption[i].Number == $(this).parent().children('input').attr('value'))
+					{
+						//alert("Add course to selection");
+						AddCourseToCourseListSelection(CourseListOption[i]);							
+						
+						//Update Selection View
+						NotifyView("ULIDSelection");	
+						
+						//Update the calendaSection/Create all possible section with a a course
+						var SingleCourseSectionList = GenerateCourseSectionList(CourseListOption[i]);
+					
+						//Add course section list to the storage table.	
+						AddToCompleteCourseSectionTable(SingleCourseSectionList);
+						
+						//Solve and filter matrix
+						SolveCompleteCourseSectionTable();
+						
+						SetScheduleNumber(0);
+						
+						//change calendar data
+						NotifyView("calendar");	
+							
+						break;	
+					}
+					
+				}
+												
+			}
+			else if($(this).parent().parent().attr('id') == "ULIDElective")
+			{	
+				//alert("Add course to selection");	
+				
+				//add the course in the selection tab
+				//retreive course list in the according tab
+				//search for the course object				
+				var CourseListElectives = GetCourseListElectives();
+				
+				for (var i=0; i < CourseListElectives.length ; i++) 
+				{
+					//alert(CourseCoreEngineering.CourseArray[i].Name);
+					//alert($(this).parent().children('input').attr('value'));
+					
+					if(CourseListElectives[i].Number == $(this).parent().children('input').attr('value'))
+					{
+						//alert("Add course to selection");
+						AddCourseToCourseListSelection(CourseListElectives[i]);							
+						
+						//Update Selection View
+						NotifyView("ULIDSelection");	
+						
+						//Update the calendaSection/Create all possible section with a a course
+						var SingleCourseSectionList = GenerateCourseSectionList(CourseListElectives[i]);
+					
+						//Add course section list to the storage table.	
+						AddToCompleteCourseSectionTable(SingleCourseSectionList);
+						
+						//Solve and filter matrix
+						SolveCompleteCourseSectionTable();
+						
+						SetScheduleNumber(0);
+						
+						//change calendar data
+						NotifyView("calendar");	
+							
+						break;	
+					}
+					
+				}
+												
+			}
+			
 			
 		}
 	});
@@ -643,7 +1054,7 @@ $(document).ready(function()
 					//alert(CourseListCoreEngineering[i].Name);
 					//alert($(this).parent().children('input').attr('value'));
 					
-					if(CourseListCoreEngineering[i].Name == $(this).parent().children('input').attr('value'))
+					if(CourseListCoreEngineering[i].Number == $(this).parent().children('input').attr('value'))
 					{
 						//alert("Remove course from selection");
 						
@@ -667,8 +1078,118 @@ $(document).ready(function()
 					}
 					
 				}
+			}	
+			else if($(this).parent().parent().attr('id') == "ULIDFieldEngineering")
+			{
+				
+				var CourseListFieldEngineering = GetCourseListFieldEngineering();
+				
+				for (var i=0; i < CourseListFieldEngineering.length ; i++) 
+				{
+					//alert(CourseListCoreEngineering[i].Name);
+					//alert($(this).parent().children('input').attr('value'));
+					
+					if(CourseListFieldEngineering[i].Number == $(this).parent().children('input').attr('value'))
+					{
+						//alert("Remove course from selection");
+						
+						RemoveCourseFromCourseListSelection(CourseListFieldEngineering[i]);
+												
+						//Update Selection View
+						NotifyView("ULIDSelection");	
+						
+						//Remove generated section from this course.
+						RemoveFromCompleteCourseSectionTable(CourseListFieldEngineering[i]);
+						
+						//Solve and filter matrix
+						SolveCompleteCourseSectionTable();
+						
+						SetScheduleNumber(0);
+						
+						//change calendar data
+						NotifyView("calendar");	
+						
+						break;	
+					}
+					
+				}
 			}				
-			
+			else if($(this).parent().parent().attr('id') == "ULIDOption")
+			{
+				
+				var CourseListOption = GetCourseListOption();
+				
+				for (var i=0; i < CourseListOption.length ; i++) 
+				{
+					//alert(CourseListCoreEngineering[i].Name);
+					//alert($(this).parent().children('input').attr('value'));
+					
+					if(CourseListOption[i].Number == $(this).parent().children('input').attr('value'))
+					{
+						//alert("Remove course from selection");
+						
+						RemoveCourseFromCourseListSelection(CourseListOption[i]);
+												
+						//Update Selection View
+						NotifyView("ULIDSelection");	
+						
+						//Remove generated section from this course.
+						RemoveFromCompleteCourseSectionTable(CourseListOption[i]);
+						
+						//Solve and filter matrix
+						SolveCompleteCourseSectionTable();
+						
+						SetScheduleNumber(0);
+						
+						//change calendar data
+						NotifyView("calendar");	
+						
+						break;	
+					}
+					
+				}
+			}
+			else if($(this).parent().parent().attr('id') == "ULIDElective")
+			{	
+				//alert("Add course to selection");	
+				
+				//add the course in the selection tab
+				//retreive course list in the according tab
+				//search for the course object				
+				var CourseListElectives = GetCourseListElectives();
+				
+				for (var i=0; i < CourseListElectives.length ; i++) 
+				{
+					
+					//alert(CourseListCoreEngineering[i].Name);
+					//alert($(this).parent().children('input').attr('value'));
+					
+					if(CourseListElectives[i].Number == $(this).parent().children('input').attr('value'))
+					{
+						//alert("Remove course from selection");
+						
+						RemoveCourseFromCourseListSelection(CourseListElectives[i]);
+												
+						//Update Selection View
+						NotifyView("ULIDSelection");	
+						
+						//Remove generated section from this course.
+						RemoveFromCompleteCourseSectionTable(CourseListElectives[i]);
+						
+						//Solve and filter matrix
+						SolveCompleteCourseSectionTable();
+						
+						SetScheduleNumber(0);
+						
+						//change calendar data
+						NotifyView("calendar");	
+						
+						break;	
+					}
+					
+				}
+												
+			}	
 		}
 	});
 	
