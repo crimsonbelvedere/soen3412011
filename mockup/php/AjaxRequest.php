@@ -1,5 +1,24 @@
 <?php 
 
+include('queries.php');
+
+
+	$Faculty= $_GET['Faculty'];
+	$Department= $_GET['Department'];
+	$Program= $_GET['Program'];
+	
+	$resultFall=get_courses($Faculty,$Department,$Program,2);
+	$resultFall=get_courses($Faculty,$Department,$Program,4);
+	$result=array_merge($resultFall,$resultFall);
+	
+	echo json_encode($result);
+	
+	
+	
+	
+	
+	
+/*
 class Course {
 	public $Name;
 	public $Description;
@@ -191,5 +210,5 @@ $Laboratory2->LaboratoryID="Lb2";
 
 //Return response to the client.
 echo json_encode($CourseList);
-
+*/
 ?>
