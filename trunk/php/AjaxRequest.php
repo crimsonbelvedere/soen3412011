@@ -1,20 +1,38 @@
 <?php 
 
 include('queries.php');
+include('login.php');
 
-
-	$Faculty= $_GET['Faculty'];
-	$Department= $_GET['Department'];
-	$Program= $_GET['Program'];
-	$Semester= $_GET['Semester'];
+	$FunctionCall = $_GET['FunctionCall'];
 	
-	//$resultFall=get_courses($Faculty,$Department,$Program,2);
-	//$resultFall=get_courses($Faculty,$Department,$Program,4);
-	//$result=array_merge($resultFall,$resultFall);
-	$result=get_courses($Faculty,$Department,$Program,$Semester);
-	
-	echo json_encode($result);
-	
+	if($FunctionCall == "get_courses")
+	{	
+		$Faculty= $_GET['Faculty'];
+		$Department= $_GET['Department'];
+		$Program= $_GET['Program'];
+		$Semester= $_GET['Semester'];
+		
+		//$resultFall=get_courses($Faculty,$Department,$Program,2);
+		//$resultFall=get_courses($Faculty,$Department,$Program,4);
+		//$result=array_merge($resultFall,$resultFall);
+		$result=get_courses($Faculty,$Department,$Program,$Semester);
+		
+		echo json_encode($result);
+	}
+	elseif ($FunctionCall == "get_student_courses") 
+	{
+		//$StudentId= $_GET['StudentId'];
+		$result = get_student_courses(3);
+		
+		echo json_encode($result);
+	}
+	elseif ($FunctionCall == "login") 
+	{
+		$StudentId= $_GET['StudentId'];
+		$Password = $_GET['Password'];
+		$result = login($StudentId,$Password);
+		echo json_encode($result);
+	}
 	
 	
 	
