@@ -42,7 +42,7 @@ include('queries.php');
 		assert($prerequisite_groups[1]->course_list[0]->pk()==19);
 	}
 	function test_get_student_courses(){
-		$student_courses=get_student_courses(3);
+		$student_courses=get_student_courses(3333);
 		assert(count($student_courses)==30);
 		assert($student_courses[0]->pk()==16);
 		assert($student_courses[1]->pk()==17);
@@ -66,7 +66,7 @@ include('queries.php');
 		
 	}
 	function test_get_courses_to_take(){
-			echo count(get_courses_to_take(3));
+			echo count(get_courses_to_take(3333));
 			foreach(get_courses_to_take(3) as $var){
 				echo $var->string();
 			}
@@ -99,7 +99,7 @@ include('queries.php');
 		
 	}
 	function test_get_prerequisites(){
-		$list=get_prerequisites(3);
+		$list=get_prerequisites(3333);
 		foreach($list as $prerequisite_groups_for_course){
 			foreach($prerequisite_groups_for_course as $prerequisite_group){
 				foreach($prerequisite_group->course_list as $course){
@@ -111,12 +111,20 @@ include('queries.php');
 	test_set_difference();
 	test_get_prerequisites();
 	//THIS IS COMMENTED OUT CAUSE THE UNIT TEST IS VISUAL.
+	 
 	test_get_courses_to_take();
+	
 	test_get_courses_from_group();
+	
 	test_get_prerequisite_course_groups();
+	
 	test_get_courses_for_option();
+	
 	test_get_prerequisite_groups_for_course();
+	
 	test_process_courses_query();
-	test_get_student_courses();
-	test_small_function();
+	
+	//test_get_student_courses();
+	//test_small_function();
+	 
 ?>
