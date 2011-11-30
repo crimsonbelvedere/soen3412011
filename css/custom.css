@@ -98,11 +98,10 @@ body {
 
 #InputIDUserName{
 	position:relative;
-
 	width:160px;
 	float: right;
 	clear: right;
-	color: white;
+	color: black;
 }
 
 #InputIDPassword{
@@ -110,7 +109,7 @@ body {
 	width:160px;
 	float: right;
 	clear: right;
-	color: white;
+	color: black;
 }
 
 #FieldSetIDTabs {
