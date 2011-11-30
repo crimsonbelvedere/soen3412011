@@ -15,6 +15,7 @@ class Course {
 		$query_set=$query_set[0];
 		$this->Description=$query_set['description'];
 		$this->Name=$query_set['title'];
+		$this->Number=$query_set['number'];
 		if($term!=null){
 			$this->populate_lecture_arr($term);
 		}
@@ -62,6 +63,7 @@ class Course {
 		}
 	}
 	public $Name;
+	public $Number;
 	public $Description;
 	public $NumberOfCredits;
 	public $LectureArray= array();
@@ -106,15 +108,7 @@ class Course {
 	 *  	class_sort[index]==Computer Games and class_type[index]==Elective
 	 */
 	public $class_sort=array();
-	/**
-<<<<<<< .mine
-	
-	
-	//public $PrequisiteArray = array(); //array of string course name
-	public $SectionArray = array();
-=======
->>>>>>> .r32
-**/
+
 
 	function populate_lecture_arr($term){
 		$db_adapter=new db_adapter();

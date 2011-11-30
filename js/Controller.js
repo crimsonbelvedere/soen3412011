@@ -477,7 +477,7 @@ function AjaxRetreiveCourses(Faculty, Department, Program)
 		
   	$.ajax({
 	type: "GET",
-	url: "/Website/soen3412011/trunk/mockup/php/AjaxRequest.php",
+	url: "/Website/soen3412011/trunk/php/AjaxRequest.php",
 	async: false,
 	data: { Faculty: Faculty, Department: Department , Program: Program},
 
