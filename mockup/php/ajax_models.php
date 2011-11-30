@@ -306,7 +306,17 @@ class student{
 			return $query_set[0]['description'];
 		}
 	}
-	function __construct($id){
+	function get_student_row_id_from_student_id($student_id){
+		
+		$sql_query='select id from student where student_id='.$student_id;
+		
+		$db_adapter=new db_adapter();
+		
+		$query_set=$db_adapter->query($sql_query);
+		return $query_set[0]['id'];
+	}
+	function __construct($student_id){
+		$id=$this->get_student_row_id_from_student_id($student_id);
 		$query_string='select * from student where id='.$id;
 		$db_adapter=new db_adapter();
 		$query_set=$db_adapter->query($query_string);
