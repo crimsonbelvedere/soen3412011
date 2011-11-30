@@ -415,7 +415,11 @@ function RetreiveCourses()
 	}
 	else
 	{
-		AjaxRetreiveCourses(GetFaculty(), GetDepartment(), GetProgram());
+		AjaxRetreiveCourses(GetFaculty(), GetDepartment(), GetProgram(), 2);
+		AjaxRetreiveCourses(GetFaculty(), GetDepartment(), GetProgram(), 4);
+		
+		//Concatenate winter and fall courses together.
+		SetAllCourseList(GetFallCourseList().concat(GetWinterCourseList()));
 		
 		var AllCourses = GetAllCourseList();
 		
@@ -472,14 +476,14 @@ function RetreiveCourses()
 	}	
 }
 
-function AjaxRetreiveCourses(Faculty, Department, Program)
+function AjaxRetreiveCourses(Faculty, Department, Program, Semester)
 {
 		
   	$.ajax({
 	type: "GET",
 	url: "/Website/soen3412011/trunk/php/AjaxRequest.php",
 	async: false,
-	data: { Faculty: Faculty, Department: Department , Program: Program},
+	data: { Faculty: Faculty, Department: Department , Program: Program, Semester: Semester},
 
 	beforeSend:function(x) {
 		//alert("Before Sending Ajax request");
@@ -490,8 +494,15 @@ function AjaxRetreiveCourses(Faculty, Department, Program)
 	//do your stuff with the JSON data
 	//alert("JSON request succeeded");
 	
-		SetAllCourseList(CourseArray);
-
+		if(Semester == 2)
+		{
+			SetFallCourseList(CourseArray);
+		}
+		else if(Semester == 4)
+		{
+			SetWinterCourseList(CourseArray);
+		}
+		
 	},
 	
 	error:function(){

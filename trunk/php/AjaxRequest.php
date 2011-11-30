@@ -6,10 +6,12 @@ include('queries.php');
 	$Faculty= $_GET['Faculty'];
 	$Department= $_GET['Department'];
 	$Program= $_GET['Program'];
+	$Semester= $_GET['Semester'];
 	
-	$resultFall=get_courses($Faculty,$Department,$Program,2);
-	$resultFall=get_courses($Faculty,$Department,$Program,4);
-	$result=array_merge($resultFall,$resultFall);
+	//$resultFall=get_courses($Faculty,$Department,$Program,2);
+	//$resultFall=get_courses($Faculty,$Department,$Program,4);
+	//$result=array_merge($resultFall,$resultFall);
+	$result=get_courses($Faculty,$Department,$Program,$Semester);
 	
 	echo json_encode($result);
 	

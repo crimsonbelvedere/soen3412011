@@ -14,6 +14,16 @@
 	
 	];
 	
+	var FallCourseList = 
+	[ 
+	
+	];
+	
+	var WinterCourseList = 
+	[ 
+	
+	];
+	
 	var CourseListCoreEngineering = 
 	[
 		/* 
@@ -359,6 +369,24 @@
 		return AllCourseList;
 	}
 	
+	//Course List
+	function SetFallCourseList(Courses)
+	{
+		FallCourseList = Courses;
+	}
+	function GetFallCourseList()
+	{
+		return FallCourseList;
+	}
+	//Course List
+	function SetWinterCourseList(Courses)
+	{
+		WinterCourseList = Courses;
+	}
+	function GetWinterCourseList()
+	{
+		return WinterCourseList;
+	}
 	
 	//Course List FieldEngineeing
 	function SetCourseListFieldEngineering(Courses)

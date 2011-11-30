@@ -395,7 +395,8 @@ function NotifyView(ElementID)
 		$("ULIDSelection").empty();
 		
 		var LocalCourseCoreEngineering = GetCourseListCoreEngineering();
-				
+		var SelectedTerm = GetSemester();
+		//alert("Selected Term:"+SelectedTerm);		
 		//Populate the CoreEngineering Tab				
 		for (var i=0; i < LocalCourseCoreEngineering.length ; i++) 
 		{
