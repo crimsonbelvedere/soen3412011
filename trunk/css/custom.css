@@ -1,0 +1,553 @@
+body {
+    font-family: Helvetica,Arial,sans-serif;
+  	width: 100%;
+	height: 100%;
+	font-size:12px;
+}
+
+#DivIDTopbanner {
+    height: 90px;
+    
+    background-image:url('../img/topbanner.jpg');
+    background-repeat: no-repeat;
+    background-attachment:fixed;
+    background-position:center top;
+    background-color: black;
+    margin: 0;
+    position:relative;
+	width:1100px;
+	margin: auto;
+	padding-left: 20px;
+	padding-right: 20px;
+
+}
+
+
+#DivIDLogin{
+	position:absolute;
+	top:-70px;
+	left:850px;
+	height:70px;
+	width:250px;
+	color: white;
+	z-index: 1;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+#FieldSetIDSelectFieldSets {
+	position:relative;
+	left:0px;
+	top:0px;
+	height:80px;
+	width:880px;
+	float: left;
+	clear: left;
+	margin-top: 10px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	margin-left: 10px;
+
+}
+
+#FieldSetIDStudentInfo {
+	position:relative;
+	left:0px;
+	top:0px;
+	height:160px;
+	width:250px;
+	color: white;
+	float: right;
+	clear: right;
+	margin-top: 10px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	margin-left: 10px;
+}
+
+
+#FieldSetIDTerm {
+	position:relative;
+	left:0px;
+	top:0px;
+	height:80px;
+	/*width:760px;*/
+	float: right;
+/*	clear: left;*/
+	margin-top: 10px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	margin-left: 10px;
+}
+
+/*
+#DfnIDUserName{
+	position:relative;
+	float: left;
+	clear: left;
+	color: white;
+}*/
+
+#DfnIDPassword{
+	position:relative;
+
+	float: left;
+	clear: left;
+	color: white;
+}
+
+#InputIDUserName{
+	position:relative;
+
+	width:160px;
+	float: right;
+	clear: right;
+	color: white;
+}
+
+#InputIDPassword{
+	position:relative;
+	width:160px;
+	float: right;
+	clear: right;
+	color: white;
+}
+
+#FieldSetIDTabs {
+	position:relative;
+	left:8px;
+    width: 1061px;
+	top:0px;
+	clear: both;
+}
+
+#FieldSetIDSelectedCourses {
+	position:relative;
+	left:0px;
+	top:0px;
+	clear: both;
+	margin-top: 10px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	margin-left: 10px;
+}
+
+#FieldSetIDStatusInfo {
+	position:relative;
+	width:150px;
+	left:0px;
+	top:0px;
+	float: left;
+	clear: left;
+	margin-top: 10px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	margin-left: 10px;
+}
+
+#FieldSetIDSchedule {
+	position:relative;
+	top:0px;
+	/*float: right;
+	clear: right;*/
+	margin-top: 10px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	margin-left: 10px;
+}
+
+#calendar {
+	position:relative;
+    float: left;
+	clear: right;
+    width: 800px;
+}
+
+#DivIDNavigation {
+    float: left;
+}
+
+#DivIDTitle {
+    color: white;
+    font-size: 20px;
+    height: 40px;
+    width: 800px;
+}
+
+
+#DivIDConstraints {
+	position:relative;
+	float: right;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+
+    /*margin: 20px, 0px, 0px, 40px;*/
+    /*padding: 0px 10px 10px;*/
+    width: 200px;
+}
+
+
+#FieldSetIDConstraints {
+	position:relative;
+	left:0px;
+	width:160px;
+	float: left;
+	clear: right;
+	margin-top: 10px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	margin-left: 10px;
+}
+
+#SelectIDSelectDay {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#DivIDTime {
+    color: white;
+}
+
+#ButtonIDAdd {
+    float: left;
+}
+
+#ButtonIDClearAll {
+    float: right;
+}
+
+
+.fg-button { outline: 0; margin:0 4px 0 0; padding: .4em 1em; text-decoration:none !important; cursor:pointer; position: relative; text-align: center; zoom: 1; }
+.fg-button .ui-icon { position: absolute; top: 50%; margin-top: -8px; left: 50%; margin-left: -8px; }
+
+a.fg-button { float:left; }
+
+button.fg-button { width:auto; overflow:visible; }
+
+.fg-button-icon-left { padding-left: 2.1em; }
+.fg-button-icon-right { padding-right: 2.1em; }
+.fg-button-icon-left .ui-icon { right: auto; left: .2em; margin-left: 0; }
+.fg-button-icon-right .ui-icon { left: auto; right: .2em; margin-left: 0; }
+
+.fg-button-icon-solo { display:block; width:8px; text-indent: -9999px; }
+.fg-buttonset { float:left; }
+.fg-buttonset .fg-button { float: left; }
+.fg-buttonset-single .fg-button,
+.fg-buttonset-multi .fg-button { margin-right: -1px;}
+
+.ui-tooltip {
+	width: 210px;
+}
+
+.float-left {
+  float: left;
+  margin-right: 10px;
+}
+
+.CssLegend {
+    color: white;
+	font-size: 17px;
+    margin: 5px 0px 16px;
+}
+
+.CssContent {
+	position:relative;
+	width:1100px;
+	margin: auto;
+	background-color:#666666;
+	padding: 20px;
+}
+
+.CssText {
+    color: white;
+	font-size: 17px;
+    margin: 5px 0px 16px;
+}
+
+.DropdownProgram {
+    margin-left: 24px;
+ 	width: 260px;
+}
+
+.margin10 {
+  margin: 10px;
+
+}
+
+/*Check list for courses*/
+.checklist {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.checklist li input {
+	display: none;
+}
+
+.checklist li label {
+	display: block;
+	text-align: left;
+	padding: 6px 8px 8px 15px;
+}
+
+
+.checklist li.selected {
+    color: white;
+
+	float: left;
+
+	margin-top: 10px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	margin-left: 10px;
+
+	width: 105px;
+	height: 24px;
+	position: relative;
+    font-size: 0.9em;
+}
+
+.checklist li.deselected {
+    color: #333333;
+
+	float: left;
+
+	margin-top: 10px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	margin-left: 10px;
+
+	background: url(../img/chkboxbg.png) no-repeat 0 0;
+	width: 105px;
+	height: 24px;
+	position: relative;
+    font-size: 0.9em;
+}
+
+
+.checklist li a.checkbox-select {
+
+	display: block;
+	float: right;
+	position: absolute;
+	top: 1px;
+	left: 82px;
+	width: 24px;
+	height: 24px;
+	background: url(../img/plus.png) no-repeat 0 0;
+	text-indent: -9999px;
+	visibility:visible;
+}
+
+.checklist li a.checkbox-deselect {
+
+	display: block;
+	float: right;
+	position: absolute;
+	top: 1px;
+	left: 82px;
+	width: 24px;
+	height: 24px;
+	background: url(../img/minus.png) no-repeat 0 0;
+	text-indent: -9999px;
+	visibility:hidden;
+}
+
+
+.LiIDCourseSelected {
+	color: green;
+
+	float: left;
+
+	margin-top: 10px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	margin-left: 10px;
+
+	background: url(../img/chkboxbg.png) no-repeat 0 0;
+	width: 105px;
+	height: 24px;
+	position: relative;
+    font-size: 0.9em;
+}
+
+
+/*
+.checklist li.selected .checkbox-select {
+	display: none;
+}
+
+
+.checklist li.selected a.checkbox-deselect {
+	display: block;
+}
+*/
+
+/*
+
+.gray-border {
+	border: 2px solid #444444;
+}
+
+.panes div {
+  	display:none;
+  	padding:15px 10px;
+  	border:1px solid #999;
+  	border-top:0;
+  	height:100px;
+  	font-size:14px;
+  	background-color:#fff;
+}
+
+#content {
+	width:1100px;
+	margin: auto;
+	background-color:#666666;
+	padding: 20px;
+}
+
+form {
+	margin: 0 0 30px 0;
+}
+
+legend {
+    color: white;
+	font-size: 17px;
+    margin: 5px 0px 16px;
+}
+
+fieldset {
+	border: 0;
+}
+
+.gray-border {
+	border: 2px solid #444444;
+}
+
+.checklist {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.checklist li {
+    color: #333333;
+	float: left;
+	margin-right: 10px;
+	background: url(../img/chkboxbg.png) no-repeat 0 0;
+	width: 105px;
+	height: 24px;
+	position: relative;
+    font-size: 0.9em;
+}
+
+.checklist li.selected {
+    color: white;
+	background-position: -105px 0;
+}
+
+.checklist li.selected .checkbox-select {
+	display: none;
+}
+
+.checkbox-select {
+	display: block;
+	float: left;
+	position: absolute;
+	top: 1px;
+	left: 82px;
+	width: 24px;
+	height: 24px;
+	background: url(../img/plus.png) no-repeat 0 0;
+	text-indent: -9999px;
+}
+
+.checklist li input {
+	display: none;
+}
+
+a.checkbox-deselect {
+	display: none;
+	float: left;
+	position: absolute;
+	top: 1px;
+	left: 82px;
+	width: 24px;
+	height: 24px;
+	background: url(../img/minus.png) no-repeat 0 0;
+	text-indent: -9999px;
+}
+
+.checklist li.selected a.checkbox-deselect {
+	display: block;
+}
+
+.checklist li label {
+	display: block;
+	text-align: left;
+	padding: 6px 8px 8px 15px;
+}
+
+.fc-agenda-slots td div {
+     height: 2px !important;
+}
+
+.float-left {
+  float: left;
+  margin-right: 10px;
+}
+
+.float-right {
+  float: right;
+}
+
+.clear-both {
+  clear: both;
+}
+
+#options {
+    color: white;
+    background-color: black;
+    margin-top: 20px;
+    padding: 0px 10px 10px;
+    width: 200px;
+}
+
+.center {
+  margin: auto;
+}
+
+.margin10 {
+  margin: 10px;
+}
+
+.fg-button { outline: 0; margin:0 4px 0 0; padding: .4em 1em; text-decoration:none !important; cursor:pointer; position: relative; text-align: center; zoom: 1; }
+.fg-button .ui-icon { position: absolute; top: 50%; margin-top: -8px; left: 50%; margin-left: -8px; }
+
+a.fg-button { float:left; }
+
+
+button.fg-button { width:auto; overflow:visible; }
+
+.fg-button-icon-left { padding-left: 2.1em; }
+.fg-button-icon-right { padding-right: 2.1em; }
+.fg-button-icon-left .ui-icon { right: auto; left: .2em; margin-left: 0; }
+.fg-button-icon-right .ui-icon { left: auto; right: .2em; margin-left: 0; }
+
+.fg-button-icon-solo { display:block; width:8px; text-indent: -9999px; }
+.fg-buttonset { float:left; }
+.fg-buttonset .fg-button { float: left; }
+.fg-buttonset-single .fg-button,
+.fg-buttonset-multi .fg-button { margin-right: -1px;}
+
+.ui-tooltip {
+	width: 210px;
+}
+*/

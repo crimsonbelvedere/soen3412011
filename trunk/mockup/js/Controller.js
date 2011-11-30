@@ -291,170 +291,6 @@ function SolveCompleteCourseSectionTable()
 	SetScheduleList(FullSchedule);	
 	
 	
-	
-	//alert(CompleteCourseSectionTable.join('\n'));
-	
-	//There is only one course so just  make all the possibility equal to the valid martrix	
-	//alert("Number of courses section list :" + CompleteCourseSectionTable.length);
-	
-	/*var CompleteCourseSectionTable = GetCompleteCourseSectionTable();
-	var ScheduleSequenceList = GetCourseScheduleList();
-	
-	//Clear the list of schedule and repopulate it.
-	ClearCourseFromScheduleList();
-	
-	if(CompleteCourseSectionTable.length > 0)
-	{
-		var TemporaryScheduleSequence = [ ];
-		
-		for (var i=0; i < CompleteCourseSectionTable.length; i++) 
-		{		
-			
-			for (var j=0; j < CompleteCourseSectionTable[i].length; j++)
-			{	 			
-				var ScheduleSequenceList = GetCourseScheduleList();
-				for (var k=0; k < ScheduleSequenceList.length; k++)
-				{	 			
-				
-				}
-				SectionCourseSequenceList.push(CompleteCourseSectionTable[i][j]);
-				TemporaryScheduleSequence.push(SectionCourseSequenceList); 						
-			}
-			
-		}
-	}*/
-	/*if(CompleteCourseSectionTable.length > 0)
-	{
-		//Add the first course.
-		var TemporaryScheduleSequence = [ ];
-		for (var i=0; i < CompleteCourseSectionTable[0].length; i++) 
-		{
-			var SectionCourseSequenceList= new Array();
-			
-			SectionCourseSequenceList.push(CompleteCourseSectionTable[0][i]);
-
-		 	TemporaryScheduleSequence.push(SectionCourseSequenceList); 	
-		 			 
-		}
-		SetScheduleList(TemporaryScheduleSequence);	
-		*/
-		
-		//add the other course 2,3,4,5 to the first one.
-		//var TemporaryScheduleSequence = [ ];		
-		
-		/*for (var i = 1; i < CompleteCourseSectionTable.length; i++) 
-		{
-			var ScheduleSequenceList = GetCourseScheduleList();
-				
-			for (var l=0; l< ScheduleSequenceList.length; l++) 
-			{
-			  	//Number of section in the next added course
-				for (var j=0; j < CompleteCourseSectionTable[i].length; j++) 
-				{
-					//Create a temporary array to strore the new schedule
-					var SectionCourseSequenceList= new Array();
-					//store the already added section in the new array
-
-					for (var k=0; k < ScheduleSequenceList[l].length; k++) 
-					{  
-						SectionCourseSequenceList.push(ScheduleSequenceList[l][k]);				
-					}
-					
-					//add the new course section
-					SectionCourseSequenceList.push(CompleteCourseSectionTable[i][j]);
-					
-					//Add to the temporary schedule
-					TemporaryScheduleSequence.push(SectionCourseSequenceList);
-				}
-			}	
-			
-			TemporaryScheduleSequence = FilterCompleteCourseSectionTable(TemporaryScheduleSequence);
-			
-			SetScheduleList(TemporaryScheduleSequence);		
-		}
-		
-		TemporaryScheduleSequence = FilterCompleteCourseSectionTable(TemporaryScheduleSequence);
-		
-		SetScheduleList(TemporaryScheduleSequence);
-		*/
-		/*
-		//Remove colliding section courses
-		//backup the temporary schedule
-		var IndexToRemove= new Array();
-		for (var p=0; p < TemporaryScheduleSequence.length; p++) 
-		{
-		  
-		  	if(TemporaryScheduleSequence[p].length > 1)
-		  	{
-			  	for (var j=0; j < TemporaryScheduleSequence[p].length - 1; j++) 
-			  	{
-				
-					for (var k=j+1; k < TemporaryScheduleSequence[p].length; k++) 
-					{
-						//Compare course [j] and [k]
-						//if there is a time conflict remove the schedule from selection.
-						if(IsSectionTimeConfict(TemporaryScheduleSequence[p][j],TemporaryScheduleSequence[p][k]) == true || IsConstraintsTimeConflict(TemporaryScheduleSequence[p][j]) == true || IsConstraintsTimeConflict(TemporaryScheduleSequence[p][k]) == true )
-						{
-							//alert("Remove schedule from temporary list.");
-							IndexToRemove.push(p);		
-												
-							//break the two loops this schedule is void.
-							k=TemporaryScheduleSequence[p].length;
-							j=TemporaryScheduleSequence[p].length - 1;					
-						}
-						
-						
-					}
-			 
-			 	}
-		 	}
-		 	else
-		 	{
-	 			//Compare course [j] and [k]
-				//if there is a time conflict remove the schedule from selection.
-				if(IsConstraintsTimeConflict(TemporaryScheduleSequence[p][0]) == true )
-				{
-					//alert("Remove schedule from temporary list.");
-					IndexToRemove.push(p);												
-				}
-				
-
-		 	}
-		  
-		}
-		// tag incompleted schedule.
-		for (var p=0; p < TemporaryScheduleSequence.length; p++) 
-		{
- 			if(TemporaryScheduleSequence[p].length != CompleteCourseSectionTable.length)
-			{
-				IndexToRemove.push(p);	
-			}
-		}
-
-		for (var p=0; p < IndexToRemove.length; p++) 
-		{
-			delete TemporaryScheduleSequence[IndexToRemove[p]];
-		}
-		
-		var MaximumScheduleSize = TemporaryScheduleSequence.length;
-		for (var p=0; p < MaximumScheduleSize; p++) 
-		{
-			if(TemporaryScheduleSequence[p] === undefined)
-			{
-				TemporaryScheduleSequence.splice(p,1);
-			}
-		}
-		
-		//clean up the array
-		TemporaryScheduleSequence = TemporaryScheduleSequence.filter(function(){return true});	
-			
-		SetScheduleList(TemporaryScheduleSequence);
-	
-		//ClearCourseFromScheduleList();
-		
-	//alert("All possible valid schedule are created."); 	
-		
-	}*/
 }
 
 function GenerateCourseSectionList(Course)
@@ -579,7 +415,7 @@ function RetreiveCourses()
 	}
 	else
 	{
-		AjaxRetreiveCourses(GetFaculty(), GetDepartment(), GetProgram(), "both", "all");
+		AjaxRetreiveCourses(GetFaculty(), GetDepartment(), GetProgram());
 		
 		var AllCourses = GetAllCourseList();
 		
@@ -636,14 +472,14 @@ function RetreiveCourses()
 	}	
 }
 
-function AjaxRetreiveCourses(Faculty, Department, Program, Semester ,CourseCategory)
+function AjaxRetreiveCourses(Faculty, Department, Program)
 {
 		
   	$.ajax({
 	type: "GET",
-	url: "/Website/soen3412011/trunk/mockup/php/queries.php",
+	url: "/Website/soen3412011/trunk/php/AjaxRequest.php",
 	async: false,
-	data: { Faculty: Faculty, Department: Department , Program: Program , Semester: Semester , Category: CourseCategory},
+	data: { Faculty: Faculty, Department: Department , Program: Program},
 
 	beforeSend:function(x) {
 		//alert("Before Sending Ajax request");
@@ -652,63 +488,10 @@ function AjaxRetreiveCourses(Faculty, Department, Program, Semester ,CourseCateg
 	
 	success:function(CourseArray){
 	//do your stuff with the JSON data
-		//alert("JSON request succeeded");
-		
-		if(CourseCategory == "all")
-		{
-			SetAllCourseList(CourseArray);
-		}
-		/*if(CourseCategory == "FieldEngineering")
-		{
-			SetCourseListFieldEngineering(CourseArray);
-			NotifyView("ULID"+CourseCategory);	
-		}
-		else if(CourseCategory == "CoreEngineering")
-		{
-			SetCourseListCoreEngineering(CourseArray);
-			NotifyView("ULID"+CourseCategory);	
-		}
-		else  if (CourseCategory == "Option")
-		{
-			SetCourseListOption(CourseArray);
-			NotifyView("ULID"+CourseCategory);	
-		}
-		else  if (CourseCategory == "Elective")
-		{
-			SetCourseListElectives(CourseArray);
-			NotifyView("ULID"+CourseCategory);	
-		}*/
-		
-		/*alert("Name: " + CourseArray[0].Name);   	
-		alert("Number: " + CourseArray[0].Number);   	
-		alert("Description: " + CourseArray[0].Description);   	
-		alert("Number of Credits: " + CourseArray[0].NumberOfCredits);   	
-		alert("classtype: " + CourseArray[0].class_type);
-		alert("class_sort: " + CourseArray[0].class_sort);*/
-		
-		/*
-		alert("LectureID: " + Schedule.CourseArray[0].LectureArray[0].LectureID);	 			
-		alert("Lecture classroom: " + Schedule.CourseArray[0].LectureArray[0].Classrom); 
-		alert("Lecture Professor: " + Schedule.CourseArray[0].LectureArray[0].Professor);
-		alert("Lecture Days: " + Schedule.CourseArray[0].LectureArray[0].Days);
-		alert("Lecture StartingTime: " + Schedule.CourseArray[0].LectureArray[0].StartingTime);
-		alert("Lecture EndTime: " + Schedule.CourseArray[0].LectureArray[0].EndTime);
-		
-		alert("TutorialID: " + Schedule.CourseArray[0].TutorialArray[0].TutorialID);	 			
-		alert("Tutorial classroom: " + Schedule.CourseArray[0].TutorialArray[0].Classrom); 
-		alert("Tutorial Professor: " + Schedule.CourseArray[0].TutorialArray[0].Professor);
-		alert("Tutorial Days: " + Schedule.CourseArray[0].TutorialArray[0].Days);
-		alert("Tutorial StartingTime: " + Schedule.CourseArray[0].TutorialArray[0].StartingTime);
-		alert("Tutorial EndTime: " + Schedule.CourseArray[0].TutorialArray[0].EndTime);
-		
-		alert("LaboratoryID: " + Schedule.CourseArray[0].LaboratoryArray[0].LaboratoryID);	 			
-		alert("Laboratory classroom: " + Schedule.CourseArray[0].LaboratoryArray[0].Classrom); 
-		alert("Laboratory Professor: " + Schedule.CourseArray[0].LaboratoryArray[0].Professor);
-		alert("Laboratory Days: " + Schedule.CourseArray[0].LaboratoryArray[0].Days);
-		alert("Laboratory StartingTime: " + Schedule.CourseArray[0].LaboratoryArray[0].StartingTime);
-		alert("Laboratory EndTime: " + Schedule.CourseArray[0].LaboratoryArray[0].EndTime);
-		*/
-		
+	//alert("JSON request succeeded");
+	
+		SetAllCourseList(CourseArray);
+
 	},
 	
 	error:function(){
