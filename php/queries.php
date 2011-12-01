@@ -9,7 +9,7 @@ include('ajax_models.php');
  * 
  * */
 $DEBUG=False;
-$DEBUG_PREREQUISITES=false;
+$DEBUG_PREREQUISITES=False;
 
 if($DEBUG_PREREQUISITES){
 	$prerequisite_group=null;
