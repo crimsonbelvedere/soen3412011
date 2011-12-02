@@ -9,6 +9,38 @@
 		*/
 	};
 	
+	var StudentIsLoggedIn = false;
+	
+	var StudentInformation = 
+	[ 
+	
+	];
+	
+	var CourseLeftToTakeInThisSemester =
+	[
+	
+	];
+	
+	var CourseLeftToTakeInProgram =
+	[
+	
+	];
+	
+	var StudentPrerequisite =
+	[
+	
+	];
+	
+	var CourseCannotTake =
+	[
+	
+	];
+	
+	var StudentCourseList = 
+	[ 
+	
+	];
+	
 	var AllCourseList = 
 	[ 
 	
@@ -253,7 +285,13 @@
 		}
 		*/	
 	];
-		
+	
+	//  matrix that contains array of course combiantion	
+	var  CompleteCourseSectionTable = 
+	[
+	
+	];
+	
 	// ValidSchedue	
 	var CourseScheduleList = 
 	[
@@ -265,26 +303,124 @@
 	
 	];
 	
+	function GetStudentIsLoggedIn()
+	{
+		return StudentIsLoggedIn;
+	}
+	
+	function SetStudentIsLoggedIn(Status)
+	{
+		StudentIsLoggedIn = Status;	
+	}
+	
+	function GetStudentInformation()
+	{
+		return StudentInformation;
+	}
+	
+	function SetStudentInformation(NewStudentInformation)
+	{
+		StudentInformation=NewStudentInformation;
+	}
+	
+
+	
+	function GetStudentPrerequisite()
+	{
+		return StudentPrerequisite;
+	}
+	
+	function SetStudentPrerequisite(NewPrerequisite)
+	{
+		StudentPrerequisite=NewPrerequisite;
+	}
+	function AddToStudentPrerequisite(NewPrerequisite)
+	{
+		StudentPrerequisite.push(NewPrerequisite);
+	}	
+	function ClearStudentPrerequisite()
+	{
+		StudentPrerequisite.splice(0,StudentPrerequisite.length);				
+	}
+	
+	function GetStudentCourseCannotTake()
+	{
+		return CourseCannotTake;
+	}	
+	function SetStudentCourseCannotTake(NewCourseCannotTake)
+	{
+		CourseCannotTake=NewCourseCannotTake;
+	}
+	function AddToStudentCourseCannotTake(NewCourseCannotTake)
+	{
+		CourseCannotTake.push(NewCourseCannotTake);
+	}
+	function ClearStudentCourseCannotTake()
+	{
+		CourseCannotTake.splice(0,CourseCannotTake.length);				
+	}
+	
+	
+	function GetStudentCourseLeftToTakeInThisSemester()
+	{
+		return CourseLeftToTakeInThisSemester;
+	}
+	function SetStudentCourseLeftToTakeInThisSemester(NewCourseLeftToTakeInThisSemester)
+	{
+		CourseLeftToTakeInThisSemester=NewCourseLeftToTakeInThisSemester;
+	}
+	function AddToStudentCourseLeftToTakeInThisSemester(NewCourseLeftToTakeInThisSemester)
+	{
+		CourseLeftToTakeInThisSemester.push(NewCourseLeftToTakeInThisSemester);
+	}
+	function ClearStudentCourseLeftToTakeInThisSemester()
+	{
+		CourseLeftToTakeInThisSemester.splice(0,CourseLeftToTakeInThisSemester.length);				
+	}
+	
+	
+	function GetStudentCourseLeftToTakeInProgram()
+	{
+		return CourseLeftToTakeInProgram;
+	}
+	function SetStudentCourseLeftToTakeInProgram(NewStudentCourseLeftToTakeInProgram)
+	{
+		CourseLeftToTakeInProgram=NewStudentCourseLeftToTakeInProgram;
+	}
+	function AddToStudentCourseLeftToTakeInProgram(NewStudentCourseLeftToTakeInProgram)
+	{
+		CourseLeftToTakeInProgram.push(NewStudentCourseLeftToTakeInProgramInProgram);
+	}
+	function ClearStudentCourseLeftToTakeInProgram()
+	{
+		CourseLeftToTakeInProgram.splice(0,CourseLeftToTakeInProgram.length);				
+	}
+	
+	
+	
+	function GetStudentCourseList()
+	{
+		return StudentCourseList;
+	}
+	function SetStudentCourseList(NewStudentCourseList)
+	{
+		StudentCourseList=NewStudentCourseList;
+	}
+	
+	
 	function GetConstraintsList()
 	{
 		return ConstraintsList;
 	}
-	
 	function ClearConstraintsList()
 	{
 		ConstraintsList.splice(0,ConstraintsList.length);				
 	}
-	
 	function AddToConstraintsList(ConstraintsObject)
 	{
 		ConstraintsList.push(ConstraintsObject);
 	}
 		
-	//  matrix that contains array of course combiantion	
-	var  CompleteCourseSectionTable = 
-	[
-	
-	];
 
 	function GetCourseScheduleList()
 	{
@@ -333,6 +469,11 @@
 		};
 	}
 	
+	function ClearCompleteCourseSectionTable()
+	{
+		CompleteCourseSectionTable.splice(0,CompleteCourseSectionTable.length);		
+	}
+	
 	//Course List Selection api
 	function GetCourseListSelection()
 	{
@@ -359,6 +500,11 @@
 		}
 	}
 	
+	function ClearCourseListSelection()
+	{
+		CourseListSelection.splice(0,CourseListSelection.length);		
+	}	
+	
 	//Course List
 	function SetAllCourseList(Courses)
 	{
@@ -367,6 +513,11 @@
 	function GetAllCourseList()
 	{
 		return AllCourseList;
+	}
+	
+	function ClearCourseList()
+	{
+		AllCourseList.splice(0,AllCourseList.length);		
 	}
 	
 	//Course List
