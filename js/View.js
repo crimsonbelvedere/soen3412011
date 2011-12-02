@@ -39,6 +39,18 @@ function NotifyView(ElementID)
 		
 		$("#"+ElementID).html(HtmlCode);
 	}
+	
+	if(ElementID == "DfnIDStudentProgram")
+	{
+		$("#"+ElementID).empty();
+		
+		var StudentInformation = GetStudentInformation();
+		
+		HtmlCode = StudentInformation.program+" "+StudentInformation.program_option;
+		
+		$("#"+ElementID).html(HtmlCode);
+	}
+	
 	//alert("NotifyView " + ElementID);	
 	//if(ElementID == )
 	if(ElementID == "constraints")
