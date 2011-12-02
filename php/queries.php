@@ -30,12 +30,13 @@ if($DEBUG){
 	//echo json_encode($arr);
 	
 	//print "Testing db call";
-	$result=get_courses('Engineering and Computer Science','Computer Science and Software Engineering','BEng in Software Engineering',2 );
+	//$result=get_courses('Engineering and Computer Science','Computer Science and Software Engineering','BEng in Software Engineering',2 );
 	/*$counter=0;
 	foreach($result as $course){
 		echo $course->string();
 		$counter+=1;
 	}*/
+	$result=get_courses_to_take(3333);
 	echo json_encode($result);
 	
 }
@@ -335,5 +336,23 @@ function get_prerequisite_course_groups($course_id){
 	}	
 	return $group_id;
 }
+
+function login($student_id, $password){
+	
+	$student= new student($student_id);
+	if($student->password==$password){
+		if(!isset($SESSION['login'])){
+			session_start();
+			$SESSION['login']=True;
+			return $student;
+		}
+		$SESSION['login']=True;
+		return $student;
+	}
+	session_start();
+	$SESSION['login']=False;
+}
+
+
 
 ?>
