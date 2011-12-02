@@ -1,3 +1,7 @@
+/*
+ * Function to retreives courses from the database,
+ * the must have already selected a a valid faculty , program, department, semester
+ */
 function RetreiveCourses()
 {
 	if(GetFaculty() === undefined ||  GetFaculty() == "None" ||  GetProgram() === undefined || GetProgram() == "None" ||  GetDepartment() === undefined || GetDepartment() == "None"  || GetSemester() === undefined)
@@ -61,46 +65,14 @@ function RetreiveCourses()
 		SetCourseListElectives(ElectivesCourses);
 		NotifyView("ULIDElective");	
 		
-			
-		//var StudentCourseList =  GetStudentCourseList();
-		
-		
-		
-		//Filter course according to student need.
-		//have this semester offered course
-		
-		//Get student course that he still needs to take
-		
-		//course not taken for this semester = offered course for this semester  - student course that he still need to take
-		
-		//course prerequisite for this student = get prerequisite (id)
-		
-		/*
-		 
-		for (var i=0; i < CourseToTakeInThisSemester.length; i++) 
-		{
-			for (var j=0; j < CoursePrerequisites.length; j++) 
-			{
-				for (var k=0; k < CoursePrerequisites[j].length; k++) 
-				{
-			
-					for (var l=0; l < CoursePrerequisites[j].CourseList.length; k++) 
-					{
-					
-						
-					}
-				}
-	
-			}
-		};
-		
-		
-		*/	
-		
 	}	
 }
 
-
+/*
+ * Function to verify if the student has all the prerequisite for the given course
+ * course to take
+ * prerequisite of all course
+ */
 function HasPrerequisite(Course,PrerequisiteArray)
 {
 						 
@@ -129,6 +101,12 @@ function HasPrerequisite(Course,PrerequisiteArray)
 	
 }
 
+/*
+ * Detect if a course is in the array
+ * course to take
+ * array to check
+ * return bool
+ */
 function IsCourseInArray(Course,CourseArray)
 {
 	
@@ -150,6 +128,10 @@ function IsCourseInArray(Course,CourseArray)
 	}
 }
 
+/*
+ * Ajax call to get the login information from the database
+ * the database will return the student object
+ */
 function AjaxLogin(StudentId, Password)
 {
 	var ajax_load = "<img src='img/ajax-loader.gif'/>";  
@@ -249,6 +231,12 @@ function AjaxLogin(StudentId, Password)
 	
 }
 
+/*
+ * Ajax call to get the course that student must take
+ * student Id
+ * return the array of course that the student must take
+ * 
+ */
 function AjaxGetStudentCoursesToTake(StudentId)
 {
 	$.ajax({
@@ -281,6 +269,10 @@ function AjaxGetStudentCoursesToTake(StudentId)
  
 }
 
+/*
+ * Ajax call to retreive courses from the selected faculty, department, program, semester
+ * return the list of courses
+ */
 function AjaxRetreiveCourses(Faculty, Department, Program, Semester)
 {
 		
@@ -325,6 +317,11 @@ function AjaxRetreiveCourses(Faculty, Department, Program, Semester)
 		
 }		
 
+/*
+ * Ajax call to return the prerequisite arrau for the student
+ * student id
+ * 
+ */
 function AjaxGetPrerequisite(StudentId)
 {
 	$.ajax({
@@ -364,6 +361,9 @@ function AjaxGetPrerequisite(StudentId)
 //3) Notify the view that the model has changed
 //4) The update itself using the model (READ)
 //Handle events
+/*
+ * Event handler function, handle all the action trigerred by the user on the view.
+ */
 $(document).ready(function()
 {
 	
