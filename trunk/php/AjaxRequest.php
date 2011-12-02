@@ -1,7 +1,6 @@
 <?php 
 
 include('queries.php');
-include('login.php');
 
 	$FunctionCall = $_GET['FunctionCall'];
 	
@@ -19,10 +18,10 @@ include('login.php');
 		
 		echo json_encode($result);
 	}
-	elseif ($FunctionCall == "get_student_courses") 
+	elseif ($FunctionCall == "get_courses_to_take") 
 	{
-		//$StudentId= $_GET['StudentId'];
-		$result = get_student_courses(3);
+		$StudentId= $_GET['StudentId'];
+		$result = get_courses_to_take($StudentId);
 		
 		echo json_encode($result);
 	}
@@ -33,10 +32,13 @@ include('login.php');
 		$result = login($StudentId,$Password);
 		echo json_encode($result);
 	}
-	
-	
-	
-	
+	elseif ($FunctionCall == "get_prerequisites")
+	{
+		$StudentId= $_GET['StudentId'];
+		$result = get_prerequisites($StudentId);
+		
+		echo json_encode($result);
+	}
 	
 /*
 class Course {

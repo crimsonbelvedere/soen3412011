@@ -292,6 +292,7 @@ class Laboratory {
 }
 class student{
 	public $pk;
+	public $studentid;
 	public $first_name;
 	public $last_name;
 	public $password;
@@ -330,6 +331,7 @@ class student{
 		$this->program_option=$query_set['program_option'];
 		$this->program=$query_set['program'];
 		$this->status=$query_set['status'];
+		$this->studentid=$query_set['student_id'];
 		$this->populate_courses_taken();
 	}
 	function populate_courses_taken(){
