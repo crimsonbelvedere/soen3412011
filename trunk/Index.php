@@ -179,6 +179,8 @@
 		<div id="DivIDLogout" class="DivIDLoginLogoutHidden">			
 			<dfn id="DfnIDWelcome" >Welcome </dfn><dfn id="DfnIDStudentName" ></dfn>			
 			<button id="ButtonIDLogOut" class="logfg-button ui-state-default ui-corner-all">Log out</button>	
+			<br></br>
+			<dfn>Program: </dfn><dfn id="DfnIDStudentProgram" ></dfn>	
 		</div>
 		
 		<div id="DivIDSelectFieldSets">

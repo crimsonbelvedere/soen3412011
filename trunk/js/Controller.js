@@ -179,7 +179,7 @@ function AjaxLogin(StudentId, Password)
 				SetStudentInformation(StudentInformation);				
 				NotifyView("DivIDLogin");
 				NotifyView("DfnIDStudentName");
-				
+				NotifyView("DfnIDStudentProgram");
 				
 				
 				//set course taken
