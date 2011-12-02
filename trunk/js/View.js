@@ -1,4 +1,9 @@
 
+/*
+ * View of the MVC
+ * This function receive which element has change and do the establish behaviour.
+ * all element from the GUI are here (html div)
+ */
 function NotifyView(ElementID)
 {
 	//Generate html code
@@ -68,31 +73,6 @@ function NotifyView(ElementID)
 		var ConstraintList =GetConstraintsList();
 		var ScheduleNumber = GetScheduleNumber();	
 		var ScheduleSequenceList = GetCourseScheduleList();
-		
-		/*var d = new Date();
-		var DayNumber = d.getDay();
-		var DateNumber = d.getDate();
-		var MonthNumber = d.getMonth()+1;
-		var YearNumber = d.getFullYear();
-		var FirtMondayOfThisWeek;
-		
-		//DateNumber=19;
-		//DayNumber=6;
-		//alert(YearNumber+"-"+MonthNumber+"-"+DateNumber);
-		
-		if(DayNumber > 1)
-		{
-			FirtMondayOfThisWeek = DateNumber - DayNumber + 1;
-		}
-		else if(DayNumber < 1)
-		{
-			FirtMondayOfThisWeek = DateNumber + DayNumber + 1;
-		}
-		else
-		{
-			FirtMondayOfThisWeek = DateNumber ;	
-		}
-		*/
 		
 		var FirsMondayOfTheWeekDate = FindFirstMondayOfTheWeek();
 		

@@ -1,4 +1,7 @@
-
+/*
+ * This function take all generated schedule and removes the one that have collision,
+ * and the one that do not contains all courses.
+ */
 function FilterCompleteCourseSectionTable(TemporaryScheduleSequence)
 {
 	//Remove colliding section courses
@@ -75,7 +78,10 @@ function FilterCompleteCourseSectionTable(TemporaryScheduleSequence)
 	
 }
 
-
+/*
+ * Sub recursive function to generate a schedule.
+ * This function will generate the tree possibilities.
+ */
 function AddSection(SingleSchedule,CourseIndex,FullSchedule)
 {
 	var CompleteCourseSectionTable = GetCompleteCourseSectionTable();
@@ -104,7 +110,9 @@ function AddSection(SingleSchedule,CourseIndex,FullSchedule)
 	return FullSchedule;
 }
 
-
+/*
+ * Main function generate all schedules, from the selected courses.
+ */
 function SolveCompleteCourseSectionTable()
 {
 	
@@ -127,6 +135,11 @@ function SolveCompleteCourseSectionTable()
 	
 }
 
+/*
+ * Generate all section from a course
+ * If we change the database structure, we only need to change this function in order to 
+ * accomodate changes.
+ */
 function GenerateCourseSectionList(Course)
 {
 	//alert("Generate all possible section from a course");	

@@ -1,3 +1,13 @@
+/*
+ * This function find conflict between two time period
+ * D1 days string
+ * S1 starting time string
+ * E1 ending time string
+ * D2 days string
+ * S2 starting time string
+ * E2 ending time string
+ * return bool
+ */
 function IsTimeConflict(D1,S1,E1,D2,S2,E2)
 {
 	//Convert string in usable format
@@ -22,6 +32,11 @@ function IsTimeConflict(D1,S1,E1,D2,S2,E2)
 	}
 }
 
+/*
+ * This function find conflict between a time period and any constraints added
+ * section object
+ * return bool
+ */
 function IsConstraintsTimeConflict(Section1)
 {
 	//retreive the time conflict array
@@ -72,6 +87,12 @@ function IsConstraintsTimeConflict(Section1)
 	return false;
 }
 
+/*
+ * Find if there is a time confict between two section
+ * Section 1
+ * Section 2
+ * return bool
+ */
 function IsSectionTimeConfict(Section1,Section2)
 {
 	//a Section can contain a lecture and optionnaly a lab and a tutorial
@@ -165,6 +186,9 @@ function IsSectionTimeConfict(Section1,Section2)
 	return false;
 }
 
+/*
+ * Find the first monday of the week, used to fix the calendar to the first monday
+ */
 function FindFirstMondayOfTheWeek()
 {
 	//set the day of the calendar to monday
@@ -208,7 +232,15 @@ function FindFirstMondayOfTheWeek()
 	//alert(YearNumber+"-"+MonthNumber+"-"+FirtMondayOfThisWeek+" 12:15:00");
 	//alert(YearNumber+"-"+MonthNumber+"-"+FirtMondayOfThisWeek+" 13:00:00");
 }
-function SlidergetTime(hours, minutes) {
+
+/*
+ *	 Transform the slider date to usable data for the schedule
+ * hours sting
+ * minute string
+ * return time string
+ */
+function SlidergetTime(hours, minutes) 
+{
   var time = null;
   minutes = minutes + "";
 
@@ -217,6 +249,12 @@ function SlidergetTime(hours, minutes) {
   }
   return hours + ":" + minutes;
 }
+
+/*
+ * Transform the day string to an binary array reflecting the day string
+ * days string
+ * return weekdays array
+ */
 function Daystr(days) 
 { 
 	//alert("gogogogo");
@@ -233,6 +271,10 @@ function Daystr(days)
 	return weekday;
 }
 
+/*
+ * transform the trimestring to a time array reflecting the time string
+ * return time array
+ */
 function Timestr(timestring)
 {
 	var str = timestring;
@@ -242,6 +284,13 @@ function Timestr(timestring)
 	return time;
 	
 }
+
+/*
+ *	Find if the days1 and days 2 string have a day in common 
+ * days1 string
+ * days2 string
+ * return bool
+ */
 function CompareDay(days1, days2)
 {
 	var week1 = Daystr(days1);
@@ -255,6 +304,11 @@ function CompareDay(days1, days2)
 	}
 	return false;
 }
+
+/*
+ * Compare time 
+ * return bool
+ */
 function CompareTime(Time1, Time2)
 {
 	var TimeArr1 = Timestr(Time1);
