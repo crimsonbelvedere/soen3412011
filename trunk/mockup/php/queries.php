@@ -46,6 +46,10 @@ if($DEBUG){
  * Each course, is an instance of the Course class from AjaxRequest.
  * The courses are selected by faculty description, department description, program description, and semester (which is an int).
  * **/
+function get_courses_short_cut($semester){
+	
+	return json_encode(get_courses('Engineering and Computer Science','Computer Science and Software Engineering','BEng in Software Engineering',2));
+}
 function get_courses($faculty_description,$department_description, $program_description, $semester){
 	$db_adapter=new db_adapter();
 	$query="

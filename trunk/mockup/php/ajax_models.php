@@ -15,6 +15,7 @@ class Course {
 		$query_set=$query_set[0];
 		$this->Description=$query_set['description'];
 		$this->Name=$query_set['title'];
+		$this->Number=$query_set['number'];
 		if($term!=null){
 			$this->populate_lecture_arr($term);
 		}
